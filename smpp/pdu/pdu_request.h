@@ -6,12 +6,10 @@
 namespace smpp {
 
 class PduRequest : public Pdu {
- private:
  public:
-    PduRequest(const PduHeader& pduHeader);
-    
+  PduRequest(uint32_t nCommandId);
 };
 
-}
+}  // namespace smpp
 
 #endif

@@ -2,8 +2,6 @@
 
 namespace smpp {
 
-PduRequest::PduRequest(const PduHeader& pduHeader) : Pdu{pduHeader, true} {
+PduRequest::PduRequest(uint32_t nCommandId) : Pdu{nCommandId, true} {}
 
-}
-
-}
+}  // namespace smpp

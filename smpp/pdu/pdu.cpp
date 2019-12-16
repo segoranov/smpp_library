@@ -4,14 +4,8 @@
 
 namespace smpp {
 
-PduHeader::PduHeader(uint32_t nCommandLength, uint32_t nCommandID, uint32_t nCommandStatus,
-                     uint32_t nSequenceNumber)
-    : m_nCommandLength{nCommandLength},
-      m_nCommandID{nCommandID},
-      m_nCommandStatus{nCommandStatus},
-      m_nSequenceNumber{nSequenceNumber} {}
-
-Pdu::Pdu(const PduHeader& pduHeader, bool isRequest) : m_pduHeader{pduHeader}, m_bIsRequest{isRequest} {}
+Pdu::Pdu(uint32_t nCommandId, bool bIsRequest)
+    : m_nCommandId{nCommandId}, m_bIsRequest{bIsRequest} {}
 
 void Pdu::addOptionalParameter(const Tlv& tlv) { m_vOptionalTlvParameters.push_back(tlv); }
 
