@@ -44,7 +44,7 @@ class ChannelBuffer {
   std::string readString(int size);
   char readChar();
 
-  void resetMarker();
+  void resetReadMarker();
 
   // sets the values, the offset must be from 0 to length of the encoded message
   void setBytes(const char* pData, size_t nSize, unsigned offset);

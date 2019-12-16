@@ -6,7 +6,7 @@ namespace smpp {
 
 ChannelBuffer::ChannelBuffer() : m_stringBuffer(""), m_stream{&m_stringBuffer} {};
 
-void ChannelBuffer::resetMarker() { m_stream.seekg(0, m_stream.beg); }
+void ChannelBuffer::resetReadMarker() { m_stream.seekg(0, m_stream.beg); }
 
 void ChannelBuffer::writeInt8(uint8_t nValue) {
   m_stream.write(reinterpret_cast<char*>(&nValue), sizeof(uint8_t));

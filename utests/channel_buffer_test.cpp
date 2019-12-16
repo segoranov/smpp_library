@@ -38,7 +38,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
       channelBuffer.writeInt8(ch);
       THEN("the size of the buffer should be 1 byte") { REQUIRE(channelBuffer.size() == 1); }
       THEN("the char value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(channelBuffer.readChar() == ch);
       }
     }
@@ -47,7 +46,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
       channelBuffer.writeInt8(x8);
       THEN("the size of the buffer should be 1 byte") { REQUIRE(channelBuffer.size() == 1); }
       THEN("the uint8_t value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(channelBuffer.readInt8() == x8);
       }
     }
@@ -56,7 +54,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
       channelBuffer.writeInt16(x16);
       THEN("the size of the buffer should be 2 bytes") { REQUIRE(channelBuffer.size() == 2); }
       THEN("the uint16_t value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(channelBuffer.readInt16() == x16);
       }
     }
@@ -65,7 +62,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
       channelBuffer.writeInt32(x32);
       THEN("the size of the buffer should be 4 bytes") { REQUIRE(channelBuffer.size() == 4); }
       THEN("the uint32_t value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(channelBuffer.readInt32() == x32);
       }
     }
@@ -76,7 +72,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
         REQUIRE(channelBuffer.size() == octetString.size());
       }
       THEN("the uint32_t value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(channelBuffer.readString(octetString.size()) == octetString);
       }
     }
@@ -89,7 +84,6 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
         REQUIRE(channelBuffer.size() == std::string{nullTerminatedString}.size());
       }
       THEN("the uint32_t value read from the buffer should be the same") {
-        channelBuffer.resetMarker();
         REQUIRE(std::string{channelBuffer.readNullTerminatedString()} ==
                 std::string{nullTerminatedString});
       }
