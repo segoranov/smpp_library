@@ -7,7 +7,7 @@ namespace smpp {
 
 class PduRequest : public Pdu {
  public:
-  PduRequest(uint32_t nCommandId);
+  explicit PduRequest(uint32_t nCommandId);
 };
 
 }  // namespace smpp

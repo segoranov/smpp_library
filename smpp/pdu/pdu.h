@@ -23,7 +23,7 @@ class Pdu {
   const bool m_bIsRequest;
 
  public:
-  Pdu(uint32_t nCommandId, bool bIsRequest);
+  explicit Pdu(uint32_t nCommandId, bool bIsRequest);
 
   uint32_t getCommandLength() const { return m_nCommandLength; }
   uint32_t getCommandId() const { return m_nCommandId; }
