@@ -13,7 +13,7 @@ constexpr int DATA_TYPE_OCTET_STRING = 1;
 constexpr int DATA_TYPE_INTEGER = 2;
 
 constexpr int PDU_HEADER_FIELD_LENGTH = 4;
-constexpr int PDU_TOTAL_HEADER_LENGTH = 16;
+constexpr int PDU_HEADER_LENGTH = 16;
 constexpr int PDU_CMD_ID_RESP_MASK = 0x80000000;  // 31st bit set to true
 // constexpr Address EMPTY_ADDRESS = new Address();
 
@@ -101,7 +101,7 @@ constexpr uint16_t TAG_DEST_SUBADDRESS = 0x0203;
 constexpr uint16_t TAG_USER_MESSAGE_REFERENCE = 0x0204;
 constexpr uint16_t TAG_USER_RESPONSE_CODE = 0x0205;
 constexpr uint16_t TAG_SOURCE_PORT = 0x020A;
-constexpr uint16_t TAG_DESTINATION_PORT = 0x020B;
+constexpr uint16_t TAG_DEST_PORT = 0x020B;
 constexpr uint16_t TAG_SAR_MSG_REF_NUM = 0x020C;
 constexpr uint16_t TAG_LANGUAGE_INDICATOR = 0x020D;
 constexpr uint16_t TAG_SAR_TOTAL_SEGMENTS = 0x020E;
@@ -119,7 +119,27 @@ constexpr uint16_t TAG_MESSAGE_PAYLOAD = 0x0424;
 constexpr uint16_t TAG_DELIVERY_FAILURE_REASON = 0x0425;
 constexpr uint16_t TAG_MORE_MESSAGES_TO_SEND = 0x0426;
 constexpr uint16_t TAG_MESSAGE_STATE = 0x0427;
+constexpr uint16_t TAG_CONGESTION_STATE = 0x0428;
 constexpr uint16_t TAG_USSD_SERVICE_OP = 0x0501;
+constexpr uint16_t TAG_BROADCAST_CHANNEL_INDICATOR = 0x0600;
+constexpr uint16_t TAG_BROADCAST_CONTENT_TYPE = 0x0601;
+constexpr uint16_t TAG_BROADCAST_CONTENT_TYPE_INFO = 0x0602;
+constexpr uint16_t TAG_BROADCAST_MESSAGE_CLASS = 0x0603;
+constexpr uint16_t TAG_BROADCAST_REP_NUM = 0x0604;
+constexpr uint16_t TAG_BROADCAST_FREQUENCY_INTERVAL = 0x0605;
+constexpr uint16_t TAG_BROADCAST_AREA_IDENTIFIER = 0x0606;
+constexpr uint16_t TAG_BROADCAST_ERROR_STATUS = 0x0607;
+constexpr uint16_t TAG_BROADCAST_AREA_SUCCESS = 0x0608;
+constexpr uint16_t TAG_BROADCAST_END_TIME = 0x0609;
+constexpr uint16_t TAG_BROADCAST_SERVICE_GROUP = 0x060A;
+constexpr uint16_t TAG_BILLING_IDENTIFICATION = 0x060B;
+constexpr uint16_t TAG_SOURCE_NETWORK_ID = 0x060D;
+constexpr uint16_t TAG_DEST_NETWORK_ID = 0x060E;
+constexpr uint16_t TAG_SOURCE_NODE_ID = 0x060F;
+constexpr uint16_t TAG_DEST_NODE_ID = 0x0610;
+constexpr uint16_t TAG_DEST_ADDR_NP_RESOLUTION = 0x0611;
+constexpr uint16_t TAG_DEST_ADDR_NP_INFORMATION = 0x0612;
+constexpr uint16_t TAG_DEST_ADDR_NP_COUNTRY = 0x0613;
 constexpr uint16_t TAG_DISPLAY_TIME = 0x1201;
 constexpr uint16_t TAG_SMS_SIGNAL = 0x1203;
 constexpr uint16_t TAG_MS_VALIDITY = 0x1204;
@@ -503,7 +523,7 @@ const std::unordered_map<uint16_t, std::string> TAG_NAME_MAP{
     {TAG_USER_MESSAGE_REFERENCE, "TAG_USER_MESSAGE_REFERENCE"},
     {TAG_USER_RESPONSE_CODE, "TAG_USER_RESPONSE_CODE"},
     {TAG_SOURCE_PORT, "TAG_SOURCE_PORT"},
-    {TAG_DESTINATION_PORT, "TAG_DESTINATION_PORT"},
+    {TAG_DEST_PORT, "TAG_DEST_PORT"},
     {TAG_SAR_MSG_REF_NUM, "TAG_SAR_MSG_REF_NUM"},
     {TAG_LANGUAGE_INDICATOR, "TAG_LANGUAGE_INDICATOR"},
     {TAG_SAR_TOTAL_SEGMENTS, "TAG_SAR_TOTAL_SEGMENTS"},
