@@ -14,7 +14,8 @@ SCENARIO("Address should be read and written properly to buffer", "[address]") {
       }
 
       THEN("after constructing a new address from the buffer, it should be equal to the first address") {
-          smpp::Address reconstructedAddress{channelBuffer.readInt8(), channelBuffer.readInt8(), channelBuffer.readNullTerminatedString()};
+          smpp::Address reconstructedAddress;
+          reconstructedAddress.read(channelBuffer);
           REQUIRE(reconstructedAddress.size() == address.size());
           REQUIRE(reconstructedAddress == address);
       }
