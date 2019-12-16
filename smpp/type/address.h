@@ -32,9 +32,9 @@ class Address {
    */
   int size() const;
 
-  void read(ChannelBuffer& buffer);  // TODO SG exception?
+  void read(ChannelBuffer& buffer);
 
-  void write(ChannelBuffer& buffer);  // TODO SG exception?
+  void write(ChannelBuffer& buffer) const;
 
 };  // namespace smpp
 

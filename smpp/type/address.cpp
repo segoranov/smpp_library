@@ -16,7 +16,7 @@ void Address::read(ChannelBuffer& buffer) {
   address_range = buffer.readNullTerminatedString();
 }
 
-void Address::write(ChannelBuffer& buffer) {
+void Address::write(ChannelBuffer& buffer) const {
   buffer.writeInt8(addr_ton);
   buffer.writeInt8(addr_npi);
   buffer.writeNullTerminatedString(address_range.c_str());
