@@ -12,8 +12,8 @@ constexpr int DATA_TYPE_C_OCTET_STRING = 0;
 constexpr int DATA_TYPE_OCTET_STRING = 1;
 constexpr int DATA_TYPE_INTEGER = 2;
 
-constexpr int PDU_INT_LENGTH = 4;
-constexpr int PDU_HEADER_LENGTH = 16;
+constexpr int PDU_HEADER_FIELD_LENGTH = 4;
+constexpr int PDU_TOTAL_HEADER_LENGTH = 16;
 constexpr int PDU_CMD_ID_RESP_MASK = 0x80000000;  // 31st bit set to true
 // constexpr Address EMPTY_ADDRESS = new Address();
 

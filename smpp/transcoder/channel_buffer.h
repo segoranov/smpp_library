@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 
-#include "../smppexceptions.h"
 #include "../pdu/pdu.h"
+#include "../smppexceptions.h"
 
 /**
  *  Class used for encoding/decoding of PDUs.
@@ -20,35 +20,34 @@ class ChannelBuffer {
  public:
   ChannelBuffer();
 
-  void writeByte(char byte);
+  int size() const { return m_stringBuffer.str().size(); }
+  bool isEmpty() const { return size() == 0; }
+  void clear() { m_stringBuffer.str(""); } // empties the buffer
+
+  ChannelBuffer& operator<<(uint8_t nValue);
+  ChannelBuffer& operator<<(uint16_t nValue);
+  ChannelBuffer& operator<<(uint32_t nValue);
+  ChannelBuffer& operator<<(const char* str);
+  ChannelBuffer& operator<<(const std::string& str);
 
   void writeInt8(uint8_t nValue);
   void writeInt16(uint16_t nValue);
   void writeInt32(uint32_t nValue);
-  void writeBytes(const char *pData, size_t nSize);
-  void writeBytes(const std::string &strData);
+  void writeNullTerminatedString(const char* str);  // C-octet string
+  void writeString(const std::string& str);         // Octet string
+  void writeChar(char ch);
 
-  // Zero terminated string
-  void writeString(const char *szData);
-  void writeString(const std::string &str);
-
-  void writeBool(bool bValue);
-
-  char readByte();
   uint8_t readInt8();
   uint16_t readInt16();
   uint32_t readInt32();
-  std::string readBytes(size_t nLen);
-
-  // Zero terminated string
-  std::string readString();
-
-  bool readBool();
+  std::string readNullTerminatedString();
+  std::string readString(int size);
+  char readChar();
 
   void resetMarker();
 
   // sets the values, the offset must be from 0 to length of the encoded message
-  void setBytes(const char *pData, size_t nSize, unsigned offset);
+  void setBytes(const char* pData, size_t nSize, unsigned offset);
 
   void setInt32(uint32_t nValue, unsigned offset);
 
@@ -57,6 +56,6 @@ class ChannelBuffer {
   void setInt8(uint8_t nValue, unsigned offset);
 };
 
-}
+}  // namespace smpp
 
 #endif

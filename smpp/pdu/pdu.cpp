@@ -8,4 +8,6 @@ Pdu::Pdu(uint32_t nCommandLength, uint32_t nCommandID, uint32_t nCommandStatus,
       m_nCommandStatus{nCommandStatus},
       m_nSequenceNumber{nSequenceNumber} {}
 
+  
+
 }  // namespace smpp
