@@ -15,7 +15,8 @@ ADD_EXECUTABLE( run_tests
  channel_buffer_test.cpp 
  ${CMAKE_SOURCE_DIR}/../smpp/transcoder/channel_buffer.cpp 
  ${CMAKE_SOURCE_DIR}/../smpp/transcoder/default_pdu_transcoder.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/pdu/pdu.cpp )
+ ${CMAKE_SOURCE_DIR}/../smpp/pdu/pdu.cpp
+ ${CMAKE_SOURCE_DIR}/../smpp/pdu/pdu_request.cpp )
 
 SET_PROPERTY(TARGET run_tests PROPERTY CXX_STANDARD 17)
 

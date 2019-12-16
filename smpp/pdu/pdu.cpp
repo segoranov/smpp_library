@@ -11,7 +11,7 @@ PduHeader::PduHeader(uint32_t nCommandLength, uint32_t nCommandID, uint32_t nCom
       m_nCommandStatus{nCommandStatus},
       m_nSequenceNumber{nSequenceNumber} {}
 
-Pdu::Pdu(PduHeader pduHeader, bool isRequest) : m_pduHeader{pduHeader}, m_bIsRequest{isRequest} {}
+Pdu::Pdu(const PduHeader& pduHeader, bool isRequest) : m_pduHeader{pduHeader}, m_bIsRequest{isRequest} {}
 
 void Pdu::addOptionalParameter(const Tlv& tlv) { m_vOptionalTlvParameters.push_back(tlv); }
 
