@@ -4,15 +4,17 @@
 #include <string>
 
 #include "pdu_request.h"
+#include "../type/address.h"
 
 namespace smpp {
 
 class BaseBind : public PduRequest {
  private:
-  std::string systemId;
-  std::string password;
-  std::string systemType;
-  uint8_t interfaceVersion;
+  std::string m_strSystemId;
+  std::string m_strPassword;
+  std::string m_strSystemType;
+  uint8_t m_nInterfaceVersion;
+  Address address;
 
  public:
   explicit BaseBind(uint32_t nCommandId);
