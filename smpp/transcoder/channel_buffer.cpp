@@ -21,11 +21,11 @@ void ChannelBuffer::writeInt32(uint32_t nValue) {
 }
 
 void ChannelBuffer::writeNullTerminatedString(const char* str) {
-  writeString(std::string{str});
+  writeOctetString(std::string{str});
   writeChar('\0');
 }
 
-void ChannelBuffer::writeString(const std::string& str) {
+void ChannelBuffer::writeOctetString(const std::string& str) {
   m_stream.write(str.c_str(), str.size());
 }
 
