@@ -7,7 +7,8 @@ FIND_PACKAGE( Boost 1.69 COMPONENTS system thread REQUIRED )
 INCLUDE_DIRECTORIES( 
     ${Boost_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
-    ../smpp )
+    ../smpp
+    ../smpp/transcoder )
 
 ADD_EXECUTABLE( run_tests 
  main.cpp 

@@ -2,10 +2,10 @@
 
 namespace smpp {
 
-ChannelBuffer DefaultPduTranscoder::encode(Pdu pdu) { return ChannelBuffer(); }  // TODO SG
+ChannelBuffer DefaultPduTranscoder::encode(std::unique_ptr<Pdu> ptrPdu) { return ChannelBuffer(); }  // TODO SG
 
-Pdu DefaultPduTranscoder::decode(ChannelBuffer strBuffer) {
-  return Pdu(0, true);  // TODO SG
+std::unique_ptr<Pdu> DefaultPduTranscoder::decode(ChannelBuffer strBuffer) {
+  return nullptr; // TODO SG
 }
 
 }  // namespace smpp

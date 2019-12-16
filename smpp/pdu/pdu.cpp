@@ -2,6 +2,9 @@
 
 #include <algorithm>
 
+#include "../transcoder/channel_buffer.h"
+#include "../util/channelbuffer_util.h"
+
 namespace smpp {
 
 Pdu::Pdu(uint32_t nCommandId, bool bIsRequest)
@@ -27,6 +30,19 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   auto iterTlv = std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
                               [nTag](Tlv tlv) { return tlv.getTag() == nTag; });
   return iterTlv != m_vOptionalTlvParameters.end();
+}
+
+void Pdu::readOptionalParameters(ChannelBuffer& buffer) {
+  // if there is any data left, it's part of an optional parameter
+  while (buffer.areThereMoreBytesToRead()) {
+    auto tlv = channelbuffer_util::readTlv(buffer);
+    addOptionalParameter(tlv);
+  }
+}
+
+void Pdu::writeOptionalParameters(ChannelBuffer& buffer) {
+  std::for_each(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
+                [&buffer](const Tlv& tlv) { channelbuffer_util::writeTlv(buffer, tlv); });
 }
 
 }  // namespace smpp

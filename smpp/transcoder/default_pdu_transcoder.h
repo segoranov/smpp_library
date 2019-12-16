@@ -8,8 +8,8 @@ namespace smpp {
 
 class DefaultPduTranscoder : public PduTranscoder {
  public:
-  virtual ChannelBuffer encode(Pdu pdu) override;
-  virtual Pdu decode(ChannelBuffer strBuffer) override;
+  virtual ChannelBuffer encode(std::unique_ptr<Pdu> ptrPdu) override;
+  virtual std::unique_ptr<Pdu> decode(ChannelBuffer strBuffer) override;
 };
 
 }  // namespace smpp

@@ -9,6 +9,8 @@
 
 namespace smpp {
 
+class ChannelBuffer;
+
 class Pdu {
  private:
   // PDU Header
@@ -48,6 +50,18 @@ class Pdu {
 
   bool isRequest() const { return m_bIsRequest; }
   bool isResponse() const { return !m_bIsRequest; }
+
+  /**
+   * Read and write PDU body
+   */
+  virtual void readBody(ChannelBuffer& buffer) = 0;
+  virtual void writeBody(ChannelBuffer& buffer) = 0;
+
+  /**
+   * Read and write PDU optional parameters - TLVs
+   */
+  void readOptionalParameters(ChannelBuffer& buffer);
+  void writeOptionalParameters(ChannelBuffer& buffer);
 };
 
 }  // namespace smpp

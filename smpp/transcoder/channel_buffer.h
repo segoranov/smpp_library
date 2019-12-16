@@ -38,6 +38,8 @@ class ChannelBuffer {
   std::string readString(int size);
   char readChar();
 
+  bool areThereMoreBytesToRead() const { return m_stream.eof(); }
+
   void resetReadMarker();
 };
 
