@@ -30,18 +30,13 @@ class Pdu {
  public:
   Pdu(PduHeader pduHeader, bool isRequest);
 
-  /**
-   * @return PDU size in octets.
-   */
-  // int getSize(); TODO SG
-
   uint32_t getCommandLength() const { return m_pduHeader.m_nCommandLength; }
   uint32_t getCommandId() const { return m_pduHeader.m_nCommandID; }
   uint32_t getCommandStatus() const { return m_pduHeader.m_nCommandStatus; }
   uint32_t getSequenceNumber() const { return m_pduHeader.m_nSequenceNumber; }
   std::vector<Tlv> getOptionalParameters() const { return m_vOptionalTlvParameters; }
 
-  void addOptionalParameter(Tlv tlv);
+  void addOptionalParameter(const Tlv& tlv);
 
   /**
    * Removes an optional parameter by tag.  Will only remove the first matching tag.
@@ -50,9 +45,13 @@ class Pdu {
    */
   std::optional<Tlv> removeOptionalParameter(uint16_t nTag);
 
+  bool hasOptionalParameter(uint16_t nTag) const;
+
   bool isRequest() const { return m_bIsRequest; }
   bool isResponse() const { return !m_bIsRequest; }
 };
+
+
 
 }  // namespace smpp
 
