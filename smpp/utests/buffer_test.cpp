@@ -1,13 +1,13 @@
 
 
-#include "../smpp/aliases.h"
-#include "../smpp/pdu/pdu.h"
-#include "../smpp/transcoder/pdu_transcoder.h"
+#include "../include/aliases.h"
+#include "../include/pdu/pdu.h"
+#include "../include/transcoder/pdu_transcoder.h"
 #include "catch.hpp"
 
-SCENARIO("ChannelBuffer should know it's size and clear itself properly", "[buffer]") {
+SCENARIO("Buffer should know it's size and clear itself properly", "[buffer]") {
   GIVEN("An empty channel buffer") {
-    smpp::ChannelBuffer channelBuffer;
+    smpp::Buffer channelBuffer;
     REQUIRE(channelBuffer.isEmpty());
     REQUIRE(channelBuffer.size() == 0);
     WHEN("a character is written to the buffer") {
@@ -24,9 +24,9 @@ SCENARIO("ChannelBuffer should know it's size and clear itself properly", "[buff
   }
 }
 
-SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
+SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
   GIVEN("A channel buffer and some values with different sizes") {
-    smpp::ChannelBuffer channelBuffer;
+    smpp::Buffer channelBuffer;
     constexpr char ch{'a'};
     constexpr uint8_t x8{26};
     constexpr uint16_t x16{1000};
@@ -91,9 +91,9 @@ SCENARIO("ChannelBuffer reads and writes single values properly", "[buffer]") {
   }
 }
 
-SCENARIO("ChannelBuffer reads and writes multiple values properly", "[buffer]") {
+SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
   GIVEN("A channel buffer and some values with different sizes") {
-    smpp::ChannelBuffer channelBuffer;
+    smpp::Buffer channelBuffer;
     constexpr char ch{'a'};
     constexpr uint8_t x8{26};
     constexpr uint16_t x16{1000};

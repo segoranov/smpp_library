@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../transcoder/channel_buffer.h"
+#include "../buffer/buffer.h"
 
 namespace smpp {
 
@@ -32,9 +32,9 @@ class Address {
    */
   int size() const;
 
-  void read(ChannelBuffer& buffer);
+  void read(Buffer& buffer);
 
-  void write(ChannelBuffer& buffer) const;
+  void write(Buffer& buffer) const;
 
 };  // namespace smpp
 

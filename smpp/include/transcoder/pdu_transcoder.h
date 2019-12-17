@@ -6,7 +6,7 @@
 
 #include "../pdu/pdu.h"
 #include "../smppexceptions.h"
-#include "channel_buffer.h"
+#include "../buffer/buffer.h"
 
 namespace smpp {
 
@@ -25,11 +25,11 @@ class PduTranscoder {
    *      error while encoding the buffer. A good example is an optional parameter
    *      that is invalid or a terminating null byte wasn't found.
    */
-  virtual ChannelBuffer encode(
+  virtual Buffer encode(
       std::unique_ptr<Pdu> ptrPdu) = 0;  // throw UnrecoverablePduException, RecoverablePduException;
 
   /**
-   * Decodes a ChannelBuffer into a new PDU.
+   * Decodes a Buffer into a new PDU.
    * @param buffer The buffer to read data from
    * @return The new PDU created from the data
    * @throws UnrecoverablePduEncodingException Thrown if there is an unrecoverable
@@ -40,7 +40,7 @@ class PduTranscoder {
    *      that is invalid or a terminating null byte wasn't found.
    */
   virtual std::unique_ptr<Pdu> decode(
-      ChannelBuffer strBuffer) = 0;  // throws UnrecoverablePduException, RecoverablePduException;
+      Buffer strBuffer) = 0;  // throws UnrecoverablePduException, RecoverablePduException;
 };
 
 }  // namespace smpp

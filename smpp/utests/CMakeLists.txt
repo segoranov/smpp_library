@@ -7,20 +7,20 @@ FIND_PACKAGE( Boost 1.69 COMPONENTS system thread REQUIRED )
 INCLUDE_DIRECTORIES( 
     ${Boost_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
-    ../smpp )
+    ../include )
 
 ADD_EXECUTABLE( run_tests 
  main.cpp 
  pdu_test.cpp
- channel_buffer_test.cpp
+ buffer_test.cpp
  address_test.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/transcoder/channel_buffer.cpp 
- ${CMAKE_SOURCE_DIR}/../smpp/transcoder/default_pdu_transcoder.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/pdu/pdu.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/pdu/pdu_request.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/pdu/basebind.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/type/address.cpp
- ${CMAKE_SOURCE_DIR}/../smpp/util/channelbuffer_util.cpp )
+ ../src/buffer/buffer.cpp 
+ ../src/transcoder/default_pdu_transcoder.cpp
+ ../src/pdu/pdu.cpp
+ ../src/pdu/pdu_request.cpp
+ ../src/pdu/basebind.cpp
+ ../src/type/address.cpp
+ ../src/util/buffer_util.cpp )
 
 SET_PROPERTY(TARGET run_tests PROPERTY CXX_STANDARD 17)
 

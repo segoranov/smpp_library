@@ -9,7 +9,7 @@
 
 namespace smpp {
 
-class ChannelBuffer;
+class Buffer;
 
 class Pdu {
  private:
@@ -54,14 +54,14 @@ class Pdu {
   /**
    * Read and write PDU body
    */
-  virtual void readBody(ChannelBuffer& buffer) = 0;
-  virtual void writeBody(ChannelBuffer& buffer) = 0;
+  virtual void readBody(Buffer& buffer) = 0;
+  virtual void writeBody(Buffer& buffer) = 0;
 
   /**
    * Read and write PDU optional parameters - TLVs
    */
-  void readOptionalParameters(ChannelBuffer& buffer);
-  void writeOptionalParameters(ChannelBuffer& buffer);
+  void readOptionalParameters(Buffer& buffer);
+  void writeOptionalParameters(Buffer& buffer);
 };
 
 }  // namespace smpp

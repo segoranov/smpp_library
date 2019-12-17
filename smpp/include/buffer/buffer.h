@@ -1,5 +1,5 @@
-#ifndef CHANNEL_BUFFER_H
-#define CHANNEL_BUFFER_H
+#ifndef BUFFER_H
+#define BUFFER_H
 
 #include <sstream>
 #include <string>
@@ -12,13 +12,13 @@
  */
 namespace smpp {
 
-class ChannelBuffer {
+class Buffer {
  private:
   std::stringbuf m_stringBuffer;
   std::iostream m_stream;
 
  public:
-  ChannelBuffer();
+  Buffer();
 
   int size() const { return m_stringBuffer.str().size(); }
   bool isEmpty() const { return size() == 0; }

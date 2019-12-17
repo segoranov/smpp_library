@@ -1,4 +1,4 @@
-#include "address.h"
+#include "../include/type/address.h"
 
 namespace smpp {
 
@@ -10,13 +10,13 @@ int Address::size() const {
                                         // figure out a way to represent null terminated strings
 }
 
-void Address::read(ChannelBuffer& buffer) {
+void Address::read(Buffer& buffer) {
   addr_ton = buffer.readInt8();
   addr_npi = buffer.readInt8();
   address_range = buffer.readNullTerminatedString();
 }
 
-void Address::write(ChannelBuffer& buffer) const {
+void Address::write(Buffer& buffer) const {
   buffer.writeInt8(addr_ton);
   buffer.writeInt8(addr_npi);
   buffer.writeNullTerminatedString(address_range.c_str());

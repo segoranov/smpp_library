@@ -1,4 +1,4 @@
-#include "pdu_request.h"
+#include "../include/pdu/pdu_request.h"
 
 namespace smpp {
 
