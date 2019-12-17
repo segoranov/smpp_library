@@ -25,6 +25,11 @@ void Buffer::writeNullTerminatedString(const char* str) {
   writeChar('\0');
 }
 
+void Buffer::writeNullTerminatedString(const std::string& str) {
+  writeOctetString(str);
+  writeChar('\0');
+}
+
 void Buffer::writeOctetString(const std::string& str) {
   m_stream.write(str.c_str(), str.size());
 }

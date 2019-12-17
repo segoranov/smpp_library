@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../type/address.h"
+#include "type/address.h"
 #include "pdu_request.h"
 
 namespace smpp {
@@ -30,6 +30,9 @@ class BaseBind : public PduRequest {
   void setPassword(const std::string& strPassword) { m_strPassword = strPassword; }
   void setInterfaceVersion(uint8_t nInterfaceVersion) { m_nInterfaceVersion = nInterfaceVersion; }
   void setAddress(const Address& newAddress) { m_address = newAddress; }
+
+  virtual void readBody(Buffer& buffer) override;
+  virtual void writeBody(Buffer& buffer) const override;
 };
 
 }  // namespace smpp

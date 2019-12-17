@@ -1,3 +1,6 @@
+#ifndef SMPP_SESSION_H
+#define SMPP_SESSION_H
+
 #include <boost/asio.hpp>
 #include <cstddef>
 #include <iostream>
@@ -321,3 +324,5 @@ class SmppSession {
 };
 
 }  // namespace smpp
+
+#endif

@@ -84,7 +84,19 @@ SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
         REQUIRE(buffer.size() == std::string{nullTerminatedString}.size() + 1);
       }
       THEN("the string value read from the buffer should be the same") {
-        REQUIRE(std::string{buffer.readNullTerminatedString()} == nullTerminatedString);
+        REQUIRE(buffer.readNullTerminatedString() == nullTerminatedString);
+      }
+    }
+
+    WHEN("a string is written as null terminated string to the buffer") {
+      buffer.writeNullTerminatedString(octetString);
+      THEN(
+          "the size of the buffer should corrsepond to the string size + 1 because of the null "
+          "terminator") {
+        REQUIRE(buffer.size() == octetString.size() + 1);
+      }
+      THEN("the string value read from the buffer should be the same") {
+        REQUIRE(buffer.readNullTerminatedString() == octetString);
       }
     }
   }

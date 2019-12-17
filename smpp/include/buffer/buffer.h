@@ -26,8 +26,9 @@ class Buffer {
   void writeInt8(uint8_t nValue);
   void writeInt16(uint16_t nValue);
   void writeInt32(uint32_t nValue);
-  void writeNullTerminatedString(const char* str);  // C-octet string
-  void writeOctetString(const std::string& str);    // Octet string
+  void writeNullTerminatedString(const char* str);         // C-octet string
+  void writeNullTerminatedString(const std::string& str);  // C-octet string
+  void writeOctetString(const std::string& str);           // Octet string
   void writeChar(char ch);
 
   uint8_t readInt8();

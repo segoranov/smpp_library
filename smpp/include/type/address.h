@@ -1,5 +1,5 @@
 #ifndef ADDRESS_H
-#define ADDRES_H
+#define ADDRESS_H
 
 #include <string>
 
