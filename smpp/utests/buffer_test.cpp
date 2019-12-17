@@ -1,8 +1,8 @@
 
 
 #include "aliases.h"
-#include "pdu/pdu.h"
 #include "catch.hpp"
+#include "pdu/pdu.h"
 #include "transcoder/pdu_transcoder.h"
 
 SCENARIO("Buffer should know it's size and clear itself properly", "[buffer]") {
@@ -80,7 +80,6 @@ SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
       buffer.writeNullTerminatedString(nullTerminatedString);
       THEN(
           "the size of the buffer should corrsepond to the string size + 1 because of the null "
-          "terminator"
           "terminator") {
         REQUIRE(buffer.size() == std::string{nullTerminatedString}.size() + 1);
       }

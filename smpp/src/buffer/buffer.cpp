@@ -21,7 +21,7 @@ void Buffer::writeInt32(uint32_t nValue) {
 }
 
 void Buffer::writeNullTerminatedString(const char* str) {
-  writeOctetString(std::string{str});
+  writeOctetString(str);
   writeChar('\0');
 }
 
