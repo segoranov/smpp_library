@@ -4,9 +4,13 @@ namespace smpp::buffer_util {
 
 // TODO SG Throwing exceptions??
 
-Tlv readTlv(Buffer& buffer) {}
+Tlv readTlv(Buffer& buffer) {
+  Tlv tlv;
+  tlv.read(buffer);
+  return tlv;
+}
 
-void writeTlv(Buffer& buffer, const Tlv& tlv) {}
+void writeTlv(Buffer& buffer, const Tlv& tlv) { tlv.write(buffer); }
 
 Address readAddress(Buffer& buffer) {
   auto address = Address{};

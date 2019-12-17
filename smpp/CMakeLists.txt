@@ -17,6 +17,7 @@ add_library(smpp SHARED
     src/buffer/buffer.cpp
     src/transcoder/default_pdu_transcoder.cpp
     src/type/address.cpp
+    src/tlv/tlv.cpp
 )
 
 set_property(TARGET smpp PROPERTY CXX_STANDARD 17)

@@ -4,11 +4,10 @@
 #include <sstream>
 #include <string>
 
-#include "pdu/pdu.h"
 #include "smppexceptions.h"
 
 /**
- *  Class used for encoding/decoding of PDUs.
+ *  Class used for binary serializing/deserializing of PDUs.
  */
 namespace smpp {
 
