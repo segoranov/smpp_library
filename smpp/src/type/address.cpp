@@ -6,8 +6,7 @@ Address::Address(uint8_t addr_ton, uint8_t addr_npi, std::string address_range)
     : addr_ton{addr_ton}, addr_npi{addr_npi}, address_range{address_range} {}
 
 int Address::size() const {
-  return 2 + address_range.size() + 1;  // + 1 because of the null terminated string; TODO SG
-                                        // figure out a way to represent null terminated strings
+  return 2 + address_range.size() + 1;  // + 1 because address_range is C-octet string (null terminated)
 }
 
 void Address::read(Buffer& buffer) {
