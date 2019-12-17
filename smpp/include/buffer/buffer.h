@@ -4,8 +4,8 @@
 #include <sstream>
 #include <string>
 
-#include "../pdu/pdu.h"
-#include "../smppexceptions.h"
+#include "pdu/pdu.h"
+#include "smppexceptions.h"
 
 /**
  *  Class used for encoding/decoding of PDUs.

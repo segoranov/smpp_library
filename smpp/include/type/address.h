@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "../buffer/buffer.h"
+#include "buffer/buffer.h"
 
 namespace smpp {
 

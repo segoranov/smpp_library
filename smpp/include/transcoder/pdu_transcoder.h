@@ -4,9 +4,9 @@
 #include <memory>
 #include <string>
 
-#include "../pdu/pdu.h"
-#include "../smppexceptions.h"
-#include "../buffer/buffer.h"
+#include "pdu/pdu.h"
+#include "smppexceptions.h"
+#include "buffer/buffer.h"
 
 namespace smpp {
 

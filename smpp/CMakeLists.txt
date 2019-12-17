@@ -1,20 +1,24 @@
 cmake_minimum_required(VERSION 3.10)
 
-# set the project name
-project(SMPP)
+project(smpp_lib)
 
-FIND_PACKAGE( Boost 1.69 COMPONENTS system thread REQUIRED )
-INCLUDE_DIRECTORIES( 
+find_package(Boost 1.69 COMPONENTS system thread REQUIRED)
+
+include_directories(
     ${Boost_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
-    ../include )
+    ./include )
 
+add_library(smpp SHARED
+    src/util/buffer_util.cpp
+    src/pdu/pdu.cpp
+    src/pdu/basebind.cpp
+    src/pdu/pdu_request.cpp
+    src/buffer/buffer.cpp
+    src/transcoder/default_pdu_transcoder.cpp
+    src/type/address.cpp
+)
 
-# TODO: Create library, not exectuable
-# TODO: Use format tool for CMakeLists file
+set_property(TARGET smpp PROPERTY CXX_STANDARD 17)
 
-# ADD_EXECUTABLE( server main.cpp tcpserver.cpp )
-
-SET_PROPERTY(TARGET server PROPERTY CXX_STANDARD 17)
-
-# TARGET_LINK_LIBRARIES( server LINK_PUBLIC ${Boost_LIBRARIES} )
+# target_link_libraries( smpp LINK_PUBLIC ${Boost_LIBRARIES} )

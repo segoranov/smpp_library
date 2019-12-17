@@ -4,8 +4,8 @@
 #include <optional>
 #include <string>
 
-#include "../smppconstants.h"
-#include "../tlv/tlv.h"
+#include "smppconstants.h"
+#include "tlv/tlv.h"
 
 namespace smpp {
 
