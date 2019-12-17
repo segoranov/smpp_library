@@ -1,5 +1,5 @@
-#include "../include/util/buffer_util.h"
 #include "catch.hpp"
+#include "util/buffer_util.h"
 
 SCENARIO("Address should be read and written properly to buffer", "[address]") {
   GIVEN("An empty channel buffer and an address") {

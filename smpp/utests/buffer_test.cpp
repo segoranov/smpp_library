@@ -1,9 +1,9 @@
 
 
-#include "../include/aliases.h"
-#include "../include/pdu/pdu.h"
-#include "../include/transcoder/pdu_transcoder.h"
+#include "aliases.h"
+#include "pdu/pdu.h"
 #include "catch.hpp"
+#include "transcoder/pdu_transcoder.h"
 
 SCENARIO("Buffer should know it's size and clear itself properly", "[buffer]") {
   GIVEN("An empty channel buffer") {
