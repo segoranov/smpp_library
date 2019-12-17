@@ -3,13 +3,14 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(SMPP_UNIT_TESTS)
 
-FIND_PACKAGE( Boost 1.69 COMPONENTS system thread REQUIRED )
-INCLUDE_DIRECTORIES( 
+find_package( Boost 1.69 COMPONENTS system thread REQUIRED )
+
+include_directories( 
     ${Boost_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIR}
     ../include )
 
-ADD_EXECUTABLE( run_tests 
+add_executable( run_tests 
  main.cpp 
  pdu_test.cpp
  buffer_test.cpp
@@ -22,6 +23,6 @@ ADD_EXECUTABLE( run_tests
  ../src/type/address.cpp
  ../src/util/buffer_util.cpp )
 
-SET_PROPERTY(TARGET run_tests PROPERTY CXX_STANDARD 17)
+set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)
 
-TARGET_LINK_LIBRARIES( run_tests LINK_PUBLIC ${Boost_LIBRARIES} )
+# target_link_libraries( run_tests LINK_PUBLIC ${Boost_LIBRARIES} )
