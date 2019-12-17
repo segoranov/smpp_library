@@ -15,7 +15,7 @@ class PduTranscoder {
   // TODO: Throw proper exceptions
 
   /**
-   * Encodes a PDU into a new channel buffer.
+   * Encodes a PDU into a new buffer.
    * @param pdu The PDU to convert into a buffer
    * @return The new buffer ready to send on a Channel
    * @throws UnrecoverablePduEncodingException Thrown if there is an unrecoverable

@@ -1,5 +1,5 @@
-#ifndef CHANNEL_BUFFER_UTIL_H
-#define CHANNEL_BUFFER_UTIL_H
+#ifndef BUFFER_UTIL_H
+#define BUFFER_UTIL_H
 
 #include "../tlv/tlv.h"
 #include "../buffer/buffer.h"

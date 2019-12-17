@@ -6,27 +6,27 @@
 #include "transcoder/pdu_transcoder.h"
 
 SCENARIO("Buffer should know it's size and clear itself properly", "[buffer]") {
-  GIVEN("An empty channel buffer") {
-    smpp::Buffer channelBuffer;
-    REQUIRE(channelBuffer.isEmpty());
-    REQUIRE(channelBuffer.size() == 0);
+  GIVEN("An empty buffer") {
+    smpp::Buffer buffer;
+    REQUIRE(buffer.isEmpty());
+    REQUIRE(buffer.size() == 0);
     WHEN("a character is written to the buffer") {
-      channelBuffer.writeChar('c');
-      THEN("the buffer should not be empty") { REQUIRE(!channelBuffer.isEmpty()); }
-      THEN("the size of the buffer should be 1") { REQUIRE(channelBuffer.size() == 1); }
+      buffer.writeChar('c');
+      THEN("the buffer should not be empty") { REQUIRE(!buffer.isEmpty()); }
+      THEN("the size of the buffer should be 1") { REQUIRE(buffer.size() == 1); }
 
       WHEN("the buffer is cleared") {
-        channelBuffer.clear();
-        THEN("the buffer should be empty") { REQUIRE(channelBuffer.isEmpty()); }
-        THEN("the size of the buffer should be 0") { REQUIRE(channelBuffer.size() == 0); }
+        buffer.clear();
+        THEN("the buffer should be empty") { REQUIRE(buffer.isEmpty()); }
+        THEN("the size of the buffer should be 0") { REQUIRE(buffer.size() == 0); }
       }
     }
   }
 }
 
 SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
-  GIVEN("A channel buffer and some values with different sizes") {
-    smpp::Buffer channelBuffer;
+  GIVEN("A buffer and some values with different sizes") {
+    smpp::Buffer buffer;
     constexpr char ch{'a'};
     constexpr uint8_t x8{26};
     constexpr uint16_t x16{1000};
@@ -35,65 +35,65 @@ SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
     constexpr char nullTerminatedString[] = "constString";
 
     WHEN("the char is written to the buffer") {
-      channelBuffer.writeInt8(ch);
-      THEN("the size of the buffer should be 1 byte") { REQUIRE(channelBuffer.size() == 1); }
+      buffer.writeInt8(ch);
+      THEN("the size of the buffer should be 1 byte") { REQUIRE(buffer.size() == 1); }
       THEN("the char value read from the buffer should be the same") {
-        REQUIRE(channelBuffer.readChar() == ch);
+        REQUIRE(buffer.readChar() == ch);
       }
     }
 
     WHEN("the uint8_value is written to the buffer") {
-      channelBuffer.writeInt8(x8);
-      THEN("the size of the buffer should be 1 byte") { REQUIRE(channelBuffer.size() == 1); }
+      buffer.writeInt8(x8);
+      THEN("the size of the buffer should be 1 byte") { REQUIRE(buffer.size() == 1); }
       THEN("the uint8_t value read from the buffer should be the same") {
-        REQUIRE(channelBuffer.readInt8() == x8);
+        REQUIRE(buffer.readInt8() == x8);
       }
     }
 
     WHEN("the uint16_value is written to the buffer") {
-      channelBuffer.writeInt16(x16);
-      THEN("the size of the buffer should be 2 bytes") { REQUIRE(channelBuffer.size() == 2); }
+      buffer.writeInt16(x16);
+      THEN("the size of the buffer should be 2 bytes") { REQUIRE(buffer.size() == 2); }
       THEN("the uint16_t value read from the buffer should be the same") {
-        REQUIRE(channelBuffer.readInt16() == x16);
+        REQUIRE(buffer.readInt16() == x16);
       }
     }
 
     WHEN("the uint32_value is written to the buffer") {
-      channelBuffer.writeInt32(x32);
-      THEN("the size of the buffer should be 4 bytes") { REQUIRE(channelBuffer.size() == 4); }
+      buffer.writeInt32(x32);
+      THEN("the size of the buffer should be 4 bytes") { REQUIRE(buffer.size() == 4); }
       THEN("the uint32_t value read from the buffer should be the same") {
-        REQUIRE(channelBuffer.readInt32() == x32);
+        REQUIRE(buffer.readInt32() == x32);
       }
     }
 
     WHEN("the octet string is written to the buffer") {
-      channelBuffer.writeOctetString(octetString);
+      buffer.writeOctetString(octetString);
       THEN("the size of the buffer should corrsepond to the string size") {
-        REQUIRE(channelBuffer.size() == octetString.size());
+        REQUIRE(buffer.size() == octetString.size());
       }
       THEN("the uint32_t value read from the buffer should be the same") {
-        REQUIRE(channelBuffer.readString(octetString.size()) == octetString);
+        REQUIRE(buffer.readString(octetString.size()) == octetString);
       }
     }
 
     WHEN("the null terminated string is written to the buffer") {
-      channelBuffer.writeNullTerminatedString(nullTerminatedString);
+      buffer.writeNullTerminatedString(nullTerminatedString);
       THEN(
           "the size of the buffer should corrsepond to the string size + 1 because of the null "
           "terminator"
           "terminator") {
-        REQUIRE(channelBuffer.size() == std::string{nullTerminatedString}.size() + 1);
+        REQUIRE(buffer.size() == std::string{nullTerminatedString}.size() + 1);
       }
       THEN("the string value read from the buffer should be the same") {
-        REQUIRE(std::string{channelBuffer.readNullTerminatedString()} == nullTerminatedString);
+        REQUIRE(std::string{buffer.readNullTerminatedString()} == nullTerminatedString);
       }
     }
   }
 }
 
 SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
-  GIVEN("A channel buffer and some values with different sizes") {
-    smpp::Buffer channelBuffer;
+  GIVEN("A buffer and some values with different sizes") {
+    smpp::Buffer buffer;
     constexpr char ch{'a'};
     constexpr uint8_t x8{26};
     constexpr uint16_t x16{1000};
@@ -102,21 +102,21 @@ SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
     constexpr char nullTerminatedString[] = "constString";
 
     WHEN("all the values are written to the buffer") {
-      channelBuffer.writeChar(ch);
-      channelBuffer.writeInt8(x8);
-      channelBuffer.writeInt16(x16);
-      channelBuffer.writeInt32(x32);
-      channelBuffer.writeOctetString(octetString);
-      channelBuffer.writeNullTerminatedString(nullTerminatedString);
+      buffer.writeChar(ch);
+      buffer.writeInt8(x8);
+      buffer.writeInt16(x16);
+      buffer.writeInt32(x32);
+      buffer.writeOctetString(octetString);
+      buffer.writeNullTerminatedString(nullTerminatedString);
       THEN(
           "if we read them in the same order that we wrote them to the buffer, the values should "
           "be the same") {
-        REQUIRE(channelBuffer.readChar() == ch);
-        REQUIRE(channelBuffer.readInt8() == x8);
-        REQUIRE(channelBuffer.readInt16() == x16);
-        REQUIRE(channelBuffer.readInt32() == x32);
-        REQUIRE(channelBuffer.readString(octetString.size()) == octetString);
-        REQUIRE(channelBuffer.readNullTerminatedString() == nullTerminatedString);
+        REQUIRE(buffer.readChar() == ch);
+        REQUIRE(buffer.readInt8() == x8);
+        REQUIRE(buffer.readInt16() == x16);
+        REQUIRE(buffer.readInt32() == x32);
+        REQUIRE(buffer.readString(octetString.size()) == octetString);
+        REQUIRE(buffer.readNullTerminatedString() == nullTerminatedString);
       }
     }
   }
