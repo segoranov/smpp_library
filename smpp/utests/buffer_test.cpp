@@ -178,5 +178,7 @@ TEST_CASE("Pdu header is encoded properly in buffer", "[pdu_header]") {
   std::cout << std::endl;
 
   // TODO SG: Fix this test!
+  // The problem is that hton and ntoh should be used when writing and reading to buffer
+  // On my machine, the uint32_t is stored in little endian, whereas in samplePduHeader I defined it in big endian
   REQUIRE(buffer.toString() == samplePduHeader);
 }
