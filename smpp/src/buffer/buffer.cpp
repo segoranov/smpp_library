@@ -30,11 +30,9 @@ void Buffer::writeNullTerminatedString(const std::string& str) {
   writeChar('\0');
 }
 
-void Buffer::writeOctetString(const std::string& str) {
-  m_stream.write(str.c_str(), str.size());
-}
+void Buffer::writeOctetString(const std::string& str) { m_stream.write(str.c_str(), str.size()); }
 
-void Buffer::writeChar(char ch) { m_stream.write(&ch, sizeof(char)); }
+void Buffer::writeChar(char ch) { m_stream.put(ch); }
 
 uint8_t Buffer::readInt8() {
   uint8_t nValue;
@@ -72,9 +70,7 @@ std::string Buffer::readString(int size) {
 }
 
 char Buffer::readChar() {
-  char ch;
-  m_stream.read(&ch, sizeof(char));
-  return ch;
+  return m_stream.get();
 }
 
 }  // namespace smpp

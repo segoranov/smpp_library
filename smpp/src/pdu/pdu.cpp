@@ -32,6 +32,20 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   return iterTlv != m_vOptionalTlvParameters.end();
 }
 
+void Pdu::readHeader(Buffer& buffer) {
+  m_nCommandLength = buffer.readInt32();
+  m_nCommandId = buffer.readInt32();
+  m_nCommandStatus = buffer.readInt32();
+  m_nSequenceNumber = buffer.readInt32();
+}
+
+void Pdu::writeHeader(Buffer& buffer) const {
+  buffer.writeInt32(m_nCommandLength);
+  buffer.writeInt32(m_nCommandId);
+  buffer.writeInt32(m_nCommandStatus);
+  buffer.writeInt32(m_nSequenceNumber);
+}
+
 void Pdu::readOptionalParameters(Buffer& buffer) {
   // if there is any data left, it's part of an optional parameter
   while (buffer.areThereMoreBytesToRead()) {

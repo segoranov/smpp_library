@@ -14,6 +14,7 @@ add_library(smpp SHARED
     src/pdu/pdu.cpp
     src/pdu/basebind.cpp
     src/pdu/pdu_request.cpp
+    src/pdu/bindtransmitter.cpp
     src/buffer/buffer.cpp
     src/transcoder/default_pdu_transcoder.cpp
     src/type/address.cpp
