@@ -6,7 +6,6 @@ find_package(Boost 1.69 COMPONENTS system thread REQUIRED)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
-    ${Boost_INCLUDE_DIR}
     ./include )
 
 add_library(smpp SHARED
@@ -25,4 +24,4 @@ add_library(smpp SHARED
 
 set_property(TARGET smpp PROPERTY CXX_STANDARD 17)
 
-# target_link_libraries( smpp LINK_PUBLIC ${Boost_LIBRARIES} )
+# target_link_libraries(smpp LINK_PUBLIC Boost_LIBRARIES
