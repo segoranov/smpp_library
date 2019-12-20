@@ -1,5 +1,8 @@
 #include "util/buffer_util.h"
 
+#include <algorithm>
+#include <iomanip>
+
 namespace smpp::buffer_util {
 
 // TODO SG Throwing exceptions??
@@ -19,5 +22,7 @@ Address readAddress(Buffer& buffer) {
 }
 
 void writeAddress(Buffer& buffer, const Address& address) { address.write(buffer); }
+
+
 
 }  // namespace smpp::buffer_util

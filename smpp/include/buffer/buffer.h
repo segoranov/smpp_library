@@ -41,6 +41,7 @@ class Buffer {
   bool areThereMoreBytesToRead() const { return m_stream.eof(); }
 
   std::string toString() const { return m_stringBuffer.str(); }
+  operator std::string() const { return toString(); }
 
   void resetReadMarker();
 };

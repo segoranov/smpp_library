@@ -1,8 +1,8 @@
 #ifndef BUFFER_UTIL_H
 #define BUFFER_UTIL_H
 
-#include "tlv/tlv.h"
 #include "buffer/buffer.h"
+#include "tlv/tlv.h"
 #include "type/address.h"
 
 namespace smpp::buffer_util {

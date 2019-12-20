@@ -24,6 +24,7 @@ add_executable( run_tests
  ../src/pdu/bindtransmitter.cpp
  ../src/type/address.cpp
  ../src/util/buffer_util.cpp
+ ../src/util/print_util.cpp
  ../src/tlv/tlv.cpp )
 
 set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)

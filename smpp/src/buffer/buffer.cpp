@@ -1,5 +1,7 @@
 #include "../include/buffer/buffer.h"
 
+#include <arpa/inet.h>
+
 #include <iostream>
 
 namespace smpp {
@@ -13,10 +15,12 @@ void Buffer::writeInt8(uint8_t nValue) {
 }
 
 void Buffer::writeInt16(uint16_t nValue) {
+  nValue = htons(nValue);
   m_stream.write(reinterpret_cast<char*>(&nValue), sizeof(uint16_t));
 }
 
 void Buffer::writeInt32(uint32_t nValue) {
+  nValue = htonl(nValue);
   m_stream.write(reinterpret_cast<char*>(&nValue), sizeof(uint32_t));
 }
 
@@ -43,13 +47,13 @@ uint8_t Buffer::readInt8() {
 uint16_t Buffer::readInt16() {
   uint16_t nValue;
   m_stream.read(reinterpret_cast<char*>(&nValue), sizeof(uint16_t));
-  return nValue;
+  return ntohs(nValue);
 }
 
 uint32_t Buffer::readInt32() {
   uint32_t nValue;
   m_stream.read(reinterpret_cast<char*>(&nValue), sizeof(uint32_t));
-  return nValue;
+  return ntohl(nValue);
 }
 
 std::string Buffer::readNullTerminatedString() {
@@ -69,8 +73,6 @@ std::string Buffer::readString(int size) {
   return str;
 }
 
-char Buffer::readChar() {
-  return m_stream.get();
-}
+char Buffer::readChar() { return m_stream.get(); }
 
 }  // namespace smpp

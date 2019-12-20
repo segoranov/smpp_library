@@ -8,7 +8,10 @@
 #include "pdu/bindtransmitter.h"
 #include "pdu/pdu.h"
 #include "smppconstants.h"
+#include "tlv/tlv.h"
 #include "transcoder/pdu_transcoder.h"
+#include "util/buffer_util.h"
+#include "util/print_util.h"
 
 SCENARIO("Buffer should know it's size and clear itself properly", "[buffer]") {
   GIVEN("An empty buffer") {
@@ -136,49 +139,4 @@ SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
       }
     }
   }
-}
-
-TEST_CASE("Pdu header is encoded properly in buffer", "[pdu_header]") {
-  /*
-  Sample PDU (Values are shown in Hex format):
-  00 00 00 2F 00 00 00 02 00 00 00 00 00 00 00 01
-  53 4D 50 50 33 54 45 53 54 00 73 65 63 72 65 74
-  30 38 00 53 55 42 4D 49 54 31 00 50 01 01 00
-
-  The 16-octet header would be decoded as follows:
-  00 00 00 2F Command Length 0x0000002F
-  00 00 00 02 Command ID 0x00000002
-  00 00 00 00 Command Status 0x00000000
-  00 00 00 01 Sequence Number 0x00000001
-  */
-  const char samplePduHeader[] = {0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00, 0x02,
-                                  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01};
-
-  std::unique_ptr<smpp::Pdu> pdu = std::make_unique<smpp::BindTransmitter>();
-  pdu->setCommandLength(47);  // 0x0000002F in hex is 47 in decimal
-  pdu->setCommandStatus(0);   // 0x00000000
-  pdu->setSequenceNumber(1);  // 0x00000001
-
-  smpp::Buffer buffer;
-  pdu->writeHeader(buffer);
-  std::cout << buffer.size() << std::endl;
-
-  std::cout << "Buf:\n";
-  for (int i = 0; i < 16; i++) {
-    printf("0x%.2x ", buffer.toString()[i]);
-  }
-
-  std::cout << std::endl;
-
-  std::cout << "PduHeader:\n";
-  for (int i = 0; i < 16; i++) {
-    printf("0x%.2x ", samplePduHeader[i]);
-  }
-
-  std::cout << std::endl;
-
-  // TODO SG: Fix this test!
-  // The problem is that hton and ntoh should be used when writing and reading to buffer
-  // On my machine, the uint32_t is stored in little endian, whereas in samplePduHeader I defined it in big endian
-  REQUIRE(buffer.toString() == samplePduHeader);
 }

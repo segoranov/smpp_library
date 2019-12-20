@@ -1,9 +1,9 @@
-#include "../include/pdu/pdu.h"
+#include "pdu/pdu.h"
 
 #include <algorithm>
 
-#include "../include/buffer/buffer.h"
-#include "../include/util/buffer_util.h"
+#include "buffer/buffer.h"
+#include "util/buffer_util.h"
 
 namespace smpp {
 
