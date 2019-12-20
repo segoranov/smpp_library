@@ -6,11 +6,11 @@
 
 #include "smppexceptions.h"
 
-/**
- *  Class used for binary serializing/deserializing of PDUs.
- */
 namespace smpp {
 
+/**
+ *  Class used for binary serializing/deserializing of PDUs. Contains raw binary data.
+ */
 class Buffer {
  private:
   std::stringbuf m_stringBuffer;
@@ -18,7 +18,7 @@ class Buffer {
 
  public:
   Buffer();
-  Buffer(const Buffer& other) = delete; // disallow copying of buffer
+  Buffer(const Buffer& other) = delete;  // disallow copying of buffer
 
   int size() const { return m_stringBuffer.str().size(); }
   bool isEmpty() const { return size() == 0; }
@@ -45,6 +45,16 @@ class Buffer {
   operator std::string() const { return toString(); }
 
   void resetReadMarker();
+
+  /**
+   * Skip bytes when reading from the buffer
+   */ 
+  void skip(int numberOfBytesToSkip);
+
+  /**
+   * @return the number of bytes that are available for reading
+   */
+  int readableBytes() const;
 };
 
 }  // namespace smpp

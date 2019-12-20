@@ -5,7 +5,7 @@
 
 namespace smpp {
 
-class BindTransmitter : public BaseBind {
+class BindTransmitter final : public BaseBind {
  public:
   BindTransmitter();
 };

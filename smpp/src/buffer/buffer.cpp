@@ -75,4 +75,10 @@ std::string Buffer::readString(int size) {
 
 char Buffer::readChar() { return m_stream.get(); }
 
+void Buffer::skip(int numberOfBytesToSkip) { m_stream.seekg(numberOfBytesToSkip, m_stream.cur); } // TODO SG Unit test
+
+int Buffer::readableBytes() const {
+  return 0; // TODO SG + unit test
+}
+
 }  // namespace smpp

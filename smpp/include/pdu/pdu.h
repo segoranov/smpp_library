@@ -63,6 +63,7 @@ class Pdu {
   virtual void readBody(Buffer& buffer) = 0;
   virtual void writeBody(Buffer& buffer) const = 0;
 
+ protected:
   /**
    * Read and write PDU optional parameters - TLVs
    */
