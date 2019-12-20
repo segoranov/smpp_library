@@ -9,4 +9,5 @@ namespace smpp::print_util {
 void printStringAsHex(const std::string& str, std::ostream& os = std::cout);
 
 }
+
 #endif

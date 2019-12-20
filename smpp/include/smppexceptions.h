@@ -14,34 +14,39 @@ class SmppException : public std::exception {
 
  public:
   SmppException() : m_strError("Default SMPP exception") {}
-  explicit SmppException(const std::string &strError) : m_strError{strError} {}
-  virtual const char *what() const noexcept { return m_strError.c_str(); }
+  explicit SmppException(const std::string& strError) : m_strError{strError} {}
+  virtual const char* what() const noexcept { return m_strError.c_str(); }
+};
+
+class InvalidCommandIdException : public SmppException {
+ public:
+  InvalidCommandIdException() : SmppException{"Invalid command id"} {}
+  explicit InvalidCommandIdException(const std::string& strError) : SmppException{strError} {}
 };
 
 class InvalidSystemIdException : public SmppException {
  public:
-  InvalidSystemIdException() : SmppException{} {}
-  explicit InvalidSystemIdException(const std::string &message) : SmppException(message) {}
+  InvalidSystemIdException() : SmppException{"Invalid system id"} {}
+  explicit InvalidSystemIdException(const std::string& strError) : SmppException{strError} {}
 };
 
 class InvalidPasswordException : public SmppException {
  public:
-  InvalidPasswordException() : SmppException{} {}
-  explicit InvalidPasswordException(const std::string &message) : SmppException(message) {}
+  InvalidPasswordException() : SmppException{"Invalid password"} {}
+  explicit InvalidPasswordException(const std::string& strError) : SmppException{strError} {}
 };
 
 class InvalidSourceAddressException : public SmppException {
  public:
-  InvalidSourceAddressException() : SmppException{} {}
-
-  explicit InvalidSourceAddressException(const std::string &message) : SmppException(message) {}
+  InvalidSourceAddressException() : SmppException{"Invalid source address"} {}
+  explicit InvalidSourceAddressException(const std::string& strError) : SmppException{strError} {}
 };
 
 class InvalidDestinationAddressException : public SmppException {
  public:
-  InvalidDestinationAddressException() : SmppException{} {}
-  explicit InvalidDestinationAddressException(const std::string &message)
-      : SmppException(message) {}
+  InvalidDestinationAddressException() : SmppException{"Invalid destination address"} {}
+  explicit InvalidDestinationAddressException(const std::string& strError)
+      : SmppException{strError} {}
 };
 
 }  // namespace smpp

@@ -18,6 +18,7 @@ class Buffer {
 
  public:
   Buffer();
+  Buffer(const Buffer& other) = delete; // disallow copying of buffer
 
   int size() const { return m_stringBuffer.str().size(); }
   bool isEmpty() const { return size() == 0; }

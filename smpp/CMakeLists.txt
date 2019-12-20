@@ -12,6 +12,7 @@ include_directories(
 add_library(smpp SHARED
     src/util/buffer_util.cpp
     src/util/print_util.cpp
+    src/util/smpp_util.cpp
     src/pdu/pdu.cpp
     src/pdu/basebind.cpp
     src/pdu/pdu_request.cpp

@@ -12,6 +12,7 @@ void BaseBind::readBody(Buffer& buffer) {
   m_strSystemType = buffer.readNullTerminatedString();
   m_nInterfaceVersion = buffer.readInt8();
   m_address = buffer_util::readAddress(buffer);
+  readOptionalParameters(buffer);
 }
 
 void BaseBind::writeBody(Buffer& buffer) const {
@@ -20,6 +21,7 @@ void BaseBind::writeBody(Buffer& buffer) const {
   buffer.writeNullTerminatedString(m_strSystemType);
   buffer.writeInt8(m_nInterfaceVersion);
   buffer_util::writeAddress(buffer, m_address);
+  writeOptionalParameters(buffer);
 }
 
 }  // namespace smpp

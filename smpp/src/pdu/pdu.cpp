@@ -54,7 +54,7 @@ void Pdu::readOptionalParameters(Buffer& buffer) {
   }
 }
 
-void Pdu::writeOptionalParameters(Buffer& buffer) {
+void Pdu::writeOptionalParameters(Buffer& buffer) const {
   std::for_each(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
                 [&buffer](const Tlv& tlv) { buffer_util::writeTlv(buffer, tlv); });
 }

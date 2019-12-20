@@ -67,7 +67,7 @@ class Pdu {
    * Read and write PDU optional parameters - TLVs
    */
   void readOptionalParameters(Buffer& buffer);
-  void writeOptionalParameters(Buffer& buffer);
+  void writeOptionalParameters(Buffer& buffer) const;
 };
 
 }  // namespace smpp

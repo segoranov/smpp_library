@@ -16,6 +16,7 @@ add_executable( run_tests
  buffer_test.cpp
  address_test.cpp
  tlv_test.cpp
+ smpp_util_test.cpp
  ../src/buffer/buffer.cpp 
  ../src/transcoder/default_pdu_transcoder.cpp
  ../src/pdu/pdu.cpp
@@ -25,6 +26,7 @@ add_executable( run_tests
  ../src/type/address.cpp
  ../src/util/buffer_util.cpp
  ../src/util/print_util.cpp
+ ../src/util/smpp_util.cpp
  ../src/tlv/tlv.cpp )
 
 set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)
