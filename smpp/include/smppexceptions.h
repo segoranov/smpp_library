@@ -1,53 +1,48 @@
 #ifndef SMPP_EXCEPTIONS_H
 #define SMPP_EXCEPTIONS_H
 
-#include <stdexcept>
+#include <exception>
 #include <string>
 
 namespace smpp {
 /**
  * Exception thrown when there are SMPP protocol related issues.
  */
-class SmppException : public std::runtime_error {
+class SmppException : public std::exception {
+ private:
+  std::string m_strError;
+
  public:
-  SmppException() : std::runtime_error("Default SmppException.") {}
-  explicit SmppException(const std::string &message) : std::runtime_error(message) {}
+  SmppException() : m_strError("Default SMPP exception") {}
+  explicit SmppException(const std::string &strError) : m_strError{strError} {}
+  virtual const char *what() const noexcept { return m_strError.c_str(); }
 };
 
 class InvalidSystemIdException : public SmppException {
  public:
-  InvalidSystemIdException() : SmppException() {}
-
+  InvalidSystemIdException() : SmppException{} {}
   explicit InvalidSystemIdException(const std::string &message) : SmppException(message) {}
 };
 
 class InvalidPasswordException : public SmppException {
  public:
-  InvalidPasswordException() : SmppException() {}
+  InvalidPasswordException() : SmppException{} {}
   explicit InvalidPasswordException(const std::string &message) : SmppException(message) {}
 };
 
 class InvalidSourceAddressException : public SmppException {
  public:
-  InvalidSourceAddressException() : SmppException() {}
+  InvalidSourceAddressException() : SmppException{} {}
 
   explicit InvalidSourceAddressException(const std::string &message) : SmppException(message) {}
 };
 
 class InvalidDestinationAddressException : public SmppException {
  public:
-  InvalidDestinationAddressException() : SmppException() {}
+  InvalidDestinationAddressException() : SmppException{} {}
   explicit InvalidDestinationAddressException(const std::string &message)
       : SmppException(message) {}
 };
 
-/**
- * Exception thrown when there is transport/connection related issues.
- */
-class TransportException : public std::runtime_error {
- public:
-  TransportException() : std::runtime_error("Default TransportException.") {}
-  explicit TransportException(const std::string &message) : std::runtime_error(message) {}
-};
 }  // namespace smpp
 #endif  // SMPP_EXCEPTIONS_H
