@@ -111,31 +111,34 @@ SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
 }
 
 SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
-  GIVEN("A buffer and some values with different sizes") {
+  GIVEN("A buffer") {
     smpp::Buffer buffer;
-    constexpr char ch{'a'};
-    constexpr uint8_t x8{26};
-    constexpr uint16_t x16{1000};
-    constexpr uint32_t x32{999'999'999};
-    const std::string octetString{"just_a_test_octet_string"};
-    constexpr char nullTerminatedString[] = "constString";
+    AND_GIVEN("some values with different sizes") {
+      constexpr char ch{'a'};
+      constexpr uint8_t x8{26};
+      constexpr uint16_t x16{1000};
+      constexpr uint32_t x32{999'999'999};
+      const std::string octetString{"just_a_test_octet_string"};
+      constexpr char nullTerminatedString[] = "constString";
 
-    WHEN("all the values are written to the buffer") {
-      buffer.writeChar(ch);
-      buffer.writeInt8(x8);
-      buffer.writeInt16(x16);
-      buffer.writeInt32(x32);
-      buffer.writeOctetString(octetString);
-      buffer.writeNullTerminatedString(nullTerminatedString);
-      THEN(
-          "if we read them in the same order that we wrote them to the buffer, the values should "
-          "be the same") {
-        REQUIRE(buffer.readChar() == ch);
-        REQUIRE(buffer.readInt8() == x8);
-        REQUIRE(buffer.readInt16() == x16);
-        REQUIRE(buffer.readInt32() == x32);
-        REQUIRE(buffer.readString(octetString.size()) == octetString);
-        REQUIRE(buffer.readNullTerminatedString() == nullTerminatedString);
+      WHEN("all the values are written to the buffer") {
+        buffer.writeChar(ch);
+        buffer.writeInt8(x8);
+        buffer.writeInt16(x16);
+        buffer.writeInt32(x32);
+        buffer.writeOctetString(octetString);
+        buffer.writeNullTerminatedString(nullTerminatedString);
+        THEN(
+            "if we read them in the same order that we wrote them to the buffer, the values "
+            "should "
+            "be the same") {
+          REQUIRE(buffer.readChar() == ch);
+          REQUIRE(buffer.readInt8() == x8);
+          REQUIRE(buffer.readInt16() == x16);
+          REQUIRE(buffer.readInt32() == x32);
+          REQUIRE(buffer.readString(octetString.size()) == octetString);
+          REQUIRE(buffer.readNullTerminatedString() == nullTerminatedString);
+        }
       }
     }
   }
