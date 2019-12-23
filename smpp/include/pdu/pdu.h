@@ -1,6 +1,7 @@
 #ifndef PDU_H
 #define PDU_H
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -52,6 +53,8 @@ class Pdu {
 
   bool isRequest() const { return m_bIsRequest; }
   bool isResponse() const { return !m_bIsRequest; }
+
+  static std::unique_ptr<Pdu> createPduByCommandId(uint32_t nCommandId);
 
  protected:
   /**

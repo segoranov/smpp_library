@@ -1,7 +1,6 @@
 #include "transcoder/default_pdu_transcoder.h"
 
 #include "smppconstants.h"
-#include "util/smpp_util.h"
 
 namespace smpp {
 
@@ -19,7 +18,7 @@ std::unique_ptr<Pdu> DefaultPduTranscoder::decode(Buffer& buffer) {
   auto commandStatus = buffer.readInt32();
   auto sequenceNumber = buffer.readInt32();
 
-  auto pdu = util::createPduByCommandId(commandId);
+  auto pdu = Pdu::createPduByCommandId(commandId);
   pdu->setCommandLength(commandLength);
   pdu->setCommandStatus(commandStatus);
   pdu->setSequenceNumber(sequenceNumber);

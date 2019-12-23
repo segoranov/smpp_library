@@ -7,6 +7,21 @@
 #include "transcoder/default_pdu_transcoder.h"
 #include "util/smpp_util.h"
 
+SCENARIO("Creating PDU by static factory method should throw (or not) proper exceptions") {
+  WHEN("Trying to create a PDU with invalid command id") {
+    THEN("InvalidCommandIdException must be thrown") {
+      REQUIRE_THROWS_AS(smpp::Pdu::createPduByCommandId(696923412),
+                        smpp::InvalidCommandIdException);
+    }
+
+    WHEN("Trying to create a PDU with command id BindTransmitter") {
+      THEN("No exception should be thrown") {
+        REQUIRE_NOTHROW(smpp::Pdu::createPduByCommandId(smpp::constants::CMD_ID_BIND_TRANSMITTER));
+      }
+    }
+  }
+}
+
 SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
   GIVEN("A sample bindtransmitter pdu defined as raw data (array of hex bytes)") {
     /*
@@ -46,7 +61,7 @@ SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
 
       AND_GIVEN("a sample BindTransmitter PDU corresponding to the raw PDU") {
         std::shared_ptr<smpp::Pdu> pdu =
-            smpp::util::createPduByCommandId(smpp::constants::CMD_ID_BIND_TRANSMITTER);
+            smpp::Pdu::createPduByCommandId(smpp::constants::CMD_ID_BIND_TRANSMITTER);
         pdu->setCommandLength(47);  // 0x0000002F in hex is 47 in decimal
         pdu->setCommandStatus(0);   // 0x00000000
         pdu->setSequenceNumber(1);  // 0x00000001

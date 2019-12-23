@@ -3,6 +3,11 @@
 #include <algorithm>
 
 #include "buffer/buffer.h"
+#include "pdu/bindreceiver.h"
+#include "pdu/bindtransceiver.h"
+#include "pdu/bindtransmitter.h"
+#include "pdu/pdu.h"
+#include "smppexceptions.h"
 #include "util/buffer_util.h"
 
 namespace smpp {
@@ -43,6 +48,23 @@ void Pdu::readOptionalParameters(Buffer& buffer) {
 void Pdu::writeOptionalParameters(Buffer& buffer) const {
   std::for_each(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
                 [&buffer](const Tlv& tlv) { buffer_util::writeTlv(buffer, tlv); });
+}
+
+std::unique_ptr<Pdu> Pdu::createPduByCommandId(uint32_t nCommandId) {
+  switch (nCommandId) {
+    case constants::CMD_ID_BIND_TRANSMITTER: {
+      return std::make_unique<BindTransmitter>();
+    }
+    case constants::CMD_ID_BIND_TRANSCEIVER: {
+      return std::make_unique<BindTransceiver>();
+    }
+    case constants::CMD_ID_BIND_RECEIVER: {
+      return std::make_unique<BindReceiver>();
+    }
+    default: {
+      throw InvalidCommandIdException();
+    }
+  }
 }
 
 }  // namespace smpp
