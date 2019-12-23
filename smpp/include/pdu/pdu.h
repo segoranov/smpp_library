@@ -54,6 +54,12 @@ class Pdu {
   bool isRequest() const { return m_bIsRequest; }
   bool isResponse() const { return !m_bIsRequest; }
 
+  /**
+   * Constructs a PDU by command id
+   *
+   * @throws InvalidCommandIdException if the command ID is invalid
+   * @return the newly created PDU
+   */
   static std::unique_ptr<Pdu> createPduByCommandId(uint32_t nCommandId);
 
  protected:
