@@ -23,6 +23,8 @@ add_executable( run_tests
  ../src/pdu/pdu_request.cpp
  ../src/pdu/basebind.cpp
  ../src/pdu/bindtransmitter.cpp
+ ../src/pdu/bindreceiver.cpp
+ ../src/pdu/bindtransceiver.cpp
  ../src/type/address.cpp
  ../src/util/buffer_util.cpp
  ../src/util/print_util.cpp
