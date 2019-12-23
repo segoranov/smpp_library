@@ -12,6 +12,8 @@ namespace smpp {
 class Buffer;
 
 class Pdu {
+  friend class DefaultPduTranscoder;
+
  private:
   // PDU Header
   uint32_t m_nCommandLength;
@@ -51,13 +53,13 @@ class Pdu {
   bool isRequest() const { return m_bIsRequest; }
   bool isResponse() const { return !m_bIsRequest; }
 
+ protected:
   /**
    * Read and write PDU body
    */
   virtual void readBody(Buffer& buffer) = 0;
   virtual void writeBody(Buffer& buffer) const = 0;
 
- protected:
   /**
    * Read and write PDU optional parameters - TLVs
    */

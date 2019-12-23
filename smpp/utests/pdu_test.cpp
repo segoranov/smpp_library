@@ -8,7 +8,7 @@
 #include "util/smpp_util.h"
 
 SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
-  GIVEN("A sample pdu defined as raw data (array of hex bytes)") {
+  GIVEN("A sample bindtransmitter pdu defined as raw data (array of hex bytes)") {
     /*
     Sample PDU (Values are shown in Hex format):
     00 00 00 2F 00 00 00 02 00 00 00 00 00 00 00 01

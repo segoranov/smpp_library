@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "type/address.h"
 #include "pdu_request.h"
+#include "type/address.h"
 
 namespace smpp {
 
@@ -25,12 +25,13 @@ class BaseBind : public PduRequest {
   uint8_t getInterfaceVersion() const { return m_nInterfaceVersion; }
   Address getAddress() const { return m_address; }
 
-  void setSystemId(const std::string& strSystemId){m_strSystemId = strSystemId; }
+  void setSystemId(const std::string& strSystemId) { m_strSystemId = strSystemId; }
   void setSystemType(const std::string& strSystemType) { m_strSystemType = strSystemType; }
   void setPassword(const std::string& strPassword) { m_strPassword = strPassword; }
   void setInterfaceVersion(uint8_t nInterfaceVersion) { m_nInterfaceVersion = nInterfaceVersion; }
   void setAddress(const Address& newAddress) { m_address = newAddress; }
 
+ protected:
   virtual void readBody(Buffer& buffer) override;
   virtual void writeBody(Buffer& buffer) const override;
 };
