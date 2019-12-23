@@ -29,7 +29,7 @@ class Buffer {
   void writeInt32(uint32_t nValue);
   void writeNullTerminatedString(const char* str);         // C-octet string
   void writeNullTerminatedString(const std::string& str);  // C-octet string
-  void writeOctetString(const std::string& str);           // Octet string
+  void writeOctetString(const std::string& str);
   void writeChar(char ch);
 
   uint8_t readInt8();
@@ -48,7 +48,7 @@ class Buffer {
 
   /**
    * Skip bytes when reading from the buffer
-   */ 
+   */
   void skip(int numberOfBytesToSkip);
 
   /**
