@@ -13,7 +13,7 @@ namespace smpp {
 class PduTranscoder {
  public:
   /**
-   * Encodes a PDU into a new buffer.
+   * Encodes a PDU into a buffer.
    * @param pdu The PDU to encode into a buffer
    * @param buffer The buffer to encode the PDU into
    */

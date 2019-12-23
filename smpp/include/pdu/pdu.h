@@ -52,12 +52,6 @@ class Pdu {
   bool isResponse() const { return !m_bIsRequest; }
 
   /**
-   * Read and write PDU header
-   */
-  void readHeader(Buffer& buffer);
-  void writeHeader(Buffer& buffer) const;
-
-  /**
    * Read and write PDU body
    */
   virtual void readBody(Buffer& buffer) = 0;
