@@ -4,12 +4,14 @@
 
 namespace smpp {
 
-void DefaultPduTranscoder::encode(std::shared_ptr<const Pdu> ptrPdu, Buffer& buffer) {
+Buffer DefaultPduTranscoder::encode(std::shared_ptr<const Pdu> ptrPdu) {
+  Buffer buffer;
   buffer.writeInt32(ptrPdu->getCommandLength());
   buffer.writeInt32(ptrPdu->getCommandId());
   buffer.writeInt32(ptrPdu->getCommandStatus());
   buffer.writeInt32(ptrPdu->getSequenceNumber());
   ptrPdu->writeBody(buffer);
+  return buffer;
 }
 
 std::unique_ptr<Pdu> DefaultPduTranscoder::decode(Buffer& buffer) {

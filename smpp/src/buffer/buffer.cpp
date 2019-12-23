@@ -6,7 +6,10 @@
 
 namespace smpp {
 
-Buffer::Buffer() : m_stringBuffer(""), m_stream{&m_stringBuffer} {};
+Buffer::Buffer() : m_stringBuffer{""}, m_stream{&m_stringBuffer} {}
+
+Buffer::Buffer(const Buffer& other)
+    : m_stringBuffer{other.m_stringBuffer.str()}, m_stream{&m_stringBuffer} {}
 
 void Buffer::resetReadMarker() { m_stream.seekg(0, m_stream.beg); }
 
@@ -75,10 +78,12 @@ std::string Buffer::readString(int size) {
 
 char Buffer::readChar() { return m_stream.get(); }
 
-void Buffer::skip(int numberOfBytesToSkip) { m_stream.seekg(numberOfBytesToSkip, m_stream.cur); } // TODO SG Unit test
+void Buffer::skip(int numberOfBytesToSkip) {
+  m_stream.seekg(numberOfBytesToSkip, m_stream.cur);
+}  // TODO SG Unit test
 
 int Buffer::readableBytes() const {
-  return 0; // TODO SG + unit test
+  return 0;  // TODO SG + unit test
 }
 
 }  // namespace smpp

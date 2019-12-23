@@ -56,56 +56,52 @@ SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
 
     THEN("The size of the sample pdu should be 47") { REQUIRE(sizeof(samplePdu) == 47); }
 
-    AND_GIVEN("a buffer") {
-      smpp::Buffer buffer;
+    AND_GIVEN("a sample BindTransmitter PDU corresponding to the raw PDU") {
+      std::shared_ptr<smpp::Pdu> pdu =
+          smpp::Pdu::createPduByCommandId(smpp::constants::CMD_ID_BIND_TRANSMITTER);
+      pdu->setCommandLength(47);  // 0x0000002F in hex is 47 in decimal
+      pdu->setCommandStatus(0);   // 0x00000000
+      pdu->setSequenceNumber(1);  // 0x00000001
 
-      AND_GIVEN("a sample BindTransmitter PDU corresponding to the raw PDU") {
-        std::shared_ptr<smpp::Pdu> pdu =
-            smpp::Pdu::createPduByCommandId(smpp::constants::CMD_ID_BIND_TRANSMITTER);
-        pdu->setCommandLength(47);  // 0x0000002F in hex is 47 in decimal
-        pdu->setCommandStatus(0);   // 0x00000000
-        pdu->setSequenceNumber(1);  // 0x00000001
+      auto baseBind = dynamic_cast<smpp::BaseBind*>(pdu.get());
+      baseBind->setSystemId("SMPP3TEST");
+      baseBind->setPassword("secret08");
+      baseBind->setSystemType("SUBMIT1");
+      baseBind->setInterfaceVersion(0x50);
+      smpp::Address address{0x01, 0x01};
+      baseBind->setAddress(address);
 
-        auto baseBind = dynamic_cast<smpp::BaseBind*>(pdu.get());
-        baseBind->setSystemId("SMPP3TEST");
-        baseBind->setPassword("secret08");
-        baseBind->setSystemType("SUBMIT1");
-        baseBind->setInterfaceVersion(0x50);
-        smpp::Address address{0x01, 0x01};
-        baseBind->setAddress(address);
+      AND_GIVEN("a DefaultPduTranscoder") {
+        std::unique_ptr<smpp::PduTranscoder> pduTranscoder =
+            std::make_unique<smpp::DefaultPduTranscoder>();
 
-        AND_GIVEN("a DefaultPduTranscoder") {
-          std::unique_ptr<smpp::PduTranscoder> pduTranscoder =
-              std::make_unique<smpp::DefaultPduTranscoder>();
+        WHEN("the BindTransmitter PDU is written to a buffer by using the transcoder") {
+          auto buffer = pduTranscoder->encode(pdu);
 
-          WHEN("the BindTransmitter PDU is written to the buffer by using the transcoder") {
-            pduTranscoder->encode(pdu, buffer);
+          THEN(
+              "the buffer size should be equal to the command length of the BindTransmitter "
+              "PDU") {
+            REQUIRE(buffer.size() == pdu->getCommandLength());
+          }
 
-            THEN(
-                "the buffer size should be equal to the command length of the BindTransmitter "
-                "PDU") {
-              REQUIRE(buffer.size() == pdu->getCommandLength());
-            }
+          THEN("the buffer as a string should correspond to the sample pdu header") {
+            REQUIRE(buffer.toString() == std::string{samplePdu, sizeof(samplePdu)});
+          }
 
-            THEN("the buffer as a string should correspond to the sample pdu header") {
-              REQUIRE(buffer.toString() == std::string{samplePdu, sizeof(samplePdu)});
-            }
+          THEN(
+              "the newly created PDU from the buffer should correspond to the first "
+              "BindTransmitter PDU") {
+            auto decodedPdu = pduTranscoder->decode(buffer);
+            REQUIRE(decodedPdu->getCommandId() == pdu->getCommandId());
+            REQUIRE(decodedPdu->getCommandLength() == pdu->getCommandLength());
+            REQUIRE(decodedPdu->getCommandStatus() == pdu->getCommandStatus());
+            REQUIRE(decodedPdu->getSequenceNumber() == pdu->getSequenceNumber());
 
-            THEN(
-                "the newly created PDU from the buffer should correspond to the first "
-                "BindTransmitter PDU") {
-              auto decodedPdu = pduTranscoder->decode(buffer);
-              REQUIRE(decodedPdu->getCommandId() == pdu->getCommandId());
-              REQUIRE(decodedPdu->getCommandLength() == pdu->getCommandLength());
-              REQUIRE(decodedPdu->getCommandStatus() == pdu->getCommandStatus());
-              REQUIRE(decodedPdu->getSequenceNumber() == pdu->getSequenceNumber());
-
-              auto decodedBaseBind = dynamic_cast<smpp::BaseBind*>(decodedPdu.get());
-              REQUIRE(decodedBaseBind->getSystemId() == baseBind->getSystemId());
-              REQUIRE(decodedBaseBind->getPassword() == baseBind->getPassword());
-              REQUIRE(decodedBaseBind->getSystemType() == baseBind->getSystemType());
-              REQUIRE(decodedBaseBind->getAddress() == baseBind->getAddress());
-            }
+            auto decodedBaseBind = dynamic_cast<smpp::BaseBind*>(decodedPdu.get());
+            REQUIRE(decodedBaseBind->getSystemId() == baseBind->getSystemId());
+            REQUIRE(decodedBaseBind->getPassword() == baseBind->getPassword());
+            REQUIRE(decodedBaseBind->getSystemType() == baseBind->getSystemType());
+            REQUIRE(decodedBaseBind->getAddress() == baseBind->getAddress());
           }
         }
       }

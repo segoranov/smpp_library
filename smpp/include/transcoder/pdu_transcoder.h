@@ -13,11 +13,11 @@ namespace smpp {
 class PduTranscoder {
  public:
   /**
-   * Encodes a PDU into a buffer.
+   * Encodes a PDU into a new buffer.
    * @param pdu The PDU to encode into a buffer
-   * @param buffer The buffer to encode the PDU into
+   * @return The buffer with encoded PDU inside
    */
-  virtual void encode(std::shared_ptr<const Pdu> ptrPdu, Buffer& buffer) = 0;
+  virtual Buffer encode(std::shared_ptr<const Pdu> ptrPdu) = 0;
 
   /**
    * Decodes a Buffer into a new PDU.
