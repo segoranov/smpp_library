@@ -65,7 +65,13 @@ class Tlv {
    * @param nLength Length of octet array.
    * @param _m_vValue Array of m_vValue.
    */
-  explicit Tlv(uint16_t nTag, uint16_t nLength, const std::vector<uint8_t>& vOctets);
+  explicit Tlv(uint16_t nTag, uint16_t nLength, const std::vector<uint8_t>& vValue);
+
+  void setTag(uint16_t nTag);
+
+  void setLength(uint16_t nLength);
+
+  void setValue(const std::vector<uint8_t>& vValue);
 
   uint16_t getTag() const;
 
@@ -74,9 +80,6 @@ class Tlv {
   std::vector<uint8_t> getValue() const;
 
   int size() const;
-
-  void write(Buffer& buffer) const;
-  void read(Buffer& buffer);
 };
 
 }  // namespace smpp

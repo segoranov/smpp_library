@@ -80,7 +80,7 @@ SCENARIO("Buffer reads and writes single values properly", "[buffer]") {
         REQUIRE(buffer.size() == octetString.size());
       }
       THEN("the uint32_t value read from the buffer should be the same") {
-        REQUIRE(buffer.readString(octetString.size()) == octetString);
+        REQUIRE(buffer.readOctetString(octetString.size()) == octetString);
       }
     }
 
@@ -136,7 +136,7 @@ SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
           REQUIRE(buffer.readInt8() == x8);
           REQUIRE(buffer.readInt16() == x16);
           REQUIRE(buffer.readInt32() == x32);
-          REQUIRE(buffer.readString(octetString.size()) == octetString);
+          REQUIRE(buffer.readOctetString(octetString.size()) == octetString);
           REQUIRE(buffer.readNullTerminatedString() == nullTerminatedString);
         }
       }

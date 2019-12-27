@@ -28,8 +28,14 @@ Tlv::Tlv(uint16_t nTag, const std::string& s)
   std::copy(s.begin(), s.end(), std::back_inserter(m_vValue));
 }
 
-Tlv::Tlv(uint16_t nTag, uint16_t nLength, const std::vector<uint8_t>& vOctets)
-    : m_nTag{nTag}, m_nLength{nLength}, m_vValue{vOctets} {}
+Tlv::Tlv(uint16_t nTag, uint16_t nLength, const std::vector<uint8_t>& vValue)
+    : m_nTag{nTag}, m_nLength{nLength}, m_vValue{vValue} {}
+
+void Tlv::setTag(uint16_t nTag) { m_nTag = nTag; }
+
+void Tlv::setLength(uint16_t nLength) { m_nLength = nLength; }
+
+void Tlv::setValue(const std::vector<uint8_t>& vValue) { m_vValue = vValue; }
 
 uint16_t Tlv::getTag() const { return m_nTag; }
 
@@ -38,22 +44,6 @@ uint16_t Tlv::getLength() const { return m_nLength; }
 std::vector<uint8_t> Tlv::getValue() const { return m_vValue; }
 
 int Tlv::size() const { return 4 + m_vValue.size(); }
-
-void Tlv::write(Buffer& buffer) const {
-  buffer.writeInt16(m_nTag);
-  buffer.writeInt16(m_nLength);
-  std::for_each(m_vValue.begin(), m_vValue.end(),
-                [&buffer](uint8_t octet) { buffer.writeInt8(octet); });
-}
-
-void Tlv::read(Buffer& buffer) {
-  m_nTag = buffer.readInt16();
-  m_nLength = buffer.readInt16();
-
-  for (int i = 0; i < m_nLength; i++) {
-    m_vValue.push_back(buffer.readInt8());
-  }
-}
 
 }  // namespace smpp
 

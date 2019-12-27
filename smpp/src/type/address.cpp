@@ -22,18 +22,6 @@ void Address::setAddrNpi(uint8_t value) { addr_npi = value; }
 
 void Address::setAddressRange(const std::string& value) { address_range = value; }
 
-void Address::read(Buffer& buffer) {
-  addr_ton = buffer.readInt8();
-  addr_npi = buffer.readInt8();
-  address_range = buffer.readNullTerminatedString();
-}
-
-void Address::write(Buffer& buffer) const {
-  buffer.writeInt8(addr_ton);
-  buffer.writeInt8(addr_npi);
-  buffer.writeNullTerminatedString(address_range.c_str());
-}
-
 }  // namespace smpp
 
 bool operator==(const smpp::Address& lhs, const smpp::Address& rhs) {

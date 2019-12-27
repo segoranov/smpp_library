@@ -31,12 +31,7 @@ class Address {
    * @return size in bytes
    */
   int size() const;
-
-  void read(Buffer& buffer);
-
-  void write(Buffer& buffer) const;
-
-};  // namespace smpp
+};
 
 }  // namespace smpp
 

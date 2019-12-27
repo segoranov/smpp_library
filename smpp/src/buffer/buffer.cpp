@@ -68,7 +68,7 @@ std::string Buffer::readNullTerminatedString() {
   return str;
 }
 
-std::string Buffer::readString(int size) {
+std::string Buffer::readOctetString(int size) {
   std::string str;
   for (int i = 0; i < size; i++) {
     str += readChar();

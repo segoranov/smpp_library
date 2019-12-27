@@ -36,7 +36,7 @@ class Buffer {
   uint16_t readInt16();
   uint32_t readInt32();
   std::string readNullTerminatedString();
-  std::string readString(int size);
+  std::string readOctetString(int size);
   char readChar();
 
   bool areThereMoreBytesToRead() const { return m_stream.eof(); }

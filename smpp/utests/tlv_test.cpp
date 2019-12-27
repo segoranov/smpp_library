@@ -45,6 +45,7 @@ SCENARIO("Tlv should be written/read properly from buffer", "[tlv]") {
     WHEN("the TLV is written to the buffer") {
       smpp::buffer_util::writeTlv(buffer, tlv);
       THEN("the buffer size should be equal to the TLV size") {
+        CAPTURE(buffer.size(), tlv.size());
         REQUIRE(buffer.size() == tlv.size());
       }
       THEN("after reading TLV from buffer, the read TLV should be the equal to the initial TLV") {
