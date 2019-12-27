@@ -98,6 +98,7 @@ SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
             REQUIRE(decodedPdu->getSequenceNumber() == pdu->getSequenceNumber());
 
             auto decodedBaseBind = dynamic_cast<smpp::BaseBind*>(decodedPdu.get());
+            REQUIRE(decodedBaseBind != nullptr);
             REQUIRE(decodedBaseBind->getSystemId() == baseBind->getSystemId());
             REQUIRE(decodedBaseBind->getPassword() == baseBind->getPassword());
             REQUIRE(decodedBaseBind->getSystemType() == baseBind->getSystemType());
