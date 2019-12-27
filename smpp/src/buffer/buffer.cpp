@@ -94,6 +94,6 @@ bool Buffer::isEmpty() const { return size() == 0; }
 
 void Buffer::clear() { m_stringBuffer.str(""); }
 
-void Buffer::skip(int numberOfBytesToSkip) { m_stream.ignore(numberOfBytesToSkip); }
+void Buffer::skip(int nNumberOfBytesToSkip) { m_stream.ignore(nNumberOfBytesToSkip); }
 
 }  // namespace smpp

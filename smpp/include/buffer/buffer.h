@@ -62,20 +62,19 @@ class Buffer {
    */
   void clear();
 
+  /**
+   * @brief reset reading marker by putting it to the beginning of the buffer
+   */
   void resetReadMarker();
 
   /**
    * @brief Skip bytes when reading from the buffer
+   * @param nNumberOfBytesToSkip - how many bytes forward to move the reading marker
    */
-  void skip(int numberOfBytesToSkip);
+  void skip(int nNumberOfBytesToSkip);
 
   std::string toString() const;
   operator std::string() const;
-
-  void sync() {
-    m_stream.sync();
-    m_stringBuffer.pubsync();
-  }
 };
 
 }  // namespace smpp

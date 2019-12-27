@@ -148,6 +148,23 @@ SCENARIO("Buffer reads and writes multiple values properly", "[buffer]") {
   }
 }
 
+TEST_CASE("Buffer skips bytes correctly") {
+  smpp::Buffer buffer;
+  REQUIRE_FALSE(buffer.areThereBytesToRead());
+
+  constexpr uint32_t x{999'999'999};
+  constexpr uint32_t y{123'456'789};
+
+  buffer.writeInt32(x);
+  buffer.writeInt32(y);
+
+  for (int i = 0; i < 8; i++) {
+    REQUIRE(buffer.areThereBytesToRead());
+    buffer.skip(1);
+  }
+  REQUIRE_FALSE(buffer.areThereBytesToRead());
+}
+
 TEST_CASE("Buffer reads correct value after skipping 4 bytes") {
   smpp::Buffer buffer;
   REQUIRE_FALSE(buffer.areThereBytesToRead());
@@ -164,4 +181,21 @@ TEST_CASE("Buffer reads correct value after skipping 4 bytes") {
   REQUIRE(buffer.areThereBytesToRead());
   REQUIRE(buffer.readInt32() == y);
   REQUIRE_FALSE(buffer.areThereBytesToRead());
+}
+
+TEST_CASE("Buffer reads correct values after resetting the reading marker") {
+  smpp::Buffer buffer;
+
+  constexpr uint32_t x{999'999'999};
+  constexpr uint32_t y{123'456'789};
+
+  buffer.writeInt32(x);
+  buffer.writeInt32(y);
+  REQUIRE(buffer.areThereBytesToRead());
+  buffer.skip(8);
+  REQUIRE_FALSE(buffer.areThereBytesToRead());
+  buffer.resetReadMarker();
+  REQUIRE(buffer.areThereBytesToRead());
+  REQUIRE(buffer.readInt32() == x);
+  REQUIRE(buffer.readInt32() == y);
 }
