@@ -17,6 +17,7 @@ add_executable( run_tests
  address_test.cpp
  tlv_test.cpp
  smpp_util_test.cpp
+ print_util_test.cpp
  ../src/buffer/buffer.cpp 
  ../src/transcoder/default_pdu_transcoder.cpp
  ../src/pdu/pdu.cpp

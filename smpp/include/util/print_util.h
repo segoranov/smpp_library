@@ -8,6 +8,8 @@ namespace smpp::print_util {
 
 void printStringAsHex(const std::string& str, std::ostream& os = std::cout);
 
-}
+std::string toHexString(int nValue);
+
+}  // namespace smpp::print_util
 
 #endif
