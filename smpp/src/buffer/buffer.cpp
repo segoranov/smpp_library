@@ -78,12 +78,22 @@ std::string Buffer::readOctetString(int size) {
 
 char Buffer::readChar() { return m_stream.get(); }
 
-void Buffer::skip(int numberOfBytesToSkip) {
-  m_stream.seekg(numberOfBytesToSkip, m_stream.cur);
-}  // TODO SG Unit test
-
-int Buffer::readableBytes() const {
-  return 0;  // TODO SG + unit test
+bool Buffer::areThereBytesToRead() {
+  const bool bNextByteIsAvailable = m_stream.peek() != EOF;
+  m_stream.clear();
+  return bNextByteIsAvailable;
 }
+
+std::string Buffer::toString() const { return m_stringBuffer.str(); }
+
+Buffer::operator std::string() const { return toString(); }
+
+int Buffer::size() const { return m_stringBuffer.str().size(); }
+
+bool Buffer::isEmpty() const { return size() == 0; }
+
+void Buffer::clear() { m_stringBuffer.str(""); }
+
+void Buffer::skip(int numberOfBytesToSkip) { m_stream.ignore(numberOfBytesToSkip); }
 
 }  // namespace smpp

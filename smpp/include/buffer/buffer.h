@@ -20,10 +20,9 @@ class Buffer {
   Buffer();
   Buffer(const Buffer& other);
 
-  int size() const { return m_stringBuffer.str().size(); }
-  bool isEmpty() const { return size() == 0; }
-  void clear() { m_stringBuffer.str(""); }  // empties the buffer
-
+  /**
+   * Write raw data to buffer
+   */
   void writeInt8(uint8_t nValue);
   void writeInt16(uint16_t nValue);
   void writeInt32(uint32_t nValue);
@@ -32,6 +31,9 @@ class Buffer {
   void writeOctetString(const std::string& str);
   void writeChar(char ch);
 
+  /**
+   * Read raw data from buffer
+   */
   uint8_t readInt8();
   uint16_t readInt16();
   uint32_t readInt32();
@@ -39,22 +41,41 @@ class Buffer {
   std::string readOctetString(int size);
   char readChar();
 
-  bool areThereMoreBytesToRead() const { return m_stream.eof(); }
+  /**
+   * Utility methods
+   */
 
-  std::string toString() const { return m_stringBuffer.str(); }
-  operator std::string() const { return toString(); }
+  bool areThereBytesToRead();
+
+  /**
+   * @return the size of the buffer
+   */
+  int size() const;
+
+  /**
+   * @return true if the buffer is empty; false otherwise
+   */
+  bool isEmpty() const;
+
+  /**
+   * @brief Empties the buffer
+   */
+  void clear();
 
   void resetReadMarker();
 
   /**
-   * Skip bytes when reading from the buffer
+   * @brief Skip bytes when reading from the buffer
    */
   void skip(int numberOfBytesToSkip);
 
-  /**
-   * @return the number of bytes that are available for reading
-   */
-  int readableBytes() const;
+  std::string toString() const;
+  operator std::string() const;
+
+  void sync() {
+    m_stream.sync();
+    m_stringBuffer.pubsync();
+  }
 };
 
 }  // namespace smpp

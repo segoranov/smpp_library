@@ -59,7 +59,7 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
 
 void Pdu::readOptionalParameters(Buffer& buffer) {
   // if there is any data left, it's part of an optional parameter
-  while (buffer.areThereMoreBytesToRead()) {
+  while (buffer.areThereBytesToRead()) {
     auto tlv = buffer_util::readTlv(buffer);
     addOptionalParameter(tlv);
   }

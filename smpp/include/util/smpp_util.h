@@ -6,6 +6,7 @@
 namespace smpp::util {
 
 /**
+ * @brief Check if tag is valid
  * @param nTag - the tag to check for validity
  * @return true if the given tag is valid by SMPP specification; false otherwise
  */
