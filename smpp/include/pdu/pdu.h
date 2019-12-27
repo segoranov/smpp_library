@@ -30,15 +30,15 @@ class Pdu {
  public:
   explicit Pdu(uint32_t nCommandId, bool bIsRequest);
 
-  uint32_t getCommandLength() const { return m_nCommandLength; }
-  uint32_t getCommandId() const { return m_nCommandId; }
-  uint32_t getCommandStatus() const { return m_nCommandStatus; }
-  uint32_t getSequenceNumber() const { return m_nSequenceNumber; }
-  std::vector<Tlv> getOptionalParameters() const { return m_vOptionalTlvParameters; }
+  uint32_t getCommandLength() const;
+  uint32_t getCommandId() const;
+  uint32_t getCommandStatus() const;
+  uint32_t getSequenceNumber() const;
+  std::vector<Tlv> getOptionalParameters() const;
 
-  void setCommandLength(uint32_t nCommandLength) { m_nCommandLength = nCommandLength; }
-  void setCommandStatus(uint32_t nCommandStatus) { m_nCommandStatus = nCommandStatus; }
-  void setSequenceNumber(uint32_t nSequenceNumber) { m_nSequenceNumber = nSequenceNumber; }
+  void setCommandLength(uint32_t nCommandLength);
+  void setCommandStatus(uint32_t nCommandStatus);
+  void setSequenceNumber(uint32_t nSequenceNumber);
 
   void addOptionalParameter(const Tlv& tlv);
 
@@ -51,8 +51,8 @@ class Pdu {
 
   bool hasOptionalParameter(uint16_t nTag) const;
 
-  bool isRequest() const { return m_bIsRequest; }
-  bool isResponse() const { return !m_bIsRequest; }
+  bool isRequest() const;
+  bool isResponse() const;
 
   /**
    * Constructs a PDU by command id

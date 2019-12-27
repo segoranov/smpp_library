@@ -67,13 +67,13 @@ class Tlv {
    */
   explicit Tlv(uint16_t nTag, uint16_t nLength, const std::vector<uint8_t>& vOctets);
 
-  uint16_t getTag() const { return m_nTag; }
+  uint16_t getTag() const;
 
-  uint16_t getLength() const { return m_nLength; }
+  uint16_t getLength() const;
 
-  std::vector<uint8_t> getValue() const { return m_vValue; }
+  std::vector<uint8_t> getValue() const;
 
-  int size() const { return 4 + m_vValue.size(); }
+  int size() const;
 
   void write(Buffer& buffer) const;
   void read(Buffer& buffer);
