@@ -15,7 +15,7 @@ class SmppException : public std::exception {
  public:
   SmppException() : m_strError("Default SMPP exception") {}
   explicit SmppException(const std::string& strError) : m_strError{strError} {}
-  virtual const char* what() const noexcept { return m_strError.c_str(); }
+  virtual const char* what() const noexcept override { return m_strError.c_str(); }
 };
 
 class InvalidCommandIdException : public SmppException {
