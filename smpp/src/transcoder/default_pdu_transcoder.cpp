@@ -1,6 +1,9 @@
 #include "transcoder/default_pdu_transcoder.h"
 
 #include "smppconstants.h"
+#include "smppexceptions.h"
+#include "util/print_util.h"
+#include <sstream>
 
 namespace smpp {
 
@@ -16,6 +19,13 @@ Buffer DefaultPduTranscoder::encode(std::shared_ptr<const Pdu> ptrPdu) {
 
 std::unique_ptr<Pdu> DefaultPduTranscoder::decode(Buffer& buffer) {
   auto commandLength = buffer.readInt32();
+
+  if (commandLength < constants::PDU_HEADER_LENGTH ) {
+    std::stringstream error;
+    error << "Invalid PDU length [" << print_util::toHexString(commandLength) << "] parsed";
+    throw UnrecoverablePduException(error.str());
+  }
+
   auto commandId = buffer.readInt32();
   auto commandStatus = buffer.readInt32();
   auto sequenceNumber = buffer.readInt32();

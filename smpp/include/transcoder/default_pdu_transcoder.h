@@ -8,6 +8,10 @@ namespace smpp {
 class DefaultPduTranscoder : public PduTranscoder {
  public:
   virtual Buffer encode(std::shared_ptr<const Pdu> ptrPdu) override;
+
+  /**
+   * @throws UnrecoverablePduException
+   */
   virtual std::unique_ptr<Pdu> decode(Buffer& buffer) override;
 };
 

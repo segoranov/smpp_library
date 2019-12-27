@@ -109,3 +109,17 @@ SCENARIO("Pdu header is encoded/decoded properly in buffer", "[pdu_header]") {
     }
   }
 }
+
+TEST_CASE(
+    "DefaultPduTranscoder throws UnrecoverablePduException in case of invalid command length "
+    "parsed") {
+  smpp::Buffer buffer;
+  constexpr uint32_t nInvalidCommandLength = 14;
+  buffer.writeInt32(nInvalidCommandLength);
+  buffer.writeInt32(smpp::constants::CMD_ID_BIND_TRANSMITTER);
+
+  std::unique_ptr<smpp::PduTranscoder> pduTranscoder =
+      std::make_unique<smpp::DefaultPduTranscoder>();
+
+  REQUIRE_THROWS_AS(pduTranscoder->decode(buffer), smpp::UnrecoverablePduException);
+}
