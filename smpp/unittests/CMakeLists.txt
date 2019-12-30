@@ -3,6 +3,8 @@ cmake_minimum_required(VERSION 3.10)
 # set the project name
 project(SMPP_UNIT_TESTS)
 
+set(CMAKE_BUILD_TYPE Debug)
+
 find_package( Boost 1.69 COMPONENTS system thread REQUIRED )
 
 include_directories( 
@@ -13,23 +15,23 @@ include_directories(
 add_executable( run_tests 
  main.cpp 
  pdu_test.cpp
- buffer_test.cpp
  address_test.cpp
  tlv_test.cpp
  smpp_util_test.cpp
  print_util_test.cpp
- ../src/buffer/buffer.cpp 
- ../src/transcoder/default_pdu_transcoder.cpp
  ../src/pdu/pdu.cpp
  ../src/pdu/pdu_request.cpp
- ../src/pdu/basebind.cpp
- ../src/pdu/bindtransmitter.cpp
- ../src/pdu/bindreceiver.cpp
- ../src/pdu/bindtransceiver.cpp
+ ../src/pdu/pdu_response.cpp
+ ../src/pdu/base_bind.cpp
+ ../src/pdu/base_bind_resp.cpp
+ ../src/pdu/bind_transmitter.cpp
+ ../src/pdu/bind_transmitter_resp.cpp
+ ../src/pdu/bind_receiver.cpp
+ ../src/pdu/bind_transceiver.cpp
  ../src/type/address.cpp
- ../src/util/buffer_util.cpp
  ../src/util/print_util.cpp
  ../src/util/smpp_util.cpp
+ ../src/util/serialization_util.cpp
  ../src/tlv/tlv.cpp )
 
 set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)

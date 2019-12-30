@@ -1,19 +1,36 @@
 #include "pdu/pdu.h"
 
 #include <algorithm>
+#include <unordered_map>
 
-#include "buffer/buffer.h"
-#include "pdu/bindreceiver.h"
-#include "pdu/bindtransceiver.h"
-#include "pdu/bindtransmitter.h"
+#include "pdu/bind_receiver.h"
+#include "pdu/bind_transceiver.h"
+#include "pdu/bind_transmitter.h"
 #include "pdu/pdu.h"
-#include "smppexceptions.h"
-#include "util/buffer_util.h"
+#include "smpp_constants.h"
+#include "smpp_exceptions.h"
+#include "util/serialization_util.h"
+#include "util/smpp_util.h"
 
 namespace smpp {
 
-Pdu::Pdu(uint32_t nCommandId, bool bIsRequest)
-    : m_nCommandId{nCommandId}, m_bIsRequest{bIsRequest} {}
+// Construct On First Use Idiom: https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
+  static const std::unordered_map<uint32_t, Pdu::Factory> commandIdToFactoryMap{
+      {constants::CMD_ID_BIND_RECEIVER, BindReceiver::create},
+      {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::create},
+      {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::create},
+  };
+  return commandIdToFactoryMap;
+}
+
+Pdu::Pdu(uint32_t nCommandId, bool bIsRequest) : m_bIsRequest{bIsRequest} {
+  if (!util::isCommandIdValid(nCommandId)) {
+    throw InvalidCommandIdException("Invalid command id while constructing a PDU");
+  }
+
+  m_nCommandId = nCommandId;
+}
 
 uint32_t Pdu::getCommandLength() const { return m_nCommandLength; }
 
@@ -57,34 +74,51 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   return iterTlv != m_vOptionalTlvParameters.end();
 }
 
-void Pdu::readOptionalParameters(Buffer& buffer) {
-  // if there is any data left, it's part of an optional parameter
-  while (buffer.areThereBytesToRead()) {
-    auto tlv = buffer_util::readTlv(buffer);
-    addOptionalParameter(tlv);
+void Pdu::serializeHeader(std::ostream& os) const {
+  if (!util::isCommandLengthValid(m_nCommandLength)) {
+    std::stringstream error;
+    error << "Invalid command length detected during Pdu serialization - [" << m_nCommandLength
+          << "]";
+    throw InvalidCommandLengthException(error.str());
+  }
+
+  if (!util::isCommandIdValid(m_nCommandId)) {
+    std::stringstream error;
+    error << "Invalid command id detected during Pdu serialization - [" << m_nCommandId << "]";
+    throw InvalidCommandIdException(error.str());
+  }
+
+  // TODO SG: validate command status and sequence number
+
+  binary::serializeInt32(m_nCommandLength, os);
+  binary::serializeInt32(m_nCommandId, os);
+  binary::serializeInt32(m_nCommandStatus, os);
+  binary::serializeInt32(m_nSequenceNumber, os);
+}
+
+void Pdu::serializeOptionalParameters(std::ostream& os) const {
+  for (const auto& tlv : m_vOptionalTlvParameters) {
+    tlv.serialize(os);
   }
 }
 
-void Pdu::writeOptionalParameters(Buffer& buffer) const {
-  std::for_each(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
-                [&buffer](const Tlv& tlv) { buffer_util::writeTlv(buffer, tlv); });
-}
-
-std::unique_ptr<Pdu> Pdu::createPduByCommandId(uint32_t nCommandId) {
-  switch (nCommandId) {
-    case constants::CMD_ID_BIND_TRANSMITTER: {
-      return std::make_unique<BindTransmitter>();
-    }
-    case constants::CMD_ID_BIND_TRANSCEIVER: {
-      return std::make_unique<BindTransceiver>();
-    }
-    case constants::CMD_ID_BIND_RECEIVER: {
-      return std::make_unique<BindReceiver>();
-    }
-    default: {
-      throw InvalidCommandIdException();
-    }
+std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
+  uint32_t nCommandLength = binary::deserializeInt32(is);
+  if (!util::isCommandLengthValid(nCommandLength)) {
+    std::stringstream error;
+    error << "Invalid command length detected during Pdu deserialization - [" << nCommandLength
+          << "]";
+    throw InvalidCommandLengthException(error.str());
   }
+
+  uint32_t nCommandId = binary::deserializeInt32(is);
+  if (!util::isCommandIdValid(nCommandId)) {
+    std::stringstream error;
+    error << "Invalid command id parsed detected Pdu deserialization - [" << nCommandId << "]";
+    throw InvalidCommandIdException(error.str());
+  }
+
+  return getCommandIdToFactoryMap().at(nCommandId)(nCommandLength, is);
 }
 
 }  // namespace smpp

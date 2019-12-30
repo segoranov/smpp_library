@@ -1,20 +1,26 @@
 #ifndef PDU_H
 #define PDU_H
 
+#include <arpa/inet.h>
+
+#include <cereal/access.hpp>
+#include <functional>
 #include <memory>
 #include <optional>
+#include <sstream>
 #include <string>
+#include <unordered_map>
 
-#include "smppconstants.h"
+#include "smpp_constants.h"
+#include "smpp_exceptions.h"
 #include "tlv/tlv.h"
+#include "util/smpp_util.h"
 
 namespace smpp {
 
 class Buffer;
 
 class Pdu {
-  friend class DefaultPduTranscoder;
-
  private:
   // PDU Header
   uint32_t m_nCommandLength;
@@ -28,6 +34,9 @@ class Pdu {
   const bool m_bIsRequest;
 
  public:
+  /**
+   * @throw InvalidCommandIdException if the given command id is invalid
+   */
   explicit Pdu(uint32_t nCommandId, bool bIsRequest);
 
   uint32_t getCommandLength() const;
@@ -54,26 +63,26 @@ class Pdu {
   bool isRequest() const;
   bool isResponse() const;
 
+  // -------------------------------------------
+  // ------ SERIALIZATION/DESERIALIZATION ------
+
   /**
-   * Constructs a PDU by command id
-   *
-   * @throws InvalidCommandIdException if the command ID is invalid
-   * @return the newly created PDU
+   * Using the serialization design described here:
+   * https://isocpp.org/wiki/faq/serialization#serialize-inherit-no-ptrs
+   * with the Named Constructor Idiom
    */
-  static std::unique_ptr<Pdu> createPduByCommandId(uint32_t nCommandId);
+
+  virtual void serialize(std::ostream& os) const = 0;
+  static std::unique_ptr<Pdu> deserialize(std::istream& is);
+
+  using Factory = std::function<std::unique_ptr<Pdu>(uint32_t nCommandLength, std::istream& is)>;
 
  protected:
-  /**
-   * Read and write PDU body
-   */
-  virtual void readBody(Buffer& buffer) = 0;
-  virtual void writeBody(Buffer& buffer) const = 0;
+  virtual void serializeBody(std::ostream& os) const = 0;
+  virtual void deserializeAfterCommandId(std::istream& is) = 0;
 
-  /**
-   * Read and write PDU optional parameters - TLVs
-   */
-  void readOptionalParameters(Buffer& buffer);
-  void writeOptionalParameters(Buffer& buffer) const;
+  void serializeHeader(std::ostream& os) const;
+  void serializeOptionalParameters(std::ostream& os) const;
 };
 
 }  // namespace smpp

@@ -3,6 +3,8 @@
 #include <algorithm>
 #include <iterator>
 
+#include "util/serialization_util.h"
+
 namespace smpp {
 
 Tlv::Tlv(uint16_t nTag) : m_nTag{nTag} {}
@@ -45,9 +47,32 @@ std::vector<uint8_t> Tlv::getValue() const { return m_vValue; }
 
 int Tlv::size() const { return 4 + m_vValue.size(); }
 
+void Tlv::serialize(std::ostream& os) const {
+  binary::serializeInt16(m_nTag, os);
+  binary::serializeInt16(m_nLength, os);
+
+  for (uint8_t octet : m_vValue) {
+    binary::serializeInt8(octet, os);
+  }
+}
+
+void Tlv::deserialize(std::istream& is) {
+  m_nTag = binary::deserializeInt16(is);
+  m_nLength = binary::deserializeInt16(is);
+
+  std::vector<uint8_t> tlvValue;
+  for (int i = 0; i < m_nLength; i++) {
+    tlvValue.push_back(binary::deserializeInt8(is));
+  }
+
+  m_vValue = tlvValue;
+}
+
 }  // namespace smpp
 
 bool operator==(const smpp::Tlv& lhs, const smpp::Tlv& rhs) {
   return lhs.getTag() == rhs.getTag() && lhs.getLength() == rhs.getLength() &&
          lhs.getValue() == rhs.getValue();
 }
+
+bool operator!=(const smpp::Tlv& lhs, const smpp::Tlv& rhs) { return !(lhs == rhs); }

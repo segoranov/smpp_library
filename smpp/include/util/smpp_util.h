@@ -3,7 +3,15 @@
 
 #include <inttypes.h>
 
+#include <cereal/archives/binary.hpp>
+#include <sstream>
+#include <utility>
 namespace smpp::util {
+
+/**
+ * @brief Check if command length is valid
+ */
+bool isCommandLengthValid(uint32_t nCommandLength);
 
 /**
  * @brief Check if tag is valid
@@ -11,6 +19,13 @@ namespace smpp::util {
  * @return true if the given tag is valid by SMPP specification; false otherwise
  */
 bool isTlvTagValid(uint16_t nTag);
+
+/**
+ * @brief Check if command id is valid
+ * @param nCommandId - the command id to check for validity
+ * @return true if the given tag is valid by SMPP specification; false otherwise
+ */
+bool isCommandIdValid(uint32_t nCommandId);
 
 }  // namespace smpp::util
 

@@ -1,8 +1,10 @@
-#include "catch.hpp"
-#include "smppconstants.h"
-#include "util/buffer_util.h"
+#include "tlv/tlv.h"
 
-SCENARIO("Tlv should have correct size", "[tlv]") {
+#include "catch.hpp"
+#include "cereal/archives/binary.hpp"
+#include "smpp_constants.h"
+
+SCENARIO("Tlv should have correct size", "[Tlv]") {
   GIVEN("some test values with different types and sizes") {
     std::string strTestValue{"billing_identification_test_value"};
     uint8_t x8{0};
@@ -35,22 +37,30 @@ SCENARIO("Tlv should have correct size", "[tlv]") {
   }
 }
 
-SCENARIO("Tlv should be written/read properly from buffer", "[tlv]") {
-  GIVEN("An empty buffer and a TLV") {
-    smpp::Buffer buffer;
+SCENARIO("Tlv should be serialized and deserialized properly", "[Tlv]") {
+  GIVEN("a sample Tlv") {
+    std::string strTestValue{"billing_identification_test_value"};
+    smpp::Tlv tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, strTestValue};
 
-    std::string test_value{"billing_identification_test_value"};
-    smpp::Tlv tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, test_value};
+    AND_GIVEN("A stringstream") {
+      std::stringstream ss;
 
-    WHEN("the TLV is written to the buffer") {
-      smpp::buffer_util::writeTlv(buffer, tlv);
-      THEN("the buffer size should be equal to the TLV size") {
-        CAPTURE(buffer.size(), tlv.size());
-        REQUIRE(buffer.size() == tlv.size());
-      }
-      THEN("after reading TLV from buffer, the read TLV should be the equal to the initial TLV") {
-        auto readTlv = smpp::buffer_util::readTlv(buffer);
-        REQUIRE(readTlv == tlv);
+      WHEN("the Tlv is serialized to the stringstream") {
+        tlv.serialize(ss);
+
+        THEN("the stringstream size should be equal to the Tlv size") {
+          REQUIRE(ss.str().size() == tlv.size());
+        }
+
+        AND_WHEN("a Tlv is deserialized from the stringstream") {
+          smpp::Tlv deserializedTlv;
+          REQUIRE(deserializedTlv != tlv);
+          deserializedTlv.deserialize(ss);
+
+          THEN("the deserialized Tlv should correspond to the initial Tlv") {
+            REQUIRE(deserializedTlv == tlv);
+          }
+        }
       }
     }
   }

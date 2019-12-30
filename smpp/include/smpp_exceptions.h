@@ -24,6 +24,12 @@ class InvalidCommandIdException : public SmppException {
   explicit InvalidCommandIdException(const std::string& strError) : SmppException{strError} {}
 };
 
+class InvalidCommandLengthException : public SmppException {
+ public:
+  InvalidCommandLengthException() : SmppException{"Invalid command length"} {}
+  explicit InvalidCommandLengthException(const std::string& strError) : SmppException{strError} {}
+};
+
 class InvalidSystemIdException : public SmppException {
  public:
   InvalidSystemIdException() : SmppException{"Invalid system id"} {}

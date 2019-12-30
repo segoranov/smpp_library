@@ -3,10 +3,9 @@
 
 #include <algorithm>
 #include <iomanip>
+#include <iostream>
 #include <string>
 #include <vector>
-
-#include "buffer/buffer.h"
 
 namespace smpp {
 
@@ -80,10 +79,14 @@ class Tlv {
   std::vector<uint8_t> getValue() const;
 
   int size() const;
+
+  void serialize(std::ostream& os) const;
+  void deserialize(std::istream& is);
 };
 
 }  // namespace smpp
 
 bool operator==(const smpp::Tlv& lhs, const smpp::Tlv& rhs);
+bool operator!=(const smpp::Tlv& lhs, const smpp::Tlv& rhs);
 
 #endif

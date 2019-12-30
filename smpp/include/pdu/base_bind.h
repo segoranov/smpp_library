@@ -1,10 +1,12 @@
-#ifndef BASEBIND_H
-#define BASEBIND_H
+#ifndef BASE_BIND_H
+#define BASE_BIND_H
 
+#include <cereal/types/base_class.hpp>
 #include <string>
 
 #include "pdu_request.h"
 #include "type/address.h"
+#include "util/serialization_util.h"
 
 namespace smpp {
 
@@ -15,6 +17,11 @@ class BaseBind : public PduRequest {
   std::string m_strSystemType;
   uint8_t m_nInterfaceVersion;
   Address m_address;
+
+ protected:
+  virtual void serializeBody(std::ostream& os) const override;
+
+  virtual void deserializeAfterCommandId(std::istream& is) override;
 
  public:
   explicit BaseBind(uint32_t nCommandId);
@@ -30,10 +37,6 @@ class BaseBind : public PduRequest {
   void setPassword(const std::string& strPassword);
   void setInterfaceVersion(uint8_t nInterfaceVersion);
   void setAddress(const Address& newAddress);
-
- protected:
-  virtual void readBody(Buffer& buffer) override;
-  virtual void writeBody(Buffer& buffer) const override;
 };
 
 }  // namespace smpp
