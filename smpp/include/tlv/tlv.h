@@ -1,12 +1,12 @@
 #ifndef TLV_H
 #define TLV_H
 
+#include <arpa/inet.h>
+
 #include <algorithm>
 #include <iomanip>
 #include <string>
 #include <vector>
-
-#include "buffer/buffer.h"
 
 namespace smpp {
 
@@ -80,10 +80,38 @@ class Tlv {
   std::vector<uint8_t> getValue() const;
 
   int size() const;
+
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(htons(m_nTag), htons(m_nLength));
+
+    for (auto octet : m_vValue) {
+      archive(octet);
+    }
+  }
+
+  template <class Archive>
+  void load(Archive& archive) {
+    auto readToHostByteOrder = [&archive](uint16_t& value) {
+      uint16_t temp;
+      archive(temp);
+      value = ntohs(temp);
+    };
+
+    readToHostByteOrder(m_nTag);
+    readToHostByteOrder(m_nLength);
+
+    for (int i = 0; i < m_nLength; i++) {
+      uint8_t octet;
+      archive(octet);
+      m_vValue.push_back(octet);
+    }
+  }
 };
 
 }  // namespace smpp
 
 bool operator==(const smpp::Tlv& lhs, const smpp::Tlv& rhs);
+bool operator!=(const smpp::Tlv& lhs, const smpp::Tlv& rhs);
 
 #endif

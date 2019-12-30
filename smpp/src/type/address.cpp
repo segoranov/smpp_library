@@ -28,3 +28,5 @@ bool operator==(const smpp::Address& lhs, const smpp::Address& rhs) {
   return lhs.getAddrTon() == rhs.getAddrTon() && lhs.getAddrNpi() == rhs.getAddrNpi() &&
          lhs.getAddressRange() == rhs.getAddressRange();
 }
+
+bool operator!=(const smpp::Address& lhs, const smpp::Address& rhs) { return !(lhs == rhs); }

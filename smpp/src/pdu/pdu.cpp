@@ -2,13 +2,11 @@
 
 #include <algorithm>
 
-#include "buffer/buffer.h"
 #include "pdu/bindreceiver.h"
 #include "pdu/bindtransceiver.h"
 #include "pdu/bindtransmitter.h"
 #include "pdu/pdu.h"
 #include "smppexceptions.h"
-#include "util/buffer_util.h"
 
 namespace smpp {
 
@@ -55,19 +53,6 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   auto iterTlv = std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
                               [nTag](Tlv tlv) { return tlv.getTag() == nTag; });
   return iterTlv != m_vOptionalTlvParameters.end();
-}
-
-void Pdu::readOptionalParameters(Buffer& buffer) {
-  // if there is any data left, it's part of an optional parameter
-  while (buffer.areThereBytesToRead()) {
-    auto tlv = buffer_util::readTlv(buffer);
-    addOptionalParameter(tlv);
-  }
-}
-
-void Pdu::writeOptionalParameters(Buffer& buffer) const {
-  std::for_each(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
-                [&buffer](const Tlv& tlv) { buffer_util::writeTlv(buffer, tlv); });
 }
 
 std::unique_ptr<Pdu> Pdu::createPduByCommandId(uint32_t nCommandId) {

@@ -51,3 +51,5 @@ bool operator==(const smpp::Tlv& lhs, const smpp::Tlv& rhs) {
   return lhs.getTag() == rhs.getTag() && lhs.getLength() == rhs.getLength() &&
          lhs.getValue() == rhs.getValue();
 }
+
+bool operator!=(const smpp::Tlv& lhs, const smpp::Tlv& rhs) { return !(lhs == rhs); }

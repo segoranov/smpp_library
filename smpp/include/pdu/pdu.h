@@ -1,6 +1,8 @@
 #ifndef PDU_H
 #define PDU_H
 
+#include <arpa/inet.h>
+
 #include <memory>
 #include <optional>
 #include <string>
@@ -62,18 +64,25 @@ class Pdu {
    */
   static std::unique_ptr<Pdu> createPduByCommandId(uint32_t nCommandId);
 
- protected:
-  /**
-   * Read and write PDU body
-   */
-  virtual void readBody(Buffer& buffer) = 0;
-  virtual void writeBody(Buffer& buffer) const = 0;
+  template <typename Archive>
+  void save(Archive& archive) const {
+    archive(htonl(m_nCommandLength), htonl(m_nCommandId), htonl(m_nCommandStatus),
+            htonl(m_nSequenceNumber));
+  }
 
-  /**
-   * Read and write PDU optional parameters - TLVs
-   */
-  void readOptionalParameters(Buffer& buffer);
-  void writeOptionalParameters(Buffer& buffer) const;
+  template <class Archive>
+  void load(Archive& archive) {
+    auto readToHostByteOrder = [&archive](uint32_t& value) {
+      uint32_t temp;
+      archive(temp);
+      value = ntohl(temp);
+    };
+
+    readToHostByteOrder(m_nCommandLength);
+    readToHostByteOrder(m_nCommandId);
+    readToHostByteOrder(m_nCommandStatus);
+    readToHostByteOrder(m_nSequenceNumber);
+  }
 };
 
 }  // namespace smpp
