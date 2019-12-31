@@ -12,6 +12,13 @@ namespace smpp::util {
  */
 bool isTlvTagValid(uint16_t nTag);
 
+/**
+ * @brief Check if command id is valid
+ * @param nCommandId - the command id to check for validity
+ * @return true if the given tag is valid by SMPP specification; false otherwise
+ */
+bool isCommandIdTagValid(uint32_t nCommandId);
+
 }  // namespace smpp::util
 
 #endif

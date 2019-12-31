@@ -10,4 +10,10 @@ bool isTlvTagValid(uint16_t nTag) {
   return it != constants::ALL_TLV_TAGS.end();
 }
 
+bool isCommandIdTagValid(uint32_t nCommandId) {
+  auto it =
+      std::find(constants::ALL_COMMAND_IDS.begin(), constants::ALL_COMMAND_IDS.end(), nCommandId);
+  return it != constants::ALL_COMMAND_IDS.end();
+}
+
 }  // namespace smpp::util

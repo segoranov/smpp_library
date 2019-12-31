@@ -55,21 +55,4 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   return iterTlv != m_vOptionalTlvParameters.end();
 }
 
-std::unique_ptr<Pdu> Pdu::createPduByCommandId(uint32_t nCommandId) {
-  switch (nCommandId) {
-    case constants::CMD_ID_BIND_TRANSMITTER: {
-      return std::make_unique<BindTransmitter>();
-    }
-    case constants::CMD_ID_BIND_TRANSCEIVER: {
-      return std::make_unique<BindTransceiver>();
-    }
-    case constants::CMD_ID_BIND_RECEIVER: {
-      return std::make_unique<BindReceiver>();
-    }
-    default: {
-      throw InvalidCommandIdException();
-    }
-  }
-}
-
 }  // namespace smpp

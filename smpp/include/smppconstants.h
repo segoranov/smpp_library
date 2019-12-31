@@ -39,9 +39,9 @@ constexpr bool DEFAULT_SERVER_REUSE_ADDRESS = true;
 // constexpr int SME_ADDRESS = 1;
 // constexpr int DISTRIBUTION_LIST_NAME = 2;
 
-//
-// SMPP Command ID (Requests)
-//
+/**
+ * SMPP Command ID (Requests)
+ */
 constexpr int CMD_ID_BIND_RECEIVER = 0x00000001;
 constexpr int CMD_ID_BIND_TRANSMITTER = 0x00000002;
 constexpr int CMD_ID_QUERY_SM = 0x00000003;
@@ -60,9 +60,9 @@ constexpr int CMD_ID_BROADCAST_SM = 0x00000111;
 constexpr int CMD_ID_QUERY_BROADCAST_SM = 0x00000112;
 constexpr int CMD_ID_CANCEL_BROADCAST_SM = 0x00000113;
 
-//
-// SMPP Command ID (Responses)
-//
+/**
+ * SMPP Command ID (Responses)
+ */
 constexpr int CMD_ID_GENERIC_NACK = 0x80000000;
 constexpr int CMD_ID_BIND_RECEIVER_RESP = 0x80000001;
 constexpr int CMD_ID_BIND_TRANSMITTER_RESP = 0x80000002;
@@ -80,9 +80,17 @@ constexpr int CMD_ID_BROADCAST_SM_RESP = 0x80000111;
 constexpr int CMD_ID_QUERY_BROADCAST_SM_RESP = 0x80000112;
 constexpr int CMD_ID_CANCEL_BROADCAST_SM_RESP = 0x80000113;
 
-//
-// Optional TLV Tags
-//
+// vector containing all command ids; just for convenience if needed
+const std::vector<uint32_t> ALL_COMMAND_IDS{
+    0x00000001, 0x00000002, 0x00000003, 0x00000004, 0x00000005, 0x00000006, 0x00000007,
+    0x00000008, 0x00000009, 0x0000000B, 0x00000015, 0x00000021, 0x00000102, 0x00000103,
+    0x00000111, 0x00000112, 0x00000113, 0x80000000, 0x80000001, 0x80000002, 0x80000003,
+    0x80000004, 0x80000005, 0x80000006, 0x80000007, 0x80000008, 0x80000009, 0x80000015,
+    0x80000021, 0x80000103, 0x80000111, 0x80000112, 0x80000113};
+
+/**
+ * Optional TLV tags
+ */
 constexpr uint16_t TAG_DEST_ADDR_SUBUNIT = 0x0005;
 constexpr uint16_t TAG_DEST_NETWORK_TYPE = 0x0006;
 constexpr uint16_t TAG_DEST_BEARER_TYPE = 0x0007;
