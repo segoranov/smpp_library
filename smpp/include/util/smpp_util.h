@@ -9,6 +9,11 @@
 namespace smpp::util {
 
 /**
+ * @brief Check if command length is valid
+ */
+bool isCommandLengthValid(uint32_t nCommandLength);
+
+/**
  * @brief Check if tag is valid
  * @param nTag - the tag to check for validity
  * @return true if the given tag is valid by SMPP specification; false otherwise
@@ -20,12 +25,14 @@ bool isTlvTagValid(uint16_t nTag);
  * @param nCommandId - the command id to check for validity
  * @return true if the given tag is valid by SMPP specification; false otherwise
  */
-bool isCommandIdTagValid(uint32_t nCommandId);
+bool isCommandIdValid(uint32_t nCommandId);
 
 /**
  * @brief serialize Pdu into a stream in compact binary format
- *
  * For example, we could serialize a PDU of type BindTransmitter into a std::stringstream
+ *
+ * @throw InvalidCommandLengthException if the serialized command length is invalid
+ * @throw InvalidCommandIdException if the serialized command id is invalid
  */
 template <typename PduType, typename StreamType>
 StreamType serializePdu(const PduType& pdu) {
@@ -39,6 +46,9 @@ StreamType serializePdu(const PduType& pdu) {
  * @brief deserialize Pdu from stream with raw binary data into an object
  *
  * For example, we could deserialize a PDU of type BindTransmitter from a std::stringstream
+ *
+ * @throw InvalidCommandLengthException if the deserialized command length is invalid
+ * @throw InvalidCommandIdException if the deserialized command id is invalid
  */
 template <typename PduType, typename StreamType>
 PduType deserializePdu(StreamType& stream) {

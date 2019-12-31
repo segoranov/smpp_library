@@ -9,8 +9,8 @@
 #include "smppexceptions.h"
 #include "util/smpp_util.h"
 
-SCENARIO("Pdu header is serialized/deserialized properly", "[pdu_header]") {
-  GIVEN("A sample bindtransmitter pdu defined as raw data (array of hex bytes)") {
+SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
+  GIVEN("A sample BindTransmitter pdu defined as raw data (array of hex bytes)") {
     /*
     Sample PDU (Values are shown in Hex format):
     00 00 00 2F 00 00 00 02 00 00 00 00 00 00 00 01
@@ -96,6 +96,48 @@ SCENARIO("Pdu header is serialized/deserialized properly", "[pdu_header]") {
             REQUIRE(deserializedBindTransmitter.getAddress() == bindTransmitterPdu.getAddress());
           }
         }
+      }
+    }
+  }
+}
+
+SCENARIO("Deserialiation of malformed PDUs throws proper exceptions", "[malformed_pdu]") {
+  GIVEN("A stream containing invalid command id - 12 (0x00 0x00 0x00 0x0C in hex)") {
+    const char rawDataPduWithInvalidCommandLength[] = {
+        0x00, 0x00, 0x00, 0x0C, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50, 0x33, 0x54, 0x45, 0x53,
+        0x54, 0x00, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x30, 0x38, 0x00, 0x53,
+        0x55, 0x42, 0x4D, 0x49, 0x54, 0x31, 0x00, 0x50, 0x01, 0x01, 0x00};
+
+    std::stringstream ss{std::string{rawDataPduWithInvalidCommandLength,
+                                     sizeof(rawDataPduWithInvalidCommandLength)}};
+
+    WHEN("We try to deserialize a PDU") {
+      THEN("InvalidCommandLengthException should be thrown") {
+        auto f = [&ss]() {
+          smpp::util::deserializePdu<smpp::BindTransmitter, std::stringstream>(ss);
+        };
+        REQUIRE_THROWS_AS(f(), smpp::InvalidCommandLengthException);
+      }
+    }
+  }
+
+  GIVEN("A stream containing invalid command id - 0x77 0x00 0x00 0x77") {
+    const char rawDataPduWithInvalidCommandId[] = {
+        0x00, 0x00, 0x00, 0x2F, 0x77, 0x00, 0x00, 0x77, 0x00, 0x00, 0x00, 0x00,
+        0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50, 0x33, 0x54, 0x45, 0x53,
+        0x54, 0x00, 0x73, 0x65, 0x63, 0x72, 0x65, 0x74, 0x30, 0x38, 0x00, 0x53,
+        0x55, 0x42, 0x4D, 0x49, 0x54, 0x31, 0x00, 0x50, 0x01, 0x01, 0x00};
+
+    std::stringstream ss{
+        std::string{rawDataPduWithInvalidCommandId, sizeof(rawDataPduWithInvalidCommandId)}};
+
+    WHEN("We try to deserialize a PDU") {
+      THEN("InvalidCommandIdException should be thrown") {
+        auto f = [&ss]() {
+          smpp::util::deserializePdu<smpp::BindTransmitter, std::stringstream>(ss);
+        };
+        REQUIRE_THROWS_AS(f(), smpp::InvalidCommandIdException);
       }
     }
   }

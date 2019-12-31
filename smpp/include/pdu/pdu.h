@@ -6,10 +6,13 @@
 #include <cereal/access.hpp>
 #include <memory>
 #include <optional>
+#include <sstream>
 #include <string>
 
 #include "smppconstants.h"
+#include "smppexceptions.h"
 #include "tlv/tlv.h"
+#include "util/smpp_util.h"
 
 namespace smpp {
 
@@ -69,26 +72,106 @@ class Pdu {
 
   template <class Archive>
   void load(Archive& archive);
+
+  /**
+   * Helper methods
+   */
+
+  template <typename Archive>
+  void deserializeCommandLength(Archive& archive);
+
+  template <typename Archive>
+  void deserializeCommandId(Archive& archive);
+
+  template <typename Archive>
+  void deserializeCommandStatus(Archive& archive);
+
+  template <typename Archive>
+  void deserializeSequenceNumber(Archive& archive);
 };
 
 template <typename Archive>
 void Pdu::save(Archive& archive) const {
+  if (!util::isCommandLengthValid(m_nCommandLength)) {
+    std::stringstream error;
+    error << "Invalid command length parsed during serialization - [" << m_nCommandLength << "]";
+    throw InvalidCommandLengthException(error.str());
+  }
+
+  if (!util::isCommandIdValid(m_nCommandId)) {
+    std::stringstream error;
+    error << "Invalid command id parsed during serialization - [" << m_nCommandId << "]";
+    throw InvalidCommandIdException(error.str());
+  }
+
+  // TODO SG: validate command status and sequence number
+
   archive(htonl(m_nCommandLength), htonl(m_nCommandId), htonl(m_nCommandStatus),
           htonl(m_nSequenceNumber));
 }
 
 template <class Archive>
 void Pdu::load(Archive& archive) {
-  auto readToHostByteOrder = [&archive](uint32_t& value) {
-    uint32_t temp;
-    archive(temp);
-    value = ntohl(temp);
-  };
+  deserializeCommandLength(archive);
+  deserializeCommandId(archive);
+  deserializeCommandStatus(archive);
+  deserializeSequenceNumber(archive);
+}
 
-  readToHostByteOrder(m_nCommandLength);
-  readToHostByteOrder(m_nCommandId);
-  readToHostByteOrder(m_nCommandStatus);
-  readToHostByteOrder(m_nSequenceNumber);
+template <typename Archive>
+void Pdu::deserializeCommandLength(Archive& archive) {
+  uint32_t nCommandLength;
+  archive(nCommandLength);
+  nCommandLength = ntohl(nCommandLength);
+
+  if (!util::isCommandLengthValid(nCommandLength)) {
+    std::stringstream error;
+    error << "Invalid command length parsed during deserialization - [" << nCommandLength << "]";
+    throw InvalidCommandLengthException(error.str());
+  }
+
+  // command length is valid; set it accordingly
+  m_nCommandLength = nCommandLength;
+}
+
+template <typename Archive>
+void Pdu::deserializeCommandId(Archive& archive) {
+  uint32_t nCommandId;
+  archive(nCommandId);
+  nCommandId = ntohl(nCommandId);
+
+  if (!util::isCommandIdValid(nCommandId)) {
+    std::stringstream error;
+    error << "Invalid command id parsed - [" << nCommandId << "]";
+    throw InvalidCommandIdException(error.str());
+  }
+
+  // command id is valid; set it accordingly
+  m_nCommandId = nCommandId;
+}
+
+template <typename Archive>
+void Pdu::deserializeCommandStatus(Archive& archive) {
+  uint32_t nCommandStatus;
+  archive(nCommandStatus);
+  nCommandStatus = ntohl(nCommandStatus);
+
+  // TODO SG: validation?
+
+  // command status is valid; set it accordingly
+  m_nCommandStatus = nCommandStatus;
+}
+
+template <typename Archive>
+void Pdu::deserializeSequenceNumber(Archive& archive) {
+  uint32_t nSequenceNumber;
+  archive(nSequenceNumber);
+  nSequenceNumber = ntohl(nSequenceNumber);
+
+  // TODO SG: validation?
+
+  // sequence number is valid; set it accordingly
+  m_nSequenceNumber = nSequenceNumber;
 }
 
 }  // namespace smpp
