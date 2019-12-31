@@ -69,14 +69,9 @@ SCENARIO("Pdu header is serialized/deserialized properly", "[pdu_header]") {
           REQUIRE(ss.str() == std::string{samplePdu, sizeof(samplePdu)});
         }
 
-        AND_WHEN(
-            "a BindTransmitter PDU is deserialized from the stringstream by "
-            "BinaryInputArchive") {
-          smpp::BindTransmitter deserializedBindTransmitter;
-          {
-            cereal::BinaryInputArchive iarchive{ss};
-            iarchive(deserializedBindTransmitter);  // Read the data from the archive into the PDU
-          }
+        AND_WHEN("a BindTransmitter PDU is deserialized from the stringstream") {
+          auto deserializedBindTransmitter =
+              smpp::util::deserializePdu<smpp::BindTransmitter, std::stringstream>(ss);
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
             REQUIRE(deserializedBindTransmitter.getCommandLength() ==

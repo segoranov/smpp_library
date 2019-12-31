@@ -23,16 +23,29 @@ bool isTlvTagValid(uint16_t nTag);
 bool isCommandIdTagValid(uint32_t nCommandId);
 
 /**
- * @brief serialize Pdu in compact binary format into a stream
+ * @brief serialize Pdu into a stream in compact binary format
  *
  * For example, we could serialize a PDU of type BindTransmitter into a std::stringstream
  */
 template <typename PduType, typename StreamType>
 StreamType serializePdu(const PduType& pdu) {
-  StreamType ss;
-  cereal::BinaryOutputArchive oarchive{ss};
+  StreamType stream;
+  cereal::BinaryOutputArchive oarchive{stream};
   oarchive(pdu);  // Write the PDU to the stream
-  return std::move(ss);
+  return stream;
+}
+
+/**
+ * @brief deserialize Pdu from stream with raw binary data into an object
+ *
+ * For example, we could deserialize a PDU of type BindTransmitter from a std::stringstream
+ */
+template <typename PduType, typename StreamType>
+PduType deserializePdu(StreamType& stream) {
+  PduType deserializedPdu;
+  cereal::BinaryInputArchive iarchive{stream};
+  iarchive(deserializedPdu);  // Read the data from the archive into the PDU
+  return deserializedPdu;
 }
 
 }  // namespace smpp::util
