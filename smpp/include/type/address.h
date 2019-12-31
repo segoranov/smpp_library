@@ -1,6 +1,7 @@
 #ifndef ADDRESS_H
 #define ADDRESS_H
 
+#include <cereal/access.hpp>
 #include <string>
 
 namespace smpp {
@@ -30,41 +31,54 @@ class Address {
    */
   int size() const;
 
-  template <typename Archive>
-  void save(Archive& archive) const {
-    archive(addr_ton);
-    archive(addr_npi);
+ private:
+  /**
+   * Serialization/Deserialization
+   */
 
-    auto serializeNullTerminatedStringCharByChar = [&archive](const std::string& str) {
-      for (char c : str) {
-        archive(c);
-      }
-      archive('\0');
-    };
-
-    serializeNullTerminatedStringCharByChar(address_range);
-  }
+  friend class cereal::access;
 
   template <typename Archive>
-  void load(Archive& archive) {
-    archive(addr_ton);
-    archive(addr_npi);
+  void save(Archive& archive) const;
 
-    auto deserializeNullTerminatedStringCharByChar = [&archive](std::string& str) {
-      str = "";
-      char c = 'A';
-      while (true) {  // TODO SG: Probably not the best thing to do while (true) ...
-        archive(c);
-        if (c == '\0') {  // std::string adds by default '\0' at the end
-          break;
-        }
-        str += c;
-      }
-    };
-
-    deserializeNullTerminatedStringCharByChar(address_range);
-  }
+  template <class Archive>
+  void load(Archive& archive);
 };
+
+template <typename Archive>
+void Address::save(Archive& archive) const {
+  archive(addr_ton);
+  archive(addr_npi);
+
+  auto serializeNullTerminatedStringCharByChar = [&archive](const std::string& str) {
+    for (char c : str) {
+      archive(c);
+    }
+    archive('\0');
+  };
+
+  serializeNullTerminatedStringCharByChar(address_range);
+}
+
+template <typename Archive>
+void Address::load(Archive& archive) {
+  archive(addr_ton);
+  archive(addr_npi);
+
+  auto deserializeNullTerminatedStringCharByChar = [&archive](std::string& str) {
+    str = "";
+    char c = 'A';
+    while (true) {  // TODO SG: Probably not the best thing to do while (true) ...
+      archive(c);
+      if (c == '\0') {  // std::string adds by default '\0' at the end
+        break;
+      }
+      str += c;
+    }
+  };
+
+  deserializeNullTerminatedStringCharByChar(address_range);
+}
 
 }  // namespace smpp
 
