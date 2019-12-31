@@ -6,9 +6,9 @@
 #include <vector>
 
 namespace smpp::constants {
-//
-// SMPP Data Types
-//
+/**
+ * SMPP Data Types
+ */
 constexpr int DATA_TYPE_C_OCTET_STRING = 0;
 constexpr int DATA_TYPE_OCTET_STRING = 1;
 constexpr int DATA_TYPE_INTEGER = 2;
@@ -271,9 +271,9 @@ constexpr uint16_t NPI_ERMES = 0x0A;
 constexpr uint16_t NPI_INTERNET = 0x0E;
 constexpr uint16_t NPI_WAP_CLIENT_ID = 0x12;
 
-//
-// SMPP Data Coding
-//
+/**
+ * SMPP Data Coding
+ */
 constexpr uint16_t DATA_CODING_DEFAULT = 0x00;  // SMSC Default Alphabet
 constexpr uint16_t DATA_CODING_IA5 = 0x01;      // IA5 (CCITT T.50)/ASCII (ANSI X3.4)
 
