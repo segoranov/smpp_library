@@ -55,61 +55,50 @@ SCENARIO("Pdu header is serialized/deserialized properly", "[pdu_header]") {
       smpp::Address address{0x01, 0x01};
       bindTransmitterPdu.setAddress(address);
 
-      AND_GIVEN("A stringstream") {
-        std::stringstream ss;
+      WHEN("the BindTransmitter PDU is serialized into a stringstream") {
+        auto ss =
+            smpp::util::serializePdu<smpp::BindTransmitter, std::stringstream>(bindTransmitterPdu);
 
-        WHEN(
-            "the BindTransmitter PDU is serialized into the stringstream by BinaryOutputArchive") {
+        THEN("the stringstream size should be 47 bytes (the command length)") {
+          REQUIRE(ss.str().size() == 47);
+        }
+
+        THEN(
+            "the string from the stringstream should be equal to the string created by the raw "
+            "PDU") {
+          REQUIRE(ss.str() == std::string{samplePdu, sizeof(samplePdu)});
+        }
+
+        AND_WHEN(
+            "a BindTransmitter PDU is deserialized from the stringstream by "
+            "BinaryInputArchive") {
+          smpp::BindTransmitter deserializedBindTransmitter;
           {
-            cereal::BinaryOutputArchive oarchive{ss};
-            oarchive(bindTransmitterPdu);  // Write the PDU to the archive
-          }  // archive goes out of scope, ensuring all contents are flushed to the underlying
-             // stream
-
-          THEN("the stringstream size should be 47 bytes (the command length)") {
-            REQUIRE(ss.str().size() == 47);
+            cereal::BinaryInputArchive iarchive{ss};
+            iarchive(deserializedBindTransmitter);  // Read the data from the archive into the PDU
           }
 
-          THEN(
-              "the string from the stringstream should be equal to the string created by the raw "
-              "PDU") {
-            REQUIRE(ss.str() == std::string{samplePdu, sizeof(samplePdu)});
-          }
+          THEN("the deserialized PDU should correspond to the initial PDU") {
+            REQUIRE(deserializedBindTransmitter.getCommandLength() ==
+                    bindTransmitterPdu.getCommandLength());
 
-          AND_WHEN(
-              "a BindTransmitter PDU is deserialized from the stringstream by "
-              "BinaryInputArchive") {
-            smpp::BindTransmitter deserializedBindTransmitter;
-            {
-              cereal::BinaryInputArchive iarchive{ss};
-              iarchive(
-                  deserializedBindTransmitter);  // Read the data from the archive into the PDU
-            }
+            REQUIRE(deserializedBindTransmitter.getCommandStatus() ==
+                    bindTransmitterPdu.getCommandStatus());
 
-            THEN("the deserialized PDU should correspond to the initial PDU") {
-              REQUIRE(deserializedBindTransmitter.getCommandLength() ==
-                      bindTransmitterPdu.getCommandLength());
+            REQUIRE(deserializedBindTransmitter.getSequenceNumber() ==
+                    bindTransmitterPdu.getSequenceNumber());
 
-              REQUIRE(deserializedBindTransmitter.getCommandStatus() ==
-                      bindTransmitterPdu.getCommandStatus());
+            REQUIRE(deserializedBindTransmitter.getSystemId() == bindTransmitterPdu.getSystemId());
 
-              REQUIRE(deserializedBindTransmitter.getSequenceNumber() ==
-                      bindTransmitterPdu.getSequenceNumber());
+            REQUIRE(deserializedBindTransmitter.getPassword() == bindTransmitterPdu.getPassword());
 
-              REQUIRE(deserializedBindTransmitter.getSystemId() ==
-                      bindTransmitterPdu.getSystemId());
+            REQUIRE(deserializedBindTransmitter.getSystemType() ==
+                    bindTransmitterPdu.getSystemType());
 
-              REQUIRE(deserializedBindTransmitter.getPassword() ==
-                      bindTransmitterPdu.getPassword());
+            REQUIRE(deserializedBindTransmitter.getInterfaceVersion() ==
+                    bindTransmitterPdu.getInterfaceVersion());
 
-              REQUIRE(deserializedBindTransmitter.getSystemType() ==
-                      bindTransmitterPdu.getSystemType());
-
-              REQUIRE(deserializedBindTransmitter.getInterfaceVersion() ==
-                      bindTransmitterPdu.getInterfaceVersion());
-
-              REQUIRE(deserializedBindTransmitter.getAddress() == bindTransmitterPdu.getAddress());
-            }
+            REQUIRE(deserializedBindTransmitter.getAddress() == bindTransmitterPdu.getAddress());
           }
         }
       }
