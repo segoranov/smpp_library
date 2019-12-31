@@ -31,9 +31,15 @@ class Pdu {
  private:
   const bool m_bIsRequest;
 
- public:
+ protected:
+  /**
+   * @brief create a Pdu
+   *
+   * @throw InvalidCommandIdException if the given command id is invalid
+   */
   explicit Pdu(uint32_t nCommandId, bool bIsRequest);
 
+ public:
   uint32_t getCommandLength() const;
   uint32_t getCommandId() const;
   uint32_t getCommandStatus() const;

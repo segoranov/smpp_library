@@ -17,9 +17,10 @@ class BaseBind : public PduRequest {
   uint8_t m_nInterfaceVersion;
   Address m_address;
 
- public:
+ protected:
   explicit BaseBind(uint32_t nCommandId);
 
+ public:
   std::string getSystemId() const;
   std::string getPassword() const;
   std::string getSystemType() const;

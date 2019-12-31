@@ -7,11 +7,17 @@
 #include "pdu/bindtransmitter.h"
 #include "pdu/pdu.h"
 #include "smppexceptions.h"
+#include "util/smpp_util.h"
 
 namespace smpp {
 
-Pdu::Pdu(uint32_t nCommandId, bool bIsRequest)
-    : m_nCommandId{nCommandId}, m_bIsRequest{bIsRequest} {}
+Pdu::Pdu(uint32_t nCommandId, bool bIsRequest) : m_bIsRequest{bIsRequest} {
+  if (!util::isCommandIdValid(nCommandId)) {
+    throw InvalidCommandIdException("Invalid command id while constructing a PDU");
+  }
+
+  m_nCommandId = nCommandId;
+}
 
 uint32_t Pdu::getCommandLength() const { return m_nCommandLength; }
 
