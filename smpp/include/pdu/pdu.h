@@ -3,6 +3,7 @@
 
 #include <arpa/inet.h>
 
+#include <cereal/access.hpp>
 #include <memory>
 #include <optional>
 #include <string>
@@ -56,26 +57,39 @@ class Pdu {
   bool isRequest() const;
   bool isResponse() const;
 
+ private:
+  /**
+   * Serialization/Deserialization
+   */
+
+  friend class cereal::access;
+
   template <typename Archive>
-  void save(Archive& archive) const {
-    archive(htonl(m_nCommandLength), htonl(m_nCommandId), htonl(m_nCommandStatus),
-            htonl(m_nSequenceNumber));
-  }
+  void save(Archive& archive) const;
 
   template <class Archive>
-  void load(Archive& archive) {
-    auto readToHostByteOrder = [&archive](uint32_t& value) {
-      uint32_t temp;
-      archive(temp);
-      value = ntohl(temp);
-    };
-
-    readToHostByteOrder(m_nCommandLength);
-    readToHostByteOrder(m_nCommandId);
-    readToHostByteOrder(m_nCommandStatus);
-    readToHostByteOrder(m_nSequenceNumber);
-  }
+  void load(Archive& archive);
 };
+
+template <typename Archive>
+void Pdu::save(Archive& archive) const {
+  archive(htonl(m_nCommandLength), htonl(m_nCommandId), htonl(m_nCommandStatus),
+          htonl(m_nSequenceNumber));
+}
+
+template <class Archive>
+void Pdu::load(Archive& archive) {
+  auto readToHostByteOrder = [&archive](uint32_t& value) {
+    uint32_t temp;
+    archive(temp);
+    value = ntohl(temp);
+  };
+
+  readToHostByteOrder(m_nCommandLength);
+  readToHostByteOrder(m_nCommandId);
+  readToHostByteOrder(m_nCommandStatus);
+  readToHostByteOrder(m_nSequenceNumber);
+}
 
 }  // namespace smpp
 

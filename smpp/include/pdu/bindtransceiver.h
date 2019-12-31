@@ -9,6 +9,13 @@ class BindTransceiver final : public BaseBind {
  public:
   BindTransceiver();
 
+ private:
+  /**
+   * Serialization/Deserialization
+   */
+
+  friend class cereal::access;
+
   template <typename Archive>
   void save(Archive& archive) const {
     archive(cereal::base_class<BaseBind>(this));
