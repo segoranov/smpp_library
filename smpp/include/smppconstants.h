@@ -101,7 +101,7 @@ constexpr uint16_t TAG_SOURCE_BEARER_TYPE = 0x000F;
 constexpr uint16_t TAG_SOURCE_TELEMATICS_ID = 0x0010;
 constexpr uint16_t TAG_QOS_TIME_TO_LIVE = 0x0017;
 constexpr uint16_t TAG_PAYLOAD_TYPE = 0x0019;
-constexpr uint16_t TAG_ADDITIONAL_STATUS_INFO_TEXT = 0x001D;
+constexpr uint16_t TAG_ADDITIONAL_ESME_RINFO_TEXT = 0x001D;
 constexpr uint16_t TAG_RECEIPTED_MESSAGE_ID = 0x001E;
 constexpr uint16_t TAG_MS_MSG_WAIT_FACILITIES = 0x0030;
 constexpr uint16_t TAG_PRIVACY_INDICATOR = 0x0201;
@@ -293,280 +293,219 @@ constexpr uint16_t DATA_CODING_EXKANJI = 0x0D;  // Extended Kanji JIS(X 0212-199
 constexpr uint16_t DATA_CODING_KSC5601 = 0x0E;  // KS C 5601
 constexpr uint16_t DATA_CODING_RSRVD3 = 0x0F;   // reserved
 
-//
-// Standard SMPP Error Codes
-//
-/** 0x00000000: No Error */
-constexpr int STATUS_OK = 0x00000000;
+namespace errors {
 
-/** Message Length is invalid */
-constexpr int STATUS_INVMSGLEN = 0x00000001;
+/**
+ * Standard SMPP Error Codes
+ */
+// 0x00000000: No Error
+constexpr int ESME_ROK = 0x00000000;
 
-/** Command Length is invalid */
-constexpr int STATUS_INVCMDLEN = 0x00000002;
+// Message Length is invalid
+constexpr int ESME_RINVMSGLEN = 0x00000001;
+
+// Command Length is invalid
+constexpr int ESME_RINVCMDLEN = 0x00000002;
 
 // Invalid Command ID
-constexpr int STATUS_INVCMDID = 0x00000003;
+constexpr int ESME_RINVCMDID = 0x00000003;
+
 // Incorrect BIND Status for given command
-constexpr int STATUS_INVBNDSTS = 0x00000004;
+constexpr int ESME_RINVBNDSTS = 0x00000004;
+
 // ESME Already in Bound State
-constexpr int STATUS_ALYBND = 0x00000005;
+constexpr int ESME_RALYBND = 0x00000005;
+
 // Invalid Priority Flag
-constexpr int STATUS_INVPRTFLG = 0x00000006;
+constexpr int ESME_RINVPRTFLG = 0x00000006;
+
 // Invalid Registered Delivery Flag
-constexpr int STATUS_INVREGDLVFLG = 0x00000007;
+constexpr int ESME_RINVREGDLVFLG = 0x00000007;
+
 // System Error
-constexpr int STATUS_SYSERR = 0x00000008;
+constexpr int ESME_RSYSERR = 0x00000008;
 
 // 0x00000009 Reserved
 
 // Invalid Source Address
-constexpr int STATUS_INVSRCADR = 0x0000000A;
+constexpr int ESME_RINVSRCADR = 0x0000000A;
+
 // Invalid Dest Addr
-constexpr int STATUS_INVDSTADR = 0x0000000B;
+constexpr int ESME_RINVDSTADR = 0x0000000B;
+
 // Message ID is invalid
-constexpr int STATUS_INVMSGID = 0x0000000C;
+constexpr int ESME_RINVMSGID = 0x0000000C;
+
 // Bind Failed
-constexpr int STATUS_BINDFAIL = 0x0000000D;
+constexpr int ESME_RBINDFAIL = 0x0000000D;
+
 // Invalid Password
-constexpr int STATUS_INVPASWD = 0x0000000E;
+constexpr int ESME_RINVPASWD = 0x0000000E;
+
 // Invalid System ID
-constexpr int STATUS_INVSYSID = 0x0000000F;
+constexpr int ESME_RINVSYSID = 0x0000000F;
 
 // 0x00000010 Reserved
 
 // Cancel SM Failed
-constexpr int STATUS_CANCELFAIL = 0x00000011;
+constexpr int ESME_RCANCELFAIL = 0x00000011;
 
 // 0x00000012 Reserved
 
 // Replace SM Failed
-constexpr int STATUS_REPLACEFAIL = 0x00000013;
+constexpr int ESME_RREPLACEFAIL = 0x00000013;
+
 // Message Queue Full
-constexpr int STATUS_MSGQFUL = 0x00000014;
+constexpr int ESME_RMSGQFUL = 0x00000014;
+
 // Invalid Service Type
-constexpr int STATUS_INVSERTYP = 0x00000015;
+constexpr int ESME_RINVSERTYP = 0x00000015;
 
 // 0x00000016-0x00000032 Reserved
 
 // Invalid number of destinations
-constexpr int STATUS_INVNUMDESTS = 0x00000033;
+constexpr int ESME_RINVNUMDESTS = 0x00000033;
 // Invalid Distribution List name
-constexpr int STATUS_INVDLNAME = 0x00000034;
+constexpr int ESME_RINVDLNAME = 0x00000034;
 
 // 0x00000035-0x0000003F Reserved
 
 // Destination flag is invalid (submit_multi)
-constexpr int STATUS_INVDESTFLAG = 0x00000040;
+constexpr int ESME_RINVDESTFLAG = 0x00000040;
 
 // 0x00000041 Reserved
 
 // Invalid ‘submit with replace’ request
 // (i.e. submit_sm with replace_if_present_flag set)
-constexpr int STATUS_INVSUBREP = 0x00000042;
+constexpr int ESME_RINVSUBREP = 0x00000042;
+
 // Invalid esm_class field data
-constexpr int STATUS_INVESMCLASS = 0x00000043;
+constexpr int ESME_RINVESMCLASS = 0x00000043;
+
 // Cannot Submit to Distribution List
-constexpr int STATUS_CNTSUBDL = 0x00000044;
+constexpr int ESME_RCNTSUBDL = 0x00000044;
+
 // submit_sm or submit_multi failed
-constexpr int STATUS_SUBMITFAIL = 0x00000045;
+constexpr int ESME_RSUBMITFAIL = 0x00000045;
 
 // 0x00000046-0x00000047 Reserved
 
 // Invalid Source address TON
-constexpr int STATUS_INVSRCTON = 0x00000048;
+constexpr int ESME_RINVSRCTON = 0x00000048;
+
 // Invalid Source address NPI
-constexpr int STATUS_INVSRCNPI = 0x00000049;
+constexpr int ESME_RINVSRCNPI = 0x00000049;
+
 // Invalid Destination address TON
-constexpr int STATUS_INVDSTTON = 0x00000050;
+constexpr int ESME_RINVDSTTON = 0x00000050;
+
 // Invalid Destination address NPI
-constexpr int STATUS_INVDSTNPI = 0x00000051;
+constexpr int ESME_RINVDSTNPI = 0x00000051;
 
 // 0x00000052 Reserved
 
 // Invalid system_type field
-constexpr int STATUS_INVSYSTYP = 0x00000053;
+constexpr int ESME_RINVSYSTYP = 0x00000053;
+
 // Invalid replace_if_present flag
-constexpr int STATUS_INVREPFLAG = 0x00000054;
+constexpr int ESME_RINVREPFLAG = 0x00000054;
+
 // Invalid number of messages
-constexpr int STATUS_INVNUMMSGS = 0x00000055;
+constexpr int ESME_RINVNUMMSGS = 0x00000055;
 
 // 0x00000056-0x00000057 Reserved
 
 // Throttling error (ESME has exceeded allowed message limits)
-constexpr int STATUS_THROTTLED = 0x00000058;
+constexpr int ESME_RTHROTTLED = 0x00000058;
 
 // 0x00000059-0x00000060 Reserved
 
 // Invalid Scheduled Delivery Time
-constexpr int STATUS_INVSCHED = 0x00000061;
+constexpr int ESME_RINVSCHED = 0x00000061;
+
 // Invalid message validity period (Expiry time)
-constexpr int STATUS_INVEXPIRY = 0x00000062;
+constexpr int ESME_RINVEXPIRY = 0x00000062;
+
 // Predefined Message Invalid or Not Found
-constexpr int STATUS_INVDFTMSGID = 0x00000063;
+constexpr int ESME_RINVDFTMSGID = 0x00000063;
+
 // ESME Receiver Temporary App Error Code
-constexpr int STATUS_X_T_APPN = 0x00000064;
+constexpr int ESME_RX_T_APPN = 0x00000064;
+
 // ESME Receiver Permanent App Error Code
-constexpr int STATUS_X_P_APPN = 0x00000065;
+constexpr int ESME_RX_P_APPN = 0x00000065;
+
 // ESME Receiver Reject Message Error Code
-constexpr int STATUS_X_R_APPN = 0x00000066;
+constexpr int ESME_RX_R_APPN = 0x00000066;
+
 // query_sm request failed
-constexpr int STATUS_QUERYFAIL = 0x00000067;
+constexpr int ESME_RQUERYFAIL = 0x00000067;
 
 // 0x00000068-0x000000BF Reserved
 
 // Error in the optional part of the PDU Body.
-constexpr int STATUS_INVOPTPARSTREAM = 0x000000C0;
+constexpr int ESME_RINVOPTPARSTREAM = 0x000000C0;
+
 // Optional Parameter not allowed
-constexpr int STATUS_OPTPARNOTALLWD = 0x000000C1;
+constexpr int ESME_ROPTPARNOTALLWD = 0x000000C1;
+
 // Invalid Parameter Length.
-constexpr int STATUS_INVPARLEN = 0x000000C2;
+constexpr int ESME_RINVPARLEN = 0x000000C2;
+
 // Expected Optional Parameter missing
-constexpr int STATUS_MISSINGOPTPARAM = 0x000000C3;
+constexpr int ESME_RMISSINGOPTPARAM = 0x000000C3;
+
 // Invalid Optional Parameter Value
-constexpr int STATUS_INVOPTPARAMVAL = 0x000000C4;
+constexpr int ESME_RINVOPTPARAMVAL = 0x000000C4;
 
 // 0x000000C5-0x000000FD Reserved
 
 // Delivery Failure (used for data_sm_resp)
-constexpr int STATUS_DELIVERYFAILURE = 0x000000FE;
+constexpr int ESME_RDELIVERYFAILURE = 0x000000FE;
+
 // Unknown Error
-constexpr int STATUS_UNKNOWNERR = 0x000000FF;
+constexpr int ESME_RUNKNOWNERR = 0x000000FF;
+
 // ESME Not authorised to use specified service_type
-constexpr int STATUS_SERTYPUNAUTH = 0x00000100;
+constexpr int ESME_RSERTYPUNAUTH = 0x00000100;
+
 // ESME Prohibited from using specified operation
-constexpr int STATUS_PROHIBITED = 0x00000101;
+constexpr int ESME_RPROHIBITED = 0x00000101;
+
 // Specified service_type is unavailable
-constexpr int STATUS_SERTYPUNAVAIL = 0x00000102;
+constexpr int ESME_RSERTYPUNAVAIL = 0x00000102;
+
 // Specified service_type is denied
-constexpr int STATUS_SERTYPDENIED = 0x00000103;
+constexpr int ESME_RSERTYPDENIED = 0x00000103;
+
 // Invalid Data Coding Scheme
-constexpr int STATUS_INVDCS = 0x00000104;
+constexpr int ESME_RINVDCS = 0x00000104;
+
 // Source Address Sub unit is Invalid
-constexpr int STATUS_INVSRCADDRSUBUNIT = 0x00000105;
+constexpr int ESME_RINVSRCADDRSUBUNIT = 0x00000105;
+
 // Destination Address Sub unit is Invalid
-constexpr int STATUS_INVDSTADDRSUBUNIT = 0x00000106;
+constexpr int ESME_RINVDSTADDRSUBUNIT = 0x00000106;
+
 // Broadcast Frequency Interval is invalid
-constexpr int STATUS_INVBCASTFREQINT = 0x00000107;
+constexpr int ESME_RINVBCASTFREQINT = 0x00000107;
+
 // Broadcast Alias Name is invalid
-constexpr int STATUS_INVBCASTALIAS_NAME = 0x00000108;
+constexpr int ESME_RINVBCASTALIAS_NAME = 0x00000108;
+
 // Broadcast Area Format is invalid
-constexpr int STATUS_INVBCASTAREAFMT = 0x00000109;
+constexpr int ESME_RINVBCASTAREAFMT = 0x00000109;
+
 // Numberof Broadcast Areas is invalid
-constexpr int STATUS_INVNUMBCAST_AREAS = 0x0000010A;
+constexpr int ESME_RINVNUMBCAST_AREAS = 0x0000010A;
+
 // Broadcast Content Type is invalid
-constexpr int STATUS_INVBCASTCNTTYPE = 0x0000010B;
+constexpr int ESME_RINVBCASTCNTTYPE = 0x0000010B;
+
 // Broadcast Message Class is invalid
-constexpr int STATUS_INVBCASTMSGCLASS = 0x0000010C;
+constexpr int ESME_RINVBCASTMSGCLASS = 0x0000010C;
 
-const std::unordered_map<int, std::string> STATUS_MESSAGE_MAP{
-    {STATUS_OK, "OK"},
-    {STATUS_INVMSGLEN, "Message length invalid"},
-    {STATUS_INVCMDLEN, "Command length invalid"},
-    {STATUS_INVCMDID, "Command ID invalid"},
-    {STATUS_INVBNDSTS, "Incorrect bind status for given command"},
-    {STATUS_ALYBND, "ESME already in bound state"},
-    {STATUS_INVPRTFLG, "Priority flag invalid"},
-    {STATUS_INVREGDLVFLG, "Registered delivery flag invalid"},
-    {STATUS_SYSERR, "System error"},
-    {STATUS_INVSRCADR, "Source address invalid"},
-    {STATUS_INVDSTADR, "Dest address invalid"},
-    {STATUS_INVMSGID, "Message ID invalid"},
-    {STATUS_BINDFAIL, "Bind failed"},
-    {STATUS_INVPASWD, "Password invalid"},
-    {STATUS_INVSYSID, "System ID invalid"},
-    {STATUS_CANCELFAIL, "Cancel SM failed"},
-    {STATUS_REPLACEFAIL, "Replace SM failed"},
-    {STATUS_MSGQFUL, "Message queue full"},
-    {STATUS_INVSERTYP, "Service type invalid"},
-    {STATUS_INVNUMDESTS, "Number of destinations invalid"},
-    {STATUS_INVDLNAME, "Distribution list name invalid"},
-    {STATUS_INVDESTFLAG, "Destination flag is invalid"},
-    {STATUS_INVSUBREP, "Submit with replace request invalid"},
-    {STATUS_INVESMCLASS, "Field esm_class invalid"},
-    {STATUS_CNTSUBDL, "Cannot submit to distribution list"},
-    {STATUS_SUBMITFAIL, "Submit SM failed"},
-    {STATUS_INVSRCTON, "Source address TON invalid"},
-    {STATUS_INVSRCNPI, "Source address NPI invalid"},
-    {STATUS_INVDSTTON, "Dest address TON invalid"},
-    {STATUS_INVDSTNPI, "Dest address NPI invalid"},
-    {STATUS_INVSYSTYP, "System type invalid"},
-    {STATUS_INVREPFLAG, "Field replace_if_present invalid"},
-    {STATUS_INVNUMMSGS, "Number of messages invalid"},
-    {STATUS_THROTTLED, "Throttling error"},
-    {STATUS_INVSCHED, "Scheduled delivery time invalid"},
-    {STATUS_INVEXPIRY, "Message validity period invalid"},
-    {STATUS_INVDFTMSGID, "Predefined message invalid or not found"},
-    {STATUS_X_T_APPN, "ESME receiver temporary app error"},
-    {STATUS_X_P_APPN, "ESME receiver permanent app error"},
-    {STATUS_X_R_APPN, "ESME receiver reject app error"},
-    {STATUS_QUERYFAIL, "Query SM failed"},
-    {STATUS_INVOPTPARSTREAM, "Error in the optional part of the PDU Body"},
-    {STATUS_OPTPARNOTALLWD, "Optional Parameter not allowed"},
-    {STATUS_INVPARLEN, "Parameter length invalid"},
-    {STATUS_MISSINGOPTPARAM, "Expected optional parameter missing"},
-    {STATUS_INVOPTPARAMVAL, "Optional parameter value invalid"},
-    {STATUS_DELIVERYFAILURE, "Deliver SM failed"},
-    {STATUS_UNKNOWNERR, "Unknown error"},
-    {STATUS_SERTYPUNAUTH, "Not authorised to use specified service_type"},
-    {STATUS_PROHIBITED, "Prohibited from using specified operation"},
-    {STATUS_SERTYPUNAVAIL, "Specified service_type is unavailable"},
-    {STATUS_SERTYPDENIED, "Specified service_type is denied"},
-    {STATUS_INVDCS, "Invalid Data Coding Scheme"},
-    {STATUS_INVSRCADDRSUBUNIT, "Source Address Sub unit is Invalid"},
-    {STATUS_INVDSTADDRSUBUNIT, "Destination Address Sub unit is Invalid"},
-    {STATUS_INVBCASTFREQINT, "Broadcast Frequency Interval is invalid"},
-    {STATUS_INVBCASTALIAS_NAME, "Broadcast Alias Name is invalid"},
-    {STATUS_INVBCASTAREAFMT, "Broadcast Area Format is invalid"},
-    {STATUS_INVNUMBCAST_AREAS, "Number of Broadcast Areas is invalid"},
-    {STATUS_INVBCASTCNTTYPE, "Broadcast Content Type is invalid"},
-    {STATUS_INVBCASTMSGCLASS, "Broadcast Message Class is invalid"}};
-
-const std::unordered_map<uint16_t, std::string> TAG_NAME_MAP{
-    {TAG_DEST_ADDR_SUBUNIT, "TAG_DEST_ADDR_SUBUNIT"},
-    {TAG_DEST_NETWORK_TYPE, "TAG_DEST_NETWORK_TYPE"},
-    {TAG_DEST_BEARER_TYPE, "TAG_DEST_BEARER_TYPE"},
-    {TAG_DEST_TELEMATICS_ID, "TAG_DEST_TELEMATICS_ID"},
-    {TAG_SOURCE_ADDR_SUBUNIT, "TAG_SOURCE_ADDR_SUBUNIT"},
-    {TAG_SOURCE_NETWORK_TYPE, "TAG_SOURCE_NETWORK_TYPE"},
-    {TAG_SOURCE_BEARER_TYPE, "TAG_SOURCE_BEARER_TYPE"},
-    {TAG_SOURCE_TELEMATICS_ID, "TAG_SOURCE_TELEMATICS_ID"},
-    {TAG_QOS_TIME_TO_LIVE, "TAG_QOS_TIME_TO_LIVE"},
-    {TAG_PAYLOAD_TYPE, "TAG_PAYLOAD_TYPE"},
-    {TAG_ADDITIONAL_STATUS_INFO_TEXT, "TAG_ADDITIONAL_STATUS_INFO_TEXT"},
-    {TAG_RECEIPTED_MESSAGE_ID, "TAG_RECEIPTED_MESSAGE_ID"},
-    {TAG_MS_MSG_WAIT_FACILITIES, "TAG_MS_MSG_WAIT_FACILITIES"},
-    {TAG_PRIVACY_INDICATOR, "TAG_PRIVACY_INDICATOR"},
-    {TAG_SOURCE_SUBADDRESS, "TAG_SOURCE_SUBADDRESS"},
-    {TAG_DEST_SUBADDRESS, "TAG_DEST_SUBADDRESS"},
-    {TAG_USER_MESSAGE_REFERENCE, "TAG_USER_MESSAGE_REFERENCE"},
-    {TAG_USER_RESPONSE_CODE, "TAG_USER_RESPONSE_CODE"},
-    {TAG_SOURCE_PORT, "TAG_SOURCE_PORT"},
-    {TAG_DEST_PORT, "TAG_DEST_PORT"},
-    {TAG_SAR_MSG_REF_NUM, "TAG_SAR_MSG_REF_NUM"},
-    {TAG_LANGUAGE_INDICATOR, "TAG_LANGUAGE_INDICATOR"},
-    {TAG_SAR_TOTAL_SEGMENTS, "TAG_SAR_TOTAL_SEGMENTS"},
-    {TAG_SAR_SEGMENT_SEQNUM, "TAG_SAR_SEGMENT_SEQNUM"},
-    {TAG_SC_INTERFACE_VERSION, "TAG_SC_INTERFACE_VERSION"},
-    {TAG_CALLBACK_NUM_PRES_IND, "TAG_CALLBACK_NUM_PRES_IND"},
-    {TAG_CALLBACK_NUM_ATAG, "TAG_CALLBACK_NUM_ATAG"},
-    {TAG_NUMBER_OF_MESSAGES, "TAG_NUMBER_OF_MESSAGES"},
-    {TAG_CALLBACK_NUM, "TAG_CALLBACK_NUM"},
-    {TAG_DPF_RESULT, "TAG_DPF_RESULT"},
-    {TAG_SET_DPF, "TAG_SET_DPF"},
-    {TAG_MS_AVAILABILITY_STATUS, "TAG_MS_AVAILABILITY_STATUS"},
-    {TAG_NETWORK_ERROR_CODE, "TAG_NETWORK_ERROR_CODE"},
-    {TAG_MESSAGE_PAYLOAD, "TAG_MESSAGE_PAYLOAD"},
-    {TAG_DELIVERY_FAILURE_REASON, "TAG_DELIVERY_FAILURE_REASON"},
-    {TAG_MORE_MESSAGES_TO_SEND, "TAG_MORE_MESSAGES_TO_SEND"},
-    {TAG_MESSAGE_STATE, "TAG_MESSAGE_STATE"},
-    {TAG_USSD_SERVICE_OP, "TAG_USSD_SERVICE_OP"},
-    {TAG_DISPLAY_TIME, "TAG_DISPLAY_TIME"},
-    {TAG_SMS_SIGNAL, "TAG_SMS_SIGNAL"},
-    {TAG_MS_VALIDITY, "TAG_MS_VALIDITY"},
-    {TAG_ALERT_ON_MESSAGE_DELIVERY, "TAG_ALERT_ON_MESSAGE_DELIVERY"},
-    {TAG_ITS_REPLY_TYPE, "TAG_ITS_REPLY_TYPE"},
-    {TAG_ITS_SESSION_INFO, "TAG_ITS_SESSION_INFO"}};
+}  // namespace errors
 
 }  // namespace smpp::constants
 
