@@ -17,6 +17,7 @@ add_library(smpp SHARED
     src/pdu/pdu_request.cpp
     src/pdu/pdu_response.cpp
     src/pdu/bindtransmitter.cpp
+    src/pdu/bindtransmitterresp.cpp
     src/pdu/bindreceiver.cpp
     src/pdu/bindtransceiver.cpp
     src/type/address.cpp
