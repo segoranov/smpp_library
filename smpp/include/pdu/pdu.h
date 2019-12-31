@@ -19,8 +19,6 @@ namespace smpp {
 class Buffer;
 
 class Pdu {
-  friend class DefaultPduTranscoder;
-
  private:
   // PDU Header
   uint32_t m_nCommandLength;
