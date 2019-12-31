@@ -4,9 +4,9 @@
 #include <sstream>
 
 #include "catch.hpp"
-#include "pdu/bindtransmitter.h"
-#include "smppconstants.h"
-#include "smppexceptions.h"
+#include "pdu/bind_transmitter.h"
+#include "smpp_constants.h"
+#include "smpp_exceptions.h"
 #include "util/smpp_util.h"
 
 SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {

@@ -2,11 +2,11 @@
 
 #include <algorithm>
 
-#include "pdu/bindreceiver.h"
-#include "pdu/bindtransceiver.h"
-#include "pdu/bindtransmitter.h"
+#include "pdu/bind_receiver.h"
+#include "pdu/bind_transceiver.h"
+#include "pdu/bind_transmitter.h"
 #include "pdu/pdu.h"
-#include "smppexceptions.h"
+#include "smpp_exceptions.h"
 #include "util/smpp_util.h"
 
 namespace smpp {

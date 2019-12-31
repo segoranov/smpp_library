@@ -12,14 +12,14 @@ add_library(smpp SHARED
     src/util/print_util.cpp
     src/util/smpp_util.cpp
     src/pdu/pdu.cpp
-    src/pdu/basebind.cpp
-    src/pdu/basebindresp.cpp
+    src/pdu/base_bind.cpp
+    src/pdu/base_bind_resp.cpp
     src/pdu/pdu_request.cpp
     src/pdu/pdu_response.cpp
-    src/pdu/bindtransmitter.cpp
-    src/pdu/bindtransmitterresp.cpp
-    src/pdu/bindreceiver.cpp
-    src/pdu/bindtransceiver.cpp
+    src/pdu/bind_transmitter.cpp
+    src/pdu/bind_transmitter_resp.cpp
+    src/pdu/bind_receiver.cpp
+    src/pdu/bind_transceiver.cpp
     src/type/address.cpp
     src/tlv/tlv.cpp
 )

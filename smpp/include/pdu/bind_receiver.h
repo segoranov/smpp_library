@@ -1,19 +1,19 @@
-#ifndef BIND_TRANSMITTER_H
-#define BIND_TRANSMITTER_H
+#ifndef BIND_RECEIVER_H
+#define BIND_RECEIVER_H
 
-#include "basebind.h"
+#include "base_bind.h"
 
 namespace smpp {
 
-class BindTransmitter final : public BaseBind {
+class BindReceiver final : public BaseBind {
  public:
-  BindTransmitter();
+  BindReceiver();
 
  private:
   /**
    * Serialization/Deserialization
    */
-  
+
   friend class cereal::access;
 
   template <typename Archive>

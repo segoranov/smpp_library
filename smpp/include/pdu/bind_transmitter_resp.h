@@ -1,13 +1,13 @@
-#ifndef BIND_TRANSCEIVER_H
-#define BIND_TRANSCEIVER_H
+#ifndef BIND_TRANSMITTER_RESP_H
+#define BIND_TRANSMITTER_RESP_H
 
-#include "basebind.h"
+#include "base_bind_resp.h"
 
 namespace smpp {
 
-class BindTransceiver final : public BaseBind {
+class BindTransmitterResp final : public BaseBindResp {
  public:
-  BindTransceiver();
+  BindTransmitterResp();
 
  private:
   /**
@@ -18,12 +18,12 @@ class BindTransceiver final : public BaseBind {
 
   template <typename Archive>
   void save(Archive& archive) const {
-    archive(cereal::base_class<BaseBind>(this));
+    archive(cereal::base_class<BaseBindResp>(this));
   }
 
   template <typename Archive>
   void load(Archive& archive) {
-    archive(cereal::base_class<BaseBind>(this));
+    archive(cereal::base_class<BaseBindResp>(this));
   }
 };
 

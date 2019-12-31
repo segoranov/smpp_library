@@ -1,6 +1,6 @@
-#include "pdu/bindtransmitter.h"
+#include "pdu/bind_transmitter.h"
 
-#include "smppconstants.h"
+#include "smpp_constants.h"
 
 namespace smpp {
 

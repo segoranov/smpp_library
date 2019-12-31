@@ -1,13 +1,13 @@
-#ifndef BIND_RECEIVER_H
-#define BIND_RECEIVER_H
+#ifndef BIND_TRANSCEIVER_H
+#define BIND_TRANSCEIVER_H
 
-#include "basebind.h"
+#include "base_bind.h"
 
 namespace smpp {
 
-class BindReceiver final : public BaseBind {
+class BindTransceiver final : public BaseBind {
  public:
-  BindReceiver();
+  BindTransceiver();
 
  private:
   /**

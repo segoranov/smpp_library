@@ -1,29 +1,29 @@
-#ifndef BIND_TRANSMITTER_RESP_H
-#define BIND_TRANSMITTER_RESP_H
+#ifndef BIND_TRANSMITTER_H
+#define BIND_TRANSMITTER_H
 
-#include "basebindresp.h"
+#include "base_bind.h"
 
 namespace smpp {
 
-class BindTransmitterResp final : public BaseBindResp {
+class BindTransmitter final : public BaseBind {
  public:
-  BindTransmitterResp();
+  BindTransmitter();
 
  private:
   /**
    * Serialization/Deserialization
    */
-
+  
   friend class cereal::access;
 
   template <typename Archive>
   void save(Archive& archive) const {
-    archive(cereal::base_class<BaseBindResp>(this));
+    archive(cereal::base_class<BaseBind>(this));
   }
 
   template <typename Archive>
   void load(Archive& archive) {
-    archive(cereal::base_class<BaseBindResp>(this));
+    archive(cereal::base_class<BaseBind>(this));
   }
 };
 

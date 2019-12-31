@@ -1,4 +1,4 @@
-#include "pdu/basebindresp.h"
+#include "pdu/base_bind_resp.h"
 
 namespace smpp {
 

@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "smppconstants.h"
+#include "smpp_constants.h"
 namespace smpp::util {
 
 bool isCommandLengthValid(uint32_t nCommandLength) {

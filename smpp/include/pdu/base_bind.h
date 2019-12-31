@@ -1,5 +1,5 @@
-#ifndef BASEBIND_H
-#define BASEBIND_H
+#ifndef BASE_BIND_H
+#define BASE_BIND_H
 
 #include <cereal/types/base_class.hpp>
 #include <string>

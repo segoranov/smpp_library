@@ -9,8 +9,8 @@
 #include <sstream>
 #include <string>
 
-#include "smppconstants.h"
-#include "smppexceptions.h"
+#include "smpp_constants.h"
+#include "smpp_exceptions.h"
 #include "tlv/tlv.h"
 #include "util/smpp_util.h"
 

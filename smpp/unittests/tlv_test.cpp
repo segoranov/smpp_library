@@ -2,7 +2,7 @@
 
 #include "catch.hpp"
 #include "cereal/archives/binary.hpp"
-#include "smppconstants.h"
+#include "smpp_constants.h"
 
 SCENARIO("Tlv should have correct size", "[Tlv]") {
   GIVEN("some test values with different types and sizes") {

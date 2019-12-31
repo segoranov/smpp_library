@@ -1,5 +1,5 @@
-#include "pdu/bindtransceiver.h"
-#include "smppconstants.h"
+#include "pdu/bind_transceiver.h"
+#include "smpp_constants.h"
 
 namespace smpp {
 
