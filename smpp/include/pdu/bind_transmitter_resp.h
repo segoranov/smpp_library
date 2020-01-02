@@ -6,9 +6,12 @@
 namespace smpp {
 
 class BindTransmitterResp final : public BaseBindResp {
- public:
+ private:
   BindTransmitterResp();
 
+ public:
+  static std::unique_ptr<BindTransmitterResp> createEmpty();
+  static std::unique_ptr<Pdu> create(uint32_t nCommandLength, std::istream& is);
   virtual void serialize(std::ostream& os) const override;
 };
 

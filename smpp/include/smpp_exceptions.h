@@ -55,19 +55,10 @@ class InvalidDestinationAddressException : public SmppException {
       : SmppException{strError} {}
 };
 
-/**
- * Thrown when an unrecoverable PDU decoding error occurs. A good example is
- * a command length which is less than 16 (the mandatory PDU header length)
- *
- * Another example is an invalid sequence number in an invalid range.
- *
- * The recommended action for an unrecoverable error is to close the SMPP
- * connection.
- */
-class UnrecoverablePduException : public SmppException {
+class InvalidTagException : public SmppException {
  public:
-  UnrecoverablePduException() : SmppException{"Unrecoverable pdu"} {}
-  explicit UnrecoverablePduException(const std::string& strError) : SmppException{strError} {}
+  InvalidTagException() : SmppException{"Invalid tag"} {}
+  explicit InvalidTagException(const std::string& strError) : SmppException{strError} {}
 };
 
 }  // namespace smpp

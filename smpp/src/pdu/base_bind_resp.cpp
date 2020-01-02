@@ -1,5 +1,6 @@
 #include "pdu/base_bind_resp.h"
 
+#include "smpp_constants.h"
 #include "util/serialization_util.h"
 
 namespace smpp {
@@ -13,6 +14,28 @@ void BaseBindResp::setSystemId(const std::string& strSystemId) { m_strSystemId =
 void BaseBindResp::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strSystemId, os);
   serializeOptionalParameters(os);
+}
+
+void BaseBindResp::deserializeAfterCommandId(std::istream& is) {
+  uint32_t nCommandStatus = binary::deserializeInt32(is);
+  setCommandStatus(nCommandStatus);
+
+  uint32_t nSequenceNumber = binary::deserializeInt32(is);
+  setSequenceNumber(nSequenceNumber);
+
+  // TODO SG: Error handling and check for correctnes of tag...
+  if (!is.eof()) {
+    Tlv sc_interface_version;
+    sc_interface_version.deserialize(is);
+
+    if (!sc_interface_version.getTag() == constants::TAG_SC_INTERFACE_VERSION) {
+      throw InvalidTagException{
+          "Tag different than 'sc_interface_version' detected during deserialization of "
+          "BaseBindResp"};
+    }
+
+    addOptionalParameter(sc_interface_version);
+  }
 }
 
 }  // namespace smpp

@@ -12,4 +12,15 @@ void BindTransmitterResp::serialize(std::ostream& os) const {
   serializeBody(os);
 }
 
+std::unique_ptr<BindTransmitterResp> BindTransmitterResp::createEmpty() {
+  return std::unique_ptr<BindTransmitterResp>{new BindTransmitterResp{}};
+}
+
+std::unique_ptr<Pdu> BindTransmitterResp::create(uint32_t nCommandLength, std::istream& is) {
+  auto bindTransmitterRespPtr = std::unique_ptr<BindTransmitterResp>{new BindTransmitterResp{}};
+  bindTransmitterRespPtr->setCommandLength(nCommandLength);
+  bindTransmitterRespPtr->deserializeAfterCommandId(is);
+  return bindTransmitterRespPtr;
+}
+
 }  // namespace smpp
