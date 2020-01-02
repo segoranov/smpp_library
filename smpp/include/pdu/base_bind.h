@@ -19,9 +19,9 @@ class BaseBind : public PduRequest {
   Address m_address;
 
  protected:
-  virtual void serializeBody(std::ostream& os) const override;
+  virtual void serializeBody(std::ostream& os) const final;
 
-  virtual void deserializeAfterCommandId(std::istream& is) override;
+  virtual void deserializeAfterCommandId(std::istream& is) final;
 
  public:
   explicit BaseBind(uint32_t nCommandId);

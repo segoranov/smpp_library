@@ -13,9 +13,9 @@ class BaseBindResp : public PduResponse {
   std::string m_strSystemId;
 
  protected:
-  virtual void serializeBody(std::ostream& os) const override;
+  virtual void serializeBody(std::ostream& os) const final;
 
-  virtual void deserializeAfterCommandId(std::istream& is) override;
+  virtual void deserializeAfterCommandId(std::istream& is) final;
 
  public:
   explicit BaseBindResp(uint32_t nCommandId);
