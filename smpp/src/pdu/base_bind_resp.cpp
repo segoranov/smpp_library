@@ -23,6 +23,9 @@ void BaseBindResp::deserializeAfterCommandId(std::istream& is) {
   uint32_t nSequenceNumber = binary::deserializeInt32(is);
   setSequenceNumber(nSequenceNumber);
 
+  std::string strSystemId = binary::deserializeNullTerminatedString(is);
+  setSystemId(strSystemId);
+
   // TODO SG: Error handling and check for correctnes of tag...
   if (!is.eof()) {
     Tlv sc_interface_version;

@@ -6,6 +6,7 @@
 #include "pdu/bind_receiver.h"
 #include "pdu/bind_transceiver.h"
 #include "pdu/bind_transmitter.h"
+#include "pdu/bind_transmitter_resp.h"
 #include "pdu/pdu.h"
 #include "smpp_constants.h"
 #include "smpp_exceptions.h"
@@ -19,6 +20,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
   static const std::unordered_map<uint32_t, Pdu::Factory> commandIdToFactoryMap{
       {constants::CMD_ID_BIND_RECEIVER, BindReceiver::create},
       {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::create},
+      {constants::CMD_ID_BIND_TRANSMITTER_RESP, BindTransmitterResp::create},
       {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::create},
   };
   return commandIdToFactoryMap;

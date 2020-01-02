@@ -5,6 +5,7 @@
 
 #include "catch.hpp"
 #include "pdu/bind_transmitter.h"
+#include "pdu/bind_transmitter_resp.h"
 #include "smpp_constants.h"
 #include "smpp_exceptions.h"
 #include "util/smpp_util.h"
@@ -18,8 +19,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     30 38 00 53 55 42 4D 49 54 31 00 50 01 01 00
 
     The 16-octet header would be decoded as follows:
-    00 00 00 2F Command Length 0x0000002F
-    00 00 00 02 Command ID 0x00000002
+    00 00 00 2F Command Length 0x0000002F (47 in decimal)
+    00 00 00 02 Command ID 0x00000002 (id of bind transmitter)
     00 00 00 00 Command Status 0x00000000
     00 00 00 01 Sequence Number 0x00000001
 
@@ -35,11 +36,11 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     00                                  addr_range (NULL)
     */
 
-    const char samplePdu[] = {0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
-                              0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50,
-                              0x33, 0x54, 0x45, 0x53, 0x54, 0x00, 0x73, 0x65, 0x63, 0x72,
-                              0x65, 0x74, 0x30, 0x38, 0x00, 0x53, 0x55, 0x42, 0x4D, 0x49,
-                              0x54, 0x31, 0x00, 0x50, 0x01, 0x01, 0x00};
+    const uint8_t samplePdu[] = {0x00, 0x00, 0x00, 0x2F, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00,
+                                 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50,
+                                 0x33, 0x54, 0x45, 0x53, 0x54, 0x00, 0x73, 0x65, 0x63, 0x72,
+                                 0x65, 0x74, 0x30, 0x38, 0x00, 0x53, 0x55, 0x42, 0x4D, 0x49,
+                                 0x54, 0x31, 0x00, 0x50, 0x01, 0x01, 0x00};
 
     THEN("The size of the sample pdu should be 47") { REQUIRE(sizeof(samplePdu) == 47); }
 
@@ -68,7 +69,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         THEN(
             "the string from the stringstream should be equal to the string created by the raw "
             "PDU") {
-          REQUIRE(ss.str() == std::string{samplePdu, sizeof(samplePdu)});
+          REQUIRE(ss.str() == std::string{(char*)samplePdu, sizeof(samplePdu)});
         }
 
         AND_WHEN("a BindTransmitter PDU is deserialized from the stringstream") {
@@ -103,6 +104,90 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
             REQUIRE(deserializedBindTransmitterPdu->getAddress() ==
                     bindTransmitterPdu->getAddress());
+          }
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample BindTransmitterResp pdu defined as raw data (array of hex bytes)") {
+    /*
+    Sample PDU (Values are shown in Hex format):
+    00 00 00 2F 80 00 00 02 00 00 00 00 00 00 00 01
+    53 4D 50 50 33 54 45 53 54 00 02 10 00 01 01
+
+    The 16-octet header would be decoded as follows:
+    00 00 00 1F Command Length 0x0000002F (31 in decimal)
+    80 00 00 02 Command ID 0x80000002 (id of bind transmitter resp)
+    00 00 00 00 Command Status 0x00000000
+    00 00 00 01 Sequence Number 0x00000001
+
+    The remaining data represents the PDU body (which in this example relates to the
+    bind_transmitter_resp PDU).
+    This is diagnosed as follows:
+    53 4D 50 50 33 54 45 53 54 00       system_id (“SMPP3TEST”)
+    02 10                               TLV sc_interface_version tag
+    00 01                               TLV sc_interface_version length
+    01                                  TLV sc_interface_version value
+    */
+
+    const uint8_t samplePdu[] = {0x00, 0x00, 0x00, 0x1F, 0x80, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
+                                 0x00, 0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50, 0x33, 0x54,
+                                 0x45, 0x53, 0x54, 0x00, 0x02, 0x10, 0x00, 0x01, 0x01};
+
+    THEN("The size of the sample pdu should be 31") { REQUIRE(sizeof(samplePdu) == 31); }
+
+    AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
+      std::shared_ptr<smpp::BindTransmitterResp> bindTransmitterRespPdu =
+          smpp::BindTransmitterResp::createEmpty();
+
+      bindTransmitterRespPdu->setCommandLength(31);  // 0x0000002F in hex is 31 in decimal
+      bindTransmitterRespPdu->setCommandStatus(0);   // 0x00000000
+      bindTransmitterRespPdu->setSequenceNumber(1);  // 0x00000001
+      bindTransmitterRespPdu->setSystemId("SMPP3TEST");
+      bindTransmitterRespPdu->addOptionalParameter(
+          smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
+
+      WHEN("the BindTransmitterResp PDU is serialized into a stringstream") {
+        std::stringstream ss;
+        bindTransmitterRespPdu->serialize(ss);
+
+        THEN("the stringstream size should be 31 bytes (the command length)") {
+          REQUIRE(ss.str().size() == 31);
+        }
+
+        THEN(
+            "the string from the stringstream should be equal to the string created by the raw "
+            "PDU") {
+          REQUIRE(ss.str() == std::string{(char*)samplePdu, sizeof(samplePdu)});
+        }
+
+        AND_WHEN("a BindTransmitterResp PDU is deserialized from the stringstream") {
+          auto deserializedPdu = smpp::Pdu::deserialize(ss);
+          REQUIRE(deserializedPdu->getCommandId() ==
+                  smpp::constants::CMD_ID_BIND_TRANSMITTER_RESP);
+
+          auto deserializedBindTransmitterRespPdu =
+              dynamic_cast<smpp::BindTransmitterResp*>(deserializedPdu.get());
+          REQUIRE(deserializedBindTransmitterRespPdu);
+
+          THEN("the deserialized PDU should correspond to the initial PDU") {
+            REQUIRE(deserializedBindTransmitterRespPdu->getCommandLength() ==
+                    bindTransmitterRespPdu->getCommandLength());
+
+            REQUIRE(deserializedBindTransmitterRespPdu->getCommandStatus() ==
+                    bindTransmitterRespPdu->getCommandStatus());
+
+            REQUIRE(deserializedBindTransmitterRespPdu->getSequenceNumber() ==
+                    bindTransmitterRespPdu->getSequenceNumber());
+
+            REQUIRE(deserializedBindTransmitterRespPdu->getSystemId() ==
+                    bindTransmitterRespPdu->getSystemId());
+
+            REQUIRE(deserializedBindTransmitterRespPdu->getOptionalParameters().size() == 1);
+            REQUIRE(
+                deserializedBindTransmitterRespPdu->getOptionalParameters()[0] ==
+                smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
           }
         }
       }
