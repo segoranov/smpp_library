@@ -75,7 +75,7 @@ class Pdu {
   virtual void serialize(std::ostream& os) const = 0;
   static std::unique_ptr<Pdu> deserialize(std::istream& is);
 
-  using Factory = std::function<std::unique_ptr<Pdu>(uint32_t nCommandLength, std::istream& is)>;
+  using Factory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
 
  protected:
   virtual void serializeBody(std::ostream& os) const = 0;

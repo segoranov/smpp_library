@@ -13,7 +13,7 @@ class BindReceiver final : public BaseBind {
   virtual void serialize(std::ostream& os) const override;
 
   static std::unique_ptr<Pdu> createEmpty();
-  static std::unique_ptr<Pdu> create(uint32_t nCommandLength, std::istream& is);
+  static std::unique_ptr<Pdu> create(std::istream& is);
 };
 
 }  // namespace smpp

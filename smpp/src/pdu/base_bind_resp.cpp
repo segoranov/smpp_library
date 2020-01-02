@@ -17,13 +17,13 @@ void BaseBindResp::serializeBody(std::ostream& os) const {
 }
 
 void BaseBindResp::deserializeAfterCommandId(std::istream& is) {
-  uint32_t nCommandStatus = binary::deserializeInt32(is);
+  const uint32_t nCommandStatus = binary::deserializeInt32(is);
   setCommandStatus(nCommandStatus);
 
-  uint32_t nSequenceNumber = binary::deserializeInt32(is);
+  const uint32_t nSequenceNumber = binary::deserializeInt32(is);
   setSequenceNumber(nSequenceNumber);
 
-  std::string strSystemId = binary::deserializeNullTerminatedString(is);
+  const std::string strSystemId = binary::deserializeNullTerminatedString(is);
   setSystemId(strSystemId);
 
   // TODO SG: Error handling and check for correctnes of tag...

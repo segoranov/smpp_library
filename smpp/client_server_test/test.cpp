@@ -1,3 +1,5 @@
+#include <unistd.h>
+
 #include <thread>
 
 #include "async_smpp_server.h"
@@ -49,6 +51,8 @@ int main() {
   } else {
     std::cout << "Client did not receive bind transmitter resp properly...";
   }
+
+  sleep(3);
 
   return 0;
 }

@@ -105,7 +105,7 @@ void Pdu::serializeOptionalParameters(std::ostream& os) const {
 }
 
 std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
-  uint32_t nCommandLength = binary::deserializeInt32(is);
+  const uint32_t nCommandLength = binary::deserializeInt32(is);
   if (!util::isCommandLengthValid(nCommandLength)) {
     std::stringstream error;
     error << "Invalid command length detected during Pdu deserialization - [" << nCommandLength
@@ -113,14 +113,16 @@ std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
     throw InvalidCommandLengthException(error.str());
   }
 
-  uint32_t nCommandId = binary::deserializeInt32(is);
+  const uint32_t nCommandId = binary::deserializeInt32(is);
   if (!util::isCommandIdValid(nCommandId)) {
     std::stringstream error;
     error << "Invalid command id parsed detected Pdu deserialization - [" << nCommandId << "]";
     throw InvalidCommandIdException(error.str());
   }
 
-  return getCommandIdToFactoryMap().at(nCommandId)(nCommandLength, is);
+  auto deserializedPdu = getCommandIdToFactoryMap().at(nCommandId)(is);
+  deserializedPdu->setCommandLength(nCommandLength);
+  return deserializedPdu;
 }
 
 }  // namespace smpp

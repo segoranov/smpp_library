@@ -15,9 +15,8 @@ std::unique_ptr<Pdu> BindReceiver::createEmpty() {
   return std::unique_ptr<BindReceiver>{new BindReceiver{}};
 }
 
-std::unique_ptr<Pdu> BindReceiver::create(uint32_t nCommandLength, std::istream& is) {
+std::unique_ptr<Pdu> BindReceiver::create(std::istream& is) {
   auto bindReceiverPtr = std::unique_ptr<BindReceiver>{new BindReceiver{}};
-  bindReceiverPtr->setCommandLength(nCommandLength);
   bindReceiverPtr->deserializeAfterCommandId(is);
   return bindReceiverPtr;
 }

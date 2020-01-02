@@ -36,22 +36,22 @@ void BaseBind::serializeBody(std::ostream& os) const {
 }
 
 void BaseBind::deserializeAfterCommandId(std::istream& is) {
-  uint32_t nCommandStatus = binary::deserializeInt32(is);
+  const uint32_t nCommandStatus = binary::deserializeInt32(is);
   setCommandStatus(nCommandStatus);
 
-  uint32_t nSequenceNumber = binary::deserializeInt32(is);
+  const uint32_t nSequenceNumber = binary::deserializeInt32(is);
   setSequenceNumber(nSequenceNumber);
 
-  std::string strSystemId = binary::deserializeNullTerminatedString(is);
+  const std::string strSystemId = binary::deserializeNullTerminatedString(is);
   setSystemId(strSystemId);
 
-  std::string strPassword = binary::deserializeNullTerminatedString(is);
+  const std::string strPassword = binary::deserializeNullTerminatedString(is);
   setPassword(strPassword);
 
-  std::string strSystemType = binary::deserializeNullTerminatedString(is);
+  const std::string strSystemType = binary::deserializeNullTerminatedString(is);
   setSystemType(strSystemType);
 
-  uint8_t nInterfaceVersion = binary::deserializeInt8(is);
+  const uint8_t nInterfaceVersion = binary::deserializeInt8(is);
   setInterfaceVersion(nInterfaceVersion);
 
   Address address;
