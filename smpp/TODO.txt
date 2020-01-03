@@ -1,3 +1,0 @@
-1. Validation of all the fields like system id, password, and so on...
-Idea: Wrap fields in classes which will manage the validity of the fields.
-Throw exception on creation of invalid fields.
