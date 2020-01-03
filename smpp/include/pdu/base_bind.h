@@ -10,7 +10,7 @@
 namespace smpp {
 
 class BaseBind : public PduRequest {
- private:
+ protected:
   std::string m_strSystemId;
   std::string m_strPassword;
   std::string m_strSystemType;
@@ -33,14 +33,6 @@ class BaseBind : public PduRequest {
   uint8_t getAddrTon() const;
   uint8_t getAddrNpi() const;
   std::string getAddressRange() const;
-
-  void setSystemId(const std::string& strSystemId);
-  void setSystemType(const std::string& strSystemType);
-  void setPassword(const std::string& strPassword);
-  void setInterfaceVersion(uint8_t nInterfaceVersion);
-  void setAddrTon(uint8_t value);
-  void setAddrNpi(uint8_t value);
-  void setAddressRange(const std::string& value);
 };
 
 }  // namespace smpp

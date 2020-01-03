@@ -3,6 +3,7 @@
 #include <thread>
 
 #include "async_smpp_server.h"
+#include "pdu/builder/bind_transmitter_builder.h"
 
 const int max_length = 1000;
 
@@ -21,17 +22,18 @@ int main() {
   std::cout << "Client connected succesfully to 127.0.0.1:7778\n";
   std::cout << "Client sending bind transmitter to server.\n";
 
-  std::shared_ptr<smpp::BindTransmitter> bindTransmitterPdu = smpp::BindTransmitter::createEmpty();
-
-  bindTransmitterPdu->setCommandLength(47);
-  bindTransmitterPdu->setCommandStatus(0);
-  bindTransmitterPdu->setSequenceNumber(1);
-  bindTransmitterPdu->setSystemId("SMPP3TEST");
-  bindTransmitterPdu->setPassword("secret08");
-  bindTransmitterPdu->setSystemType("SUBMIT1");
-  bindTransmitterPdu->setInterfaceVersion(0x50);
-  bindTransmitterPdu->setAddrTon(0x01);
-  bindTransmitterPdu->setAddrNpi(0x01);
+  auto bindTransmitterPdu = smpp::builder::BindTransmitterBuilder::BindTransmitterPdu()
+                                .withCommandLength(47)
+                                .withCommandStatus(0)
+                                .withSequenceNumber(1)
+                                .withSystemId("SMPP3TEST")
+                                .withPassword("secret08")
+                                .withSystemType("SUBMIT1")
+                                .withInterfaceVersion(0x50)
+                                .withAddrTon(0x01)
+                                .withAddrNpi(0x01)
+                                .withAddressRange("")
+                                .build();
 
   // client sending bind transmitter
   std::stringstream ss;

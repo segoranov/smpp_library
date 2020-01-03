@@ -6,6 +6,7 @@
 
 #include "pdu/bind_transmitter.h"
 #include "pdu/bind_transmitter_resp.h"
+#include "pdu/builder/bind_transmitter_resp_builder.h"
 #include "smpp_constants.h"
 
 using boost::asio::ip::tcp;
@@ -23,28 +24,29 @@ class session : public std::enable_shared_from_this<session> {
         boost::asio::buffer(data_, max_length),
         [this, self](boost::system::error_code ec, std::size_t length) {
           if (!ec) {
-            std::stringstream ss{std::string{data_, length}};
-            auto pdu = smpp::Pdu::deserialize(ss);
+            std::stringstream ssRecv{std::string{data_, length}};
+            auto pdu = smpp::Pdu::deserialize(ssRecv);
             if (!pdu->getCommandId() == smpp::constants::CMD_ID_BIND_TRANSCEIVER) {
               throw "Server expecting bind transmitter...";
             }
             std::cout << "Server received bind transmitter\n";
             std::cout << "Server sending bind transmitter resp...\n";
 
-            std::stringstream ssBindTransmitter;
-            std::shared_ptr<smpp::BindTransmitterResp> bindTransmitterRespPdu =
-                smpp::BindTransmitterResp::createEmpty();
-            bindTransmitterRespPdu->setCommandLength(31);
-            bindTransmitterRespPdu->setCommandStatus(0);
-            bindTransmitterRespPdu->setSequenceNumber(1);
-            bindTransmitterRespPdu->setSystemId("SMPP3TEST");
-            bindTransmitterRespPdu->addOptionalParameter(
-                smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
+            std::stringstream ssSend;
+            auto bindTransmitterRespPdu =
+                smpp::builder::BindTransmitterRespBuilder::BindTransmitterRespPdu()
+                    .withCommandLength(31)
+                    .withCommandStatus(0)
+                    .withSequenceNumber(0)
+                    .withSystemId("SMPP3TEST")
+                    .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
+                                                     static_cast<uint8_t>(0x01)})
+                    .build();
 
-            bindTransmitterRespPdu->serialize(ssBindTransmitter);
+            bindTransmitterRespPdu->serialize(ssSend);
             boost::asio::async_write(
                 socket_,
-                boost::asio::buffer(ssBindTransmitter.str().c_str(),
+                boost::asio::buffer(ssSend.str().c_str(),
                                     bindTransmitterRespPdu->getCommandLength()),
                 [this, self](boost::system::error_code ec, std::size_t /*length*/) {
                   if (!ec) {

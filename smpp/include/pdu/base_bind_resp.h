@@ -9,7 +9,7 @@
 namespace smpp {
 
 class BaseBindResp : public PduResponse {
- private:
+ protected:
   std::string m_strSystemId;
 
  protected:
@@ -20,8 +20,6 @@ class BaseBindResp : public PduResponse {
   explicit BaseBindResp(uint32_t nCommandId);
 
   std::string getSystemId() const;
-
-  void setSystemId(const std::string& strSystemId);
 };
 
 }  // namespace smpp

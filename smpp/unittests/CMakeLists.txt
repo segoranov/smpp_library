@@ -19,6 +19,8 @@ add_executable( run_tests
  smpp_util_test.cpp
  print_util_test.cpp
  ../src/pdu/pdu.cpp
+ ../src/pdu/builder/bind_transmitter_builder.cpp
+ ../src/pdu/builder/bind_transmitter_resp_builder.cpp
  ../src/pdu/pdu_request.cpp
  ../src/pdu/pdu_response.cpp
  ../src/pdu/base_bind.cpp

@@ -13,6 +13,8 @@ add_library(smpp SHARED
     src/util/smpp_util.cpp
     src/util/serialization_util.cpp
     src/pdu/pdu.cpp
+    src/pdu/builder/bind_transmitter_builder.cpp
+    src/pdu/builder/bind_transmitter_resp_builder.cpp
     src/pdu/base_bind.cpp
     src/pdu/base_bind_resp.cpp
     src/pdu/pdu_request.cpp

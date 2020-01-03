@@ -6,6 +6,8 @@
 #include "catch.hpp"
 #include "pdu/bind_transmitter.h"
 #include "pdu/bind_transmitter_resp.h"
+#include "pdu/builder/bind_transmitter_builder.h"
+#include "pdu/builder/bind_transmitter_resp_builder.h"
 #include "smpp_constants.h"
 #include "smpp_exceptions.h"
 #include "util/smpp_util.h"
@@ -45,18 +47,18 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     THEN("The size of the sample pdu should be 47") { REQUIRE(sizeof(samplePdu) == 47); }
 
     AND_GIVEN("a BindTransmitter PDU corresponding to the raw PDU") {
-      std::shared_ptr<smpp::BindTransmitter> bindTransmitterPdu =
-          smpp::BindTransmitter::createEmpty();
-
-      bindTransmitterPdu->setCommandLength(47);  // 0x0000002F in hex is 47 in decimal
-      bindTransmitterPdu->setCommandStatus(0);   // 0x00000000
-      bindTransmitterPdu->setSequenceNumber(1);  // 0x00000001
-      bindTransmitterPdu->setSystemId("SMPP3TEST");
-      bindTransmitterPdu->setPassword("secret08");
-      bindTransmitterPdu->setSystemType("SUBMIT1");
-      bindTransmitterPdu->setInterfaceVersion(0x50);
-      bindTransmitterPdu->setAddrTon(0x01);
-      bindTransmitterPdu->setAddrNpi(0x01);
+      auto bindTransmitterPdu = smpp::builder::BindTransmitterBuilder::BindTransmitterPdu()
+                                    .withCommandLength(47)  // 0x0000002F in hex is 47 in decimal
+                                    .withCommandStatus(0)
+                                    .withSequenceNumber(1)
+                                    .withSystemId("SMPP3TEST")
+                                    .withPassword("secret08")
+                                    .withSystemType("SUBMIT1")
+                                    .withInterfaceVersion(0x50)
+                                    .withAddrTon(0x01)
+                                    .withAddrNpi(0x01)
+                                    .withAddressRange("")
+                                    .build();
 
       WHEN("the BindTransmitter PDU is serialized into a stringstream") {
         std::stringstream ss;
@@ -144,15 +146,15 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     THEN("The size of the sample pdu should be 31") { REQUIRE(sizeof(samplePdu) == 31); }
 
     AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
-      std::shared_ptr<smpp::BindTransmitterResp> bindTransmitterRespPdu =
-          smpp::BindTransmitterResp::createEmpty();
-
-      bindTransmitterRespPdu->setCommandLength(31);  // 0x0000002F in hex is 31 in decimal
-      bindTransmitterRespPdu->setCommandStatus(0);   // 0x00000000
-      bindTransmitterRespPdu->setSequenceNumber(1);  // 0x00000001
-      bindTransmitterRespPdu->setSystemId("SMPP3TEST");
-      bindTransmitterRespPdu->addOptionalParameter(
-          smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
+      auto bindTransmitterRespPdu =
+          smpp::builder::BindTransmitterRespBuilder::BindTransmitterRespPdu()
+              .withCommandLength(31)
+              .withCommandStatus(0)
+              .withSequenceNumber(1)
+              .withSystemId("SMPP3TEST")
+              .withOptionalParameter(
+                  smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)})
+              .build();
 
       WHEN("the BindTransmitterResp PDU is serialized into a stringstream") {
         std::stringstream ss;

@@ -9,8 +9,6 @@ BaseBindResp::BaseBindResp(uint32_t nCommandId) : PduResponse{nCommandId} {}
 
 std::string BaseBindResp::getSystemId() const { return m_strSystemId; }
 
-void BaseBindResp::setSystemId(const std::string& strSystemId) { m_strSystemId = strSystemId; }
-
 void BaseBindResp::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strSystemId, os);
   serializeOptionalParameters(os);
@@ -18,7 +16,7 @@ void BaseBindResp::serializeBody(std::ostream& os) const {
 
 void BaseBindResp::deserializeBody(std::istream& is) {
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
-  setSystemId(strSystemId);
+  m_strSystemId = strSystemId;
 
   // TODO SG: Error handling and check for correctnes of tag...
   if (!is.eof()) {

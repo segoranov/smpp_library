@@ -19,7 +19,7 @@
 namespace smpp {
 
 class Pdu {
- private:
+ protected:
   // PDU Header
   uint32_t m_nCommandLength;
   uint32_t m_nCommandId;

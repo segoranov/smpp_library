@@ -61,5 +61,11 @@ class InvalidTagException : public SmppException {
   explicit InvalidTagException(const std::string& strError) : SmppException{strError} {}
 };
 
+class UndefinedValueException : public SmppException {
+  public:
+  UndefinedValueException() : SmppException{"Undefined value"} {}
+  explicit UndefinedValueException(const std::string& strError) : SmppException{strError} {}
+};
+
 }  // namespace smpp
 #endif  // SMPP_EXCEPTIONS_H
