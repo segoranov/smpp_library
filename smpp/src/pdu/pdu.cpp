@@ -15,15 +15,20 @@
 
 namespace smpp {
 
-// Construct On First Use Idiom: https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+/**
+ * Construct On First Use Idiom:
+ * https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
+ * https://isocpp.org/wiki/faq/ctors#construct-on-first-use-v2
+ */
 const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap() {
-  static const std::unordered_map<uint32_t, Pdu::BodyFactory> commandIdToFactoryMap{
-      {constants::CMD_ID_BIND_RECEIVER, BindReceiver::createPduBody},
-      {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::createPduBody},
-      {constants::CMD_ID_BIND_TRANSMITTER_RESP, BindTransmitterResp::createPduBody},
-      {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::createPduBody},
-  };
-  return commandIdToFactoryMap;
+  static const std::unordered_map<uint32_t, Pdu::BodyFactory>* const commandIdToFactoryMap =
+      new std::unordered_map<uint32_t, Pdu::BodyFactory>{
+          {constants::CMD_ID_BIND_RECEIVER, BindReceiver::createPduBody},
+          {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::createPduBody},
+          {constants::CMD_ID_BIND_TRANSMITTER_RESP, BindTransmitterResp::createPduBody},
+          {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::createPduBody},
+      };
+  return *commandIdToFactoryMap;
 }
 
 Pdu::Pdu(uint32_t nCommandId, bool bIsRequest) : m_bIsRequest{bIsRequest} {
