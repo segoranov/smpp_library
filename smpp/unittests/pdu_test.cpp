@@ -47,22 +47,22 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     THEN("The size of the sample pdu should be 47") { REQUIRE(sizeof(samplePdu) == 47); }
 
     AND_GIVEN("a BindTransmitter PDU corresponding to the raw PDU") {
-      auto bindTransmitterPdu = smpp::builder::BindTransmitterBuilder::BindTransmitterPdu()
-                                    .withCommandLength(47)  // 0x0000002F in hex is 47 in decimal
-                                    .withCommandStatus(0)
-                                    .withSequenceNumber(1)
-                                    .withSystemId("SMPP3TEST")
-                                    .withPassword("secret08")
-                                    .withSystemType("SUBMIT1")
-                                    .withInterfaceVersion(0x50)
-                                    .withAddrTon(0x01)
-                                    .withAddrNpi(0x01)
-                                    .withAddressRange("")
-                                    .build();
+      smpp::BindTransmitter bindTransmitterPdu{
+          smpp::builder::BindTransmitterBuilder()
+              .withCommandLength(47)  // 0x0000002F in hex is 47 in decimal
+              .withCommandStatus(0)
+              .withSequenceNumber(1)
+              .withSystemId("SMPP3TEST")
+              .withPassword("secret08")
+              .withSystemType("SUBMIT1")
+              .withInterfaceVersion(0x50)
+              .withAddrTon(0x01)
+              .withAddrNpi(0x01)
+              .withAddressRange("")};
 
       WHEN("the BindTransmitter PDU is serialized into a stringstream") {
         std::stringstream ss;
-        bindTransmitterPdu->serialize(ss);
+        bindTransmitterPdu.serialize(ss);
 
         THEN("the stringstream size should be 47 bytes (the command length)") {
           REQUIRE(ss.str().size() == 47);
@@ -84,34 +84,34 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
             REQUIRE(deserializedBindTransmitterPdu->getCommandLength() ==
-                    bindTransmitterPdu->getCommandLength());
+                    bindTransmitterPdu.getCommandLength());
 
             REQUIRE(deserializedBindTransmitterPdu->getCommandStatus() ==
-                    bindTransmitterPdu->getCommandStatus());
+                    bindTransmitterPdu.getCommandStatus());
 
             REQUIRE(deserializedBindTransmitterPdu->getSequenceNumber() ==
-                    bindTransmitterPdu->getSequenceNumber());
+                    bindTransmitterPdu.getSequenceNumber());
 
             REQUIRE(deserializedBindTransmitterPdu->getSystemId() ==
-                    bindTransmitterPdu->getSystemId());
+                    bindTransmitterPdu.getSystemId());
 
             REQUIRE(deserializedBindTransmitterPdu->getPassword() ==
-                    bindTransmitterPdu->getPassword());
+                    bindTransmitterPdu.getPassword());
 
             REQUIRE(deserializedBindTransmitterPdu->getSystemType() ==
-                    bindTransmitterPdu->getSystemType());
+                    bindTransmitterPdu.getSystemType());
 
             REQUIRE(deserializedBindTransmitterPdu->getInterfaceVersion() ==
-                    bindTransmitterPdu->getInterfaceVersion());
+                    bindTransmitterPdu.getInterfaceVersion());
 
             REQUIRE(deserializedBindTransmitterPdu->getAddrTon() ==
-                    bindTransmitterPdu->getAddrTon());
+                    bindTransmitterPdu.getAddrTon());
 
             REQUIRE(deserializedBindTransmitterPdu->getAddrNpi() ==
-                    bindTransmitterPdu->getAddrNpi());
+                    bindTransmitterPdu.getAddrNpi());
 
             REQUIRE(deserializedBindTransmitterPdu->getAddressRange() ==
-                    bindTransmitterPdu->getAddressRange());
+                    bindTransmitterPdu.getAddressRange());
           }
         }
       }

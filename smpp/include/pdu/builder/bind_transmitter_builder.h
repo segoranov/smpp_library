@@ -21,8 +21,6 @@ namespace smpp::builder {
  */
 class BindTransmitterBuilder {
  private:
-  BindTransmitterBuilder();
-
   friend class smpp::BindTransmitter;
 
   std::optional<uint32_t> m_optCommandLength;
@@ -39,7 +37,7 @@ class BindTransmitterBuilder {
   std::optional<std::string> m_optAddressRange;
 
  public:
-  static BindTransmitterBuilder BindTransmitterPdu();
+  BindTransmitterBuilder();
 
   BindTransmitterBuilder& withCommandLength(uint32_t nCommandLength);
 
@@ -60,8 +58,6 @@ class BindTransmitterBuilder {
   BindTransmitterBuilder& withAddrNpi(uint8_t nAddrNpi);
 
   BindTransmitterBuilder& withAddressRange(const std::string& strAddressRange);
-
-  std::unique_ptr<BindTransmitter> build();
 };
 
 }  // namespace smpp::builder

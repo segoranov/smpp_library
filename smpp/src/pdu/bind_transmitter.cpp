@@ -10,7 +10,34 @@ BindTransmitter::BindTransmitter() : BaseBind{constants::CMD_ID_BIND_TRANSMITTER
 
 BindTransmitter::BindTransmitter(const builder::BindTransmitterBuilder& params)
     : BaseBind{constants::CMD_ID_BIND_TRANSMITTER} {
-  // TODO SG: Throw exceptions here if invalid field exists
+  if (!params.m_optCommandLength)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined command length");
+
+  if (!params.m_optCommandStatus)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined command status");
+
+  if (!params.m_optSequenceNumber)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined sequence number");
+
+  if (!params.m_optSystemId)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined system id");
+
+  if (!params.m_optSystemType)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined system type");
+
+  if (!params.m_optInterfaceVersion)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined interface version");
+
+  if (!params.m_optAddrTon)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined addr ton");
+
+  if (!params.m_optAddrNpi)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined addr npi");
+
+  if (!params.m_optAddressRange)
+    throw UndefinedValueException("BindTransmitterBuilder: Undefined address range");
+
+  // TODO SG: Validation
   m_nCommandLength = params.m_optCommandLength.value();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
@@ -23,7 +50,7 @@ BindTransmitter::BindTransmitter(const builder::BindTransmitterBuilder& params)
   m_nAddrTon = params.m_optAddrTon.value();
   m_nAddrNpi = params.m_optAddrNpi.value();
   m_strAddressRange = params.m_optAddressRange.value();
-}
+}  // namespace smpp
 
 void BindTransmitter::serialize(std::ostream& os) const {
   serializeHeader(os);
