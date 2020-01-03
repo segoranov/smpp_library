@@ -9,11 +9,13 @@ class BindTransmitter final : public BaseBind {
  private:
   BindTransmitter();
 
- public:
-  virtual void serialize(std::ostream& os) const override;
-
-  static std::unique_ptr<BindTransmitter> createEmpty();
+  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
   static std::unique_ptr<BindTransmitter> createPduBody(std::istream& is);
+
+ public:
+  static std::unique_ptr<BindTransmitter> createEmpty();
+
+  virtual void serialize(std::ostream& os) const override;
 };
 
 }  // namespace smpp
