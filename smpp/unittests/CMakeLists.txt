@@ -15,7 +15,6 @@ include_directories(
 add_executable( run_tests 
  main.cpp 
  pdu_test.cpp
- address_test.cpp
  tlv_test.cpp
  smpp_util_test.cpp
  print_util_test.cpp
@@ -28,7 +27,6 @@ add_executable( run_tests
  ../src/pdu/bind_transmitter_resp.cpp
  ../src/pdu/bind_receiver.cpp
  ../src/pdu/bind_transceiver.cpp
- ../src/type/address.cpp
  ../src/util/print_util.cpp
  ../src/util/smpp_util.cpp
  ../src/util/serialization_util.cpp

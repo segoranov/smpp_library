@@ -12,7 +12,11 @@ std::string BaseBind::getSystemType() const { return m_strSystemType; }
 
 uint8_t BaseBind::getInterfaceVersion() const { return m_nInterfaceVersion; }
 
-Address BaseBind::getAddress() const { return m_address; }
+uint8_t BaseBind::getAddrTon() const { return m_nAddrTon; }
+
+uint8_t BaseBind::getAddrNpi() const { return m_nAddrNpi; }
+
+std::string BaseBind::getAddressRange() const { return m_strAddressRange; }
 
 void BaseBind::setSystemId(const std::string& strSystemId) { m_strSystemId = strSystemId; }
 
@@ -24,14 +28,22 @@ void BaseBind::setInterfaceVersion(uint8_t nInterfaceVersion) {
   m_nInterfaceVersion = nInterfaceVersion;
 }
 
-void BaseBind::setAddress(const Address& newAddress) { m_address = newAddress; }
+void BaseBind::setAddrTon(uint8_t nAddrTon) { m_nAddrTon = nAddrTon; }
+
+void BaseBind::setAddrNpi(uint8_t nAddrNpi) { m_nAddrNpi = nAddrNpi; }
+
+void BaseBind::setAddressRange(const std::string& strAddressRange) {
+  m_strAddressRange = strAddressRange;
+}
 
 void BaseBind::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strSystemId, os);
   binary::serializeNullTerminatedString(m_strPassword, os);
   binary::serializeNullTerminatedString(m_strSystemType, os);
   binary::serializeInt8(m_nInterfaceVersion, os);
-  m_address.serialize(os);
+  binary::serializeInt8(m_nAddrTon, os);
+  binary::serializeInt8(m_nAddrNpi, os);
+  binary::serializeNullTerminatedString(m_strAddressRange, os);
   serializeOptionalParameters(os);  // optional parameters are part of the body
 }
 
@@ -48,9 +60,14 @@ void BaseBind::deserializeBody(std::istream& is) {
   const uint8_t nInterfaceVersion = binary::deserializeInt8(is);
   setInterfaceVersion(nInterfaceVersion);
 
-  Address address;
-  address.deserialize(is);
-  setAddress(address);
+  const uint8_t nAddrTon = binary::deserializeInt8(is);
+  setAddrTon(nAddrTon);
+
+  const uint8_t nAddrNpi = binary::deserializeInt8(is);
+  setAddrNpi(nAddrNpi);
+
+  const std::string strAddressRange = binary::deserializeNullTerminatedString(is);
+  setAddressRange(strAddressRange);
 }
 
 }  // namespace smpp

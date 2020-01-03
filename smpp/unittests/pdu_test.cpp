@@ -55,8 +55,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       bindTransmitterPdu->setPassword("secret08");
       bindTransmitterPdu->setSystemType("SUBMIT1");
       bindTransmitterPdu->setInterfaceVersion(0x50);
-      smpp::Address address{0x01, 0x01};
-      bindTransmitterPdu->setAddress(address);
+      bindTransmitterPdu->setAddrTon(0x01);
+      bindTransmitterPdu->setAddrNpi(0x01);
 
       WHEN("the BindTransmitter PDU is serialized into a stringstream") {
         std::stringstream ss;
@@ -102,8 +102,14 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
             REQUIRE(deserializedBindTransmitterPdu->getInterfaceVersion() ==
                     bindTransmitterPdu->getInterfaceVersion());
 
-            REQUIRE(deserializedBindTransmitterPdu->getAddress() ==
-                    bindTransmitterPdu->getAddress());
+            REQUIRE(deserializedBindTransmitterPdu->getAddrTon() ==
+                    bindTransmitterPdu->getAddrTon());
+
+            REQUIRE(deserializedBindTransmitterPdu->getAddrNpi() ==
+                    bindTransmitterPdu->getAddrNpi());
+
+            REQUIRE(deserializedBindTransmitterPdu->getAddressRange() ==
+                    bindTransmitterPdu->getAddressRange());
           }
         }
       }

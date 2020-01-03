@@ -21,7 +21,6 @@ add_library(smpp SHARED
     src/pdu/bind_transmitter_resp.cpp
     src/pdu/bind_receiver.cpp
     src/pdu/bind_transceiver.cpp
-    src/type/address.cpp
     src/tlv/tlv.cpp
 )
 
