@@ -175,6 +175,9 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(deserializedPdu->getCommandId() ==
                   smpp::constants::CMD_ID_BIND_TRANSMITTER_RESP);
 
+          REQUIRE(
+              deserializedPdu->hasOptionalParameter(smpp::constants::TAG_SC_INTERFACE_VERSION));
+
           auto deserializedBindTransmitterRespPdu =
               dynamic_cast<smpp::BindTransmitterResp*>(deserializedPdu.get());
           REQUIRE(deserializedBindTransmitterRespPdu);
