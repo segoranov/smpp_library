@@ -50,31 +50,9 @@ uint32_t Pdu::getSequenceNumber() const { return m_nSequenceNumber; }
 
 std::vector<Tlv> Pdu::getOptionalParameters() const { return m_vOptionalTlvParameters; }
 
-void Pdu::setCommandLength(uint32_t nCommandLength) { m_nCommandLength = nCommandLength; }
-
-void Pdu::setCommandStatus(uint32_t nCommandStatus) { m_nCommandStatus = nCommandStatus; }
-
-void Pdu::setSequenceNumber(uint32_t nSequenceNumber) { m_nSequenceNumber = nSequenceNumber; }
-
-void Pdu::addOptionalParameter(const Tlv& tlv) { m_vOptionalTlvParameters.push_back(tlv); }
-
 bool Pdu::isRequest() const { return m_bIsRequest; }
 
 bool Pdu::isResponse() const { return !m_bIsRequest; }
-
-std::optional<Tlv> Pdu::removeOptionalParameter(uint16_t nTag) {
-  auto iterTlvToRemove =
-      std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
-                   [&nTag](Tlv tlv) { return tlv.getTag() == nTag; });
-
-  if (iterTlvToRemove == m_vOptionalTlvParameters.end()) {
-    return std::nullopt;
-  }
-
-  auto tlvToRemove = *iterTlvToRemove;
-  m_vOptionalTlvParameters.erase(iterTlvToRemove);
-  return tlvToRemove;
-}
 
 bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   auto iterTlv = std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
@@ -136,9 +114,9 @@ std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
   auto deserializedPdu = getCommandIdToBodyFactoryMap().at(nCommandId)(is);
 
   // 3. Set header fields
-  deserializedPdu->setCommandLength(nCommandLength);
-  deserializedPdu->setCommandStatus(nCommandStatus);
-  deserializedPdu->setSequenceNumber(nSequenceNumber);
+  deserializedPdu->m_nCommandLength = nCommandLength;
+  deserializedPdu->m_nCommandStatus = nCommandStatus;
+  deserializedPdu->m_nSequenceNumber = nSequenceNumber;
 
   return deserializedPdu;
 }

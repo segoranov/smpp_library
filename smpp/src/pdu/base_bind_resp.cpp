@@ -29,7 +29,7 @@ void BaseBindResp::deserializeBody(std::istream& is) {
           "BaseBindResp"};
     }
 
-    addOptionalParameter(sc_interface_version);
+    m_vOptionalTlvParameters.push_back(sc_interface_version);
   }
 }
 

@@ -42,19 +42,6 @@ class Pdu {
   uint32_t getSequenceNumber() const;
   std::vector<Tlv> getOptionalParameters() const;
 
-  void setCommandLength(uint32_t nCommandLength);
-  void setCommandStatus(uint32_t nCommandStatus);
-  void setSequenceNumber(uint32_t nSequenceNumber);
-
-  void addOptionalParameter(const Tlv& tlv);
-
-  /**
-   * Removes an optional parameter by tag.  Will only remove the first matching tag.
-   * @param nTag That tag to remove
-   * @return Empty optional if no TLV removed, or the TLV removed.
-   */
-  std::optional<Tlv> removeOptionalParameter(uint16_t nTag);
-
   bool hasOptionalParameter(uint16_t nTag) const;
 
   bool isRequest() const;
