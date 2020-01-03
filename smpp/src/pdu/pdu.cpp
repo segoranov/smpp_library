@@ -17,6 +17,7 @@ namespace smpp {
 
 /**
  * Construct On First Use Idiom:
+ * https://isocpp.org/wiki/faq/ctors#static-init-order
  * https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
  * https://isocpp.org/wiki/faq/ctors#construct-on-first-use-v2
  */
