@@ -13,7 +13,7 @@ class BindTransmitter final : public BaseBind {
   virtual void serialize(std::ostream& os) const override;
 
   static std::unique_ptr<BindTransmitter> createEmpty();
-  static std::unique_ptr<Pdu> create(std::istream& is);
+  static std::unique_ptr<BindTransmitter> createPduBody(std::istream& is);
 };
 
 }  // namespace smpp

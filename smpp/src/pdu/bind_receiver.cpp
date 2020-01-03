@@ -11,13 +11,13 @@ void BindReceiver::serialize(std::ostream& os) const {
   serializeBody(os);
 }
 
-std::unique_ptr<Pdu> BindReceiver::createEmpty() {
+std::unique_ptr<BindReceiver> BindReceiver::createEmpty() {
   return std::unique_ptr<BindReceiver>{new BindReceiver{}};
 }
 
-std::unique_ptr<Pdu> BindReceiver::create(std::istream& is) {
+std::unique_ptr<BindReceiver> BindReceiver::createPduBody(std::istream& is) {
   auto bindReceiverPtr = std::unique_ptr<BindReceiver>{new BindReceiver{}};
-  bindReceiverPtr->deserializeAfterCommandId(is);
+  bindReceiverPtr->deserializeBody(is);
   return bindReceiverPtr;
 }
 

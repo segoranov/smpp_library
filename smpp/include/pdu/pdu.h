@@ -18,8 +18,6 @@
 
 namespace smpp {
 
-class Buffer;
-
 class Pdu {
  private:
   // PDU Header
@@ -30,7 +28,6 @@ class Pdu {
 
   std::vector<Tlv> m_vOptionalTlvParameters;
 
- private:
   const bool m_bIsRequest;
 
  public:
@@ -75,11 +72,22 @@ class Pdu {
   virtual void serialize(std::ostream& os) const = 0;
   static std::unique_ptr<Pdu> deserialize(std::istream& is);
 
-  using Factory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
+  /**
+   * This function will be present in each concrete SMPP message class,
+   * for example BindTransceiver, BindTransmitterResp and so on...
+   *
+   * The purpose of the function is to deserialize the PDU body based
+   * on the type of SMPP message
+   */
+  using BodyFactory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
 
  protected:
+  /**
+   * Utility methods for serialization/deserialization
+   */
+
   virtual void serializeBody(std::ostream& os) const = 0;
-  virtual void deserializeAfterCommandId(std::istream& is) = 0;
+  virtual void deserializeBody(std::istream& is) = 0;
 
   void serializeHeader(std::ostream& os) const;
   void serializeOptionalParameters(std::ostream& os) const;

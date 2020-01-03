@@ -12,8 +12,8 @@ class BindTransceiver final : public BaseBind {
  public:
   virtual void serialize(std::ostream& os) const override;
 
-  static std::unique_ptr<Pdu> createEmpty();
-  static std::unique_ptr<Pdu> create(std::istream& is);
+  static std::unique_ptr<BindTransceiver> createEmpty();
+  static std::unique_ptr<BindTransceiver> createPduBody(std::istream& is);
 };
 
 }  // namespace smpp

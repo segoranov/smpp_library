@@ -16,13 +16,7 @@ void BaseBindResp::serializeBody(std::ostream& os) const {
   serializeOptionalParameters(os);
 }
 
-void BaseBindResp::deserializeAfterCommandId(std::istream& is) {
-  const uint32_t nCommandStatus = binary::deserializeInt32(is);
-  setCommandStatus(nCommandStatus);
-
-  const uint32_t nSequenceNumber = binary::deserializeInt32(is);
-  setSequenceNumber(nSequenceNumber);
-
+void BaseBindResp::deserializeBody(std::istream& is) {
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
   setSystemId(strSystemId);
 

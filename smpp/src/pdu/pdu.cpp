@@ -16,12 +16,12 @@
 namespace smpp {
 
 // Construct On First Use Idiom: https://isocpp.org/wiki/faq/ctors#static-init-order-on-first-use
-const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
-  static const std::unordered_map<uint32_t, Pdu::Factory> commandIdToFactoryMap{
-      {constants::CMD_ID_BIND_RECEIVER, BindReceiver::create},
-      {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::create},
-      {constants::CMD_ID_BIND_TRANSMITTER_RESP, BindTransmitterResp::create},
-      {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::create},
+const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap() {
+  static const std::unordered_map<uint32_t, Pdu::BodyFactory> commandIdToFactoryMap{
+      {constants::CMD_ID_BIND_RECEIVER, BindReceiver::createPduBody},
+      {constants::CMD_ID_BIND_TRANSMITTER, BindTransmitter::createPduBody},
+      {constants::CMD_ID_BIND_TRANSMITTER_RESP, BindTransmitterResp::createPduBody},
+      {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::createPduBody},
   };
   return commandIdToFactoryMap;
 }
@@ -105,6 +105,7 @@ void Pdu::serializeOptionalParameters(std::ostream& os) const {
 }
 
 std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
+  // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);
   if (!util::isCommandLengthValid(nCommandLength)) {
     std::stringstream error;
@@ -120,8 +121,19 @@ std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
     throw InvalidCommandIdException(error.str());
   }
 
-  auto deserializedPdu = getCommandIdToFactoryMap().at(nCommandId)(is);
+  // TODO SG validate
+  const uint32_t nCommandStatus = binary::deserializeInt32(is);
+
+  const uint32_t nSequenceNumber = binary::deserializeInt32(is);
+
+  // 2. Deserialize PDU body
+  auto deserializedPdu = getCommandIdToBodyFactoryMap().at(nCommandId)(is);
+
+  // 3. Set header fields
   deserializedPdu->setCommandLength(nCommandLength);
+  deserializedPdu->setCommandStatus(nCommandStatus);
+  deserializedPdu->setSequenceNumber(nSequenceNumber);
+
   return deserializedPdu;
 }
 

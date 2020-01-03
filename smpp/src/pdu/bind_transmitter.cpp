@@ -16,9 +16,9 @@ std::unique_ptr<BindTransmitter> BindTransmitter::createEmpty() {
   return std::unique_ptr<BindTransmitter>{new BindTransmitter{}};
 }
 
-std::unique_ptr<Pdu> BindTransmitter::create(std::istream& is) {
+std::unique_ptr<BindTransmitter> BindTransmitter::createPduBody(std::istream& is) {
   auto bindTransmitterPtr = std::unique_ptr<BindTransmitter>{new BindTransmitter{}};
-  bindTransmitterPtr->deserializeAfterCommandId(is);
+  bindTransmitterPtr->deserializeBody(is);
   return bindTransmitterPtr;
 }
 
