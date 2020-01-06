@@ -18,6 +18,13 @@
 
 namespace smpp {
 
+/**
+ * Base class for all SMPP PDUs
+ *
+ * For serialization/deserialization, the design described here is used:
+ * https://isocpp.org/wiki/faq/serialization#serialize-inherit-no-ptrs
+ * with the Named Constructor Idiom
+ */
 class Pdu {
  protected:
   // PDU Header
@@ -47,16 +54,15 @@ class Pdu {
   bool isRequest() const;
   bool isResponse() const;
 
-  // -------------------------------------------
-  // ------ SERIALIZATION/DESERIALIZATION ------
+  // Serialization/deserialization interface
+  /**
+   * @brief Serializes a PDU by writing raw bytes to an output stream
+   */
+  virtual void serialize(std::ostream& os) const = 0;
 
   /**
-   * Using the serialization design described here:
-   * https://isocpp.org/wiki/faq/serialization#serialize-inherit-no-ptrs
-   * with the Named Constructor Idiom
+   * @brief Deserializes and creates a PDU by reading raw bytes from an input stream
    */
-
-  virtual void serialize(std::ostream& os) const = 0;
   static std::unique_ptr<Pdu> deserialize(std::istream& is);
 
  protected:
@@ -65,17 +71,13 @@ class Pdu {
    * for example BindTransceiver, BindTransmitterResp and so on...
    *
    * The purpose of the function is to deserialize the PDU body based
-   * on the type of SMPP message
+   * on the PDU command id
    */
   using BodyFactory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
 
-  /**
-   * Utility methods for serialization/deserialization
-   */
-
+  // Utility methods for serialization/deserialization
   virtual void serializeBody(std::ostream& os) const = 0;
   virtual void deserializeBody(std::istream& is) = 0;
-
   void serializeHeader(std::ostream& os) const;
   void serializeOptionalParameters(std::ostream& os) const;
 };
