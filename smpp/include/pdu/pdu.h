@@ -59,6 +59,7 @@ class Pdu {
   virtual void serialize(std::ostream& os) const = 0;
   static std::unique_ptr<Pdu> deserialize(std::istream& is);
 
+ protected:
   /**
    * This function will be present in each concrete SMPP message class,
    * for example BindTransceiver, BindTransmitterResp and so on...
@@ -68,7 +69,6 @@ class Pdu {
    */
   using BodyFactory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
 
- protected:
   /**
    * Utility methods for serialization/deserialization
    */
