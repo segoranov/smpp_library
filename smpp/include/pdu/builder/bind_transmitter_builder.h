@@ -40,23 +40,14 @@ class BindTransmitterBuilder {
   BindTransmitterBuilder();
 
   BindTransmitterBuilder& withCommandLength(uint32_t nCommandLength);
-
   BindTransmitterBuilder& withCommandStatus(uint32_t nCommandStatus);
-
   BindTransmitterBuilder& withSequenceNumber(uint32_t nSequenceNumber);
-
   BindTransmitterBuilder& withSystemId(const std::string& strSystemId);
-
   BindTransmitterBuilder& withPassword(const std::string& strPassword);
-
   BindTransmitterBuilder& withSystemType(const std::string& strSystemType);
-
   BindTransmitterBuilder& withInterfaceVersion(uint8_t nInterfaceVersion);
-
   BindTransmitterBuilder& withAddrTon(uint8_t nAddrTon);
-
   BindTransmitterBuilder& withAddrNpi(uint8_t nAddrNpi);
-
   BindTransmitterBuilder& withAddressRange(const std::string& strAddressRange);
 };
 

@@ -10,16 +10,16 @@ BindTransmitterResp::BindTransmitterResp()
 
 BindTransmitterResp::BindTransmitterResp(const builder::BindTransmitterRespBuilder& params)
     : BaseBindResp{constants::CMD_ID_BIND_TRANSMITTER_RESP} {
-  if (!params.m_optCommandLength)
+  if (!params.m_optCommandLength.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined command length");
 
-  if (!params.m_optCommandStatus)
+  if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
 
-  if (!params.m_optSequenceNumber)
+  if (!params.m_optSequenceNumber.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined sequence number");
 
-  if (!params.m_optSystemId)
+  if (!params.m_optSystemId.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined system id");
 
   // TODO SG: Throw exceptions here if invalid field exists

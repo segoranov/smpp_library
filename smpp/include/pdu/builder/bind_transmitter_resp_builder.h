@@ -34,13 +34,9 @@ class BindTransmitterRespBuilder {
   BindTransmitterRespBuilder();
 
   BindTransmitterRespBuilder& withCommandLength(uint32_t nCommandLength);
-
   BindTransmitterRespBuilder& withCommandStatus(uint32_t nCommandStatus);
-
   BindTransmitterRespBuilder& withSequenceNumber(uint32_t nSequenceNumber);
-
   BindTransmitterRespBuilder& withSystemId(const std::string& strSystemId);
-
   BindTransmitterRespBuilder& withOptionalParameter(const smpp::Tlv& tlv);
 };
 

@@ -10,29 +10,29 @@ BindTransmitter::BindTransmitter() : BaseBind{constants::CMD_ID_BIND_TRANSMITTER
 
 BindTransmitter::BindTransmitter(const builder::BindTransmitterBuilder& params)
     : BaseBind{constants::CMD_ID_BIND_TRANSMITTER} {
-  if (!params.m_optCommandLength)
+  if (!params.m_optCommandLength.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined command length");
 
-  if (!params.m_optCommandStatus)
+  if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined command status");
 
-  if (!params.m_optSequenceNumber)
+  if (!params.m_optSequenceNumber.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined sequence number");
 
-  if (!params.m_optSystemId)
+  if (!params.m_optSystemId.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined system id");
 
-  if (!params.m_optSystemType)
+  if (!params.m_optSystemType.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined system type");
 
-  if (!params.m_optInterfaceVersion)
+  if (!params.m_optInterfaceVersion.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined interface version");
 
-  if (!params.m_optAddrTon) throw UndefinedValueException("BindTransmitter(): Undefined addr ton");
+  if (!params.m_optAddrTon.has_value()) throw UndefinedValueException("BindTransmitter(): Undefined addr ton");
 
-  if (!params.m_optAddrNpi) throw UndefinedValueException("BindTransmitter(): Undefined addr npi");
+  if (!params.m_optAddrNpi.has_value()) throw UndefinedValueException("BindTransmitter(): Undefined addr npi");
 
-  if (!params.m_optAddressRange)
+  if (!params.m_optAddressRange.has_value())
     throw UndefinedValueException("BindTransmitter(): Undefined address range");
 
   // TODO SG: Validation

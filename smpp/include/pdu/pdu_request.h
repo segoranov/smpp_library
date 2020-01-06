@@ -1,4 +1,4 @@
-#ifndef PDU_REUQEST_H
+#ifndef PDU_REQUEST_H
 #define PDU_REQUEST_H
 
 #include "pdu.h"

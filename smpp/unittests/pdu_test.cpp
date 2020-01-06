@@ -8,6 +8,7 @@
 #include "pdu/bind_transmitter_resp.h"
 #include "pdu/builder/bind_transmitter_builder.h"
 #include "pdu/builder/bind_transmitter_resp_builder.h"
+#include "pdu/builder/submit_sm_builder.h"
 #include "smpp_constants.h"
 #include "smpp_exceptions.h"
 #include "util/smpp_util.h"
@@ -177,28 +178,79 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(
               deserializedPdu->hasOptionalParameter(smpp::constants::TAG_SC_INTERFACE_VERSION));
 
-          auto deserializedBindTransmitterRespPdu =
+          auto deserializedSubmitSmPdu =
               dynamic_cast<smpp::BindTransmitterResp*>(deserializedPdu.get());
-          REQUIRE(deserializedBindTransmitterRespPdu);
+          REQUIRE(deserializedSubmitSmPdu);
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
-            REQUIRE(deserializedBindTransmitterRespPdu->getCommandLength() ==
+            REQUIRE(deserializedSubmitSmPdu->getCommandLength() ==
                     bindTransmitterRespPdu.getCommandLength());
 
-            REQUIRE(deserializedBindTransmitterRespPdu->getCommandStatus() ==
+            REQUIRE(deserializedSubmitSmPdu->getCommandStatus() ==
                     bindTransmitterRespPdu.getCommandStatus());
 
-            REQUIRE(deserializedBindTransmitterRespPdu->getSequenceNumber() ==
+            REQUIRE(deserializedSubmitSmPdu->getSequenceNumber() ==
                     bindTransmitterRespPdu.getSequenceNumber());
 
-            REQUIRE(deserializedBindTransmitterRespPdu->getSystemId() ==
+            REQUIRE(deserializedSubmitSmPdu->getSystemId() ==
                     bindTransmitterRespPdu.getSystemId());
 
-            REQUIRE(deserializedBindTransmitterRespPdu->getOptionalParameters().size() == 1);
+            REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 1);
             REQUIRE(
-                deserializedBindTransmitterRespPdu->getOptionalParameters()[0] ==
+                deserializedSubmitSmPdu->getOptionalParameters()[0] ==
                 smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
           }
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample submit sm pdu") {
+    smpp::SubmitSm submitSmPdu{smpp::builder::SubmitSmBuilder()
+                                   .withCommandLength(44)
+                                   .withCommandStatus(0)
+                                   .withSequenceNumber(378019)
+                                   .withServiceType("A")
+                                   .withSourceAddrTon(0x03)
+                                   .withSourceAddrNpi(0x01)
+                                   .withSourceAddr("B")
+                                   .withDestAddrTon(0x03)
+                                   .withDestAddrNpi(0x01)
+                                   .withDestinationAddr("C")
+                                   .withEsmClass(0)
+                                   .withProtocolId(0)
+                                   .withPriorityFlag(0)
+                                   .withScheduleDeliveryTime("")
+                                   .withValidityPeriod("D")
+                                   .withRegisteredDelivery(0x01)
+                                   .withReplaceIfPresentFlag(0)
+                                   .withDataCoding(0)
+                                   .withSmDefaultMsgId(0)
+                                   .withSmLength(7)
+                                   .withShortMessage("TEST_SM")};
+
+    WHEN("the submit sm PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      submitSmPdu.serialize(ss);
+
+      THEN("the stringstream size should be 44 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 44);
+      }
+
+      AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM);
+
+        auto deserializedSubmitSmPdu = dynamic_cast<smpp::SubmitSm*>(deserializedPdu.get());
+        REQUIRE(deserializedSubmitSmPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedSubmitSmPdu->getCommandLength() == submitSmPdu.getCommandLength());
+          REQUIRE(deserializedSubmitSmPdu->getCommandStatus() == submitSmPdu.getCommandStatus());
+          REQUIRE(deserializedSubmitSmPdu->getSequenceNumber() == submitSmPdu.getSequenceNumber());
+          REQUIRE(deserializedSubmitSmPdu->getShortMessage() == submitSmPdu.getShortMessage());
+          REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 0);
         }
       }
     }

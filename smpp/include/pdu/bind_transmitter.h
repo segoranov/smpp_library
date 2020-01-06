@@ -16,7 +16,7 @@ class BindTransmitter final : public BaseBind {
   static std::unique_ptr<BindTransmitter> createPduBody(std::istream& is);
 
  public:
-  BindTransmitter(const builder::BindTransmitterBuilder& params);
+  explicit BindTransmitter(const builder::BindTransmitterBuilder& params);
 
   virtual void serialize(std::ostream& os) const override;
 };
