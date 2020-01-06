@@ -146,19 +146,18 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     THEN("The size of the sample pdu should be 31") { REQUIRE(sizeof(samplePdu) == 31); }
 
     AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
-      auto bindTransmitterRespPdu =
-          smpp::builder::BindTransmitterRespBuilder::BindTransmitterRespPdu()
+      smpp::BindTransmitterResp bindTransmitterRespPdu{
+          smpp::builder::BindTransmitterRespBuilder()
               .withCommandLength(31)
               .withCommandStatus(0)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
-              .withOptionalParameter(
-                  smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)})
-              .build();
+              .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
+                                               static_cast<uint8_t>(0x01)})};
 
       WHEN("the BindTransmitterResp PDU is serialized into a stringstream") {
         std::stringstream ss;
-        bindTransmitterRespPdu->serialize(ss);
+        bindTransmitterRespPdu.serialize(ss);
 
         THEN("the stringstream size should be 31 bytes (the command length)") {
           REQUIRE(ss.str().size() == 31);
@@ -184,16 +183,16 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
             REQUIRE(deserializedBindTransmitterRespPdu->getCommandLength() ==
-                    bindTransmitterRespPdu->getCommandLength());
+                    bindTransmitterRespPdu.getCommandLength());
 
             REQUIRE(deserializedBindTransmitterRespPdu->getCommandStatus() ==
-                    bindTransmitterRespPdu->getCommandStatus());
+                    bindTransmitterRespPdu.getCommandStatus());
 
             REQUIRE(deserializedBindTransmitterRespPdu->getSequenceNumber() ==
-                    bindTransmitterRespPdu->getSequenceNumber());
+                    bindTransmitterRespPdu.getSequenceNumber());
 
             REQUIRE(deserializedBindTransmitterRespPdu->getSystemId() ==
-                    bindTransmitterRespPdu->getSystemId());
+                    bindTransmitterRespPdu.getSystemId());
 
             REQUIRE(deserializedBindTransmitterRespPdu->getOptionalParameters().size() == 1);
             REQUIRE(

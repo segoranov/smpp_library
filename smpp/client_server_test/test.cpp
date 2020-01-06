@@ -22,24 +22,23 @@ int main() {
   std::cout << "Client connected succesfully to 127.0.0.1:7778\n";
   std::cout << "Client sending bind transmitter to server.\n";
 
-  auto bindTransmitterPdu = smpp::builder::BindTransmitterBuilder::BindTransmitterPdu()
-                                .withCommandLength(47)
-                                .withCommandStatus(0)
-                                .withSequenceNumber(1)
-                                .withSystemId("SMPP3TEST")
-                                .withPassword("secret08")
-                                .withSystemType("SUBMIT1")
-                                .withInterfaceVersion(0x50)
-                                .withAddrTon(0x01)
-                                .withAddrNpi(0x01)
-                                .withAddressRange("")
-                                .build();
+  smpp::BindTransmitter bindTransmitterPdu = smpp::builder::BindTransmitterBuilder()
+                                                 .withCommandLength(47)
+                                                 .withCommandStatus(0)
+                                                 .withSequenceNumber(1)
+                                                 .withSystemId("SMPP3TEST")
+                                                 .withPassword("secret08")
+                                                 .withSystemType("SUBMIT1")
+                                                 .withInterfaceVersion(0x50)
+                                                 .withAddrTon(0x01)
+                                                 .withAddrNpi(0x01)
+                                                 .withAddressRange("");
 
   // client sending bind transmitter
   std::stringstream ss;
-  bindTransmitterPdu->serialize(ss);
-  boost::asio::write(
-      clientSocket, boost::asio::buffer(ss.str().c_str(), bindTransmitterPdu->getCommandLength()));
+  bindTransmitterPdu.serialize(ss);
+  boost::asio::write(clientSocket,
+                     boost::asio::buffer(ss.str().c_str(), bindTransmitterPdu.getCommandLength()));
 
   // receiving hopefully bind transmitter resp
   char reply[max_length];

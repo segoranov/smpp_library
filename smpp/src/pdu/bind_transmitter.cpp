@@ -11,31 +11,29 @@ BindTransmitter::BindTransmitter() : BaseBind{constants::CMD_ID_BIND_TRANSMITTER
 BindTransmitter::BindTransmitter(const builder::BindTransmitterBuilder& params)
     : BaseBind{constants::CMD_ID_BIND_TRANSMITTER} {
   if (!params.m_optCommandLength)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined command length");
+    throw UndefinedValueException("BindTransmitter(): Undefined command length");
 
   if (!params.m_optCommandStatus)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined command status");
+    throw UndefinedValueException("BindTransmitter(): Undefined command status");
 
   if (!params.m_optSequenceNumber)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined sequence number");
+    throw UndefinedValueException("BindTransmitter(): Undefined sequence number");
 
   if (!params.m_optSystemId)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined system id");
+    throw UndefinedValueException("BindTransmitter(): Undefined system id");
 
   if (!params.m_optSystemType)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined system type");
+    throw UndefinedValueException("BindTransmitter(): Undefined system type");
 
   if (!params.m_optInterfaceVersion)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined interface version");
+    throw UndefinedValueException("BindTransmitter(): Undefined interface version");
 
-  if (!params.m_optAddrTon)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined addr ton");
+  if (!params.m_optAddrTon) throw UndefinedValueException("BindTransmitter(): Undefined addr ton");
 
-  if (!params.m_optAddrNpi)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined addr npi");
+  if (!params.m_optAddrNpi) throw UndefinedValueException("BindTransmitter(): Undefined addr npi");
 
   if (!params.m_optAddressRange)
-    throw UndefinedValueException("BindTransmitterBuilder: Undefined address range");
+    throw UndefinedValueException("BindTransmitter(): Undefined address range");
 
   // TODO SG: Validation
   m_nCommandLength = params.m_optCommandLength.value();

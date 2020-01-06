@@ -33,21 +33,20 @@ class session : public std::enable_shared_from_this<session> {
             std::cout << "Server sending bind transmitter resp...\n";
 
             std::stringstream ssSend;
-            auto bindTransmitterRespPdu =
-                smpp::builder::BindTransmitterRespBuilder::BindTransmitterRespPdu()
+            smpp::BindTransmitterResp bindTransmitterRespPdu =
+                smpp::builder::BindTransmitterRespBuilder()
                     .withCommandLength(31)
                     .withCommandStatus(0)
                     .withSequenceNumber(0)
                     .withSystemId("SMPP3TEST")
                     .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
-                                                     static_cast<uint8_t>(0x01)})
-                    .build();
+                                                     static_cast<uint8_t>(0x01)});
 
-            bindTransmitterRespPdu->serialize(ssSend);
+            bindTransmitterRespPdu.serialize(ssSend);
             boost::asio::async_write(
                 socket_,
                 boost::asio::buffer(ssSend.str().c_str(),
-                                    bindTransmitterRespPdu->getCommandLength()),
+                                    bindTransmitterRespPdu.getCommandLength()),
                 [this, self](boost::system::error_code ec, std::size_t /*length*/) {
                   if (!ec) {
                     std::cout

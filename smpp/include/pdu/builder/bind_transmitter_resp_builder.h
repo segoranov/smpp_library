@@ -21,8 +21,6 @@ namespace smpp::builder {
  */
 class BindTransmitterRespBuilder {
  private:
-  BindTransmitterRespBuilder();
-
   friend class smpp::BindTransmitterResp;
 
   std::optional<uint32_t> m_optCommandLength;
@@ -33,7 +31,7 @@ class BindTransmitterRespBuilder {
   std::vector<Tlv> m_vOptionalTlvParameters;
 
  public:
-  static BindTransmitterRespBuilder BindTransmitterRespPdu();
+  BindTransmitterRespBuilder();
 
   BindTransmitterRespBuilder& withCommandLength(uint32_t nCommandLength);
 
@@ -44,8 +42,6 @@ class BindTransmitterRespBuilder {
   BindTransmitterRespBuilder& withSystemId(const std::string& strSystemId);
 
   BindTransmitterRespBuilder& withOptionalParameter(const smpp::Tlv& tlv);
-
-  std::unique_ptr<BindTransmitterResp> build();
 };
 
 }  // namespace smpp::builder
