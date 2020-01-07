@@ -42,6 +42,8 @@ class Pdu {
    */
   explicit Pdu(uint32_t nCommandId, bool bIsRequest);
 
+  using Ptr = std::unique_ptr<Pdu>;
+
   uint32_t getCommandLength() const;
   uint32_t getCommandId() const;
   uint32_t getCommandStatus() const;
@@ -62,7 +64,7 @@ class Pdu {
   /**
    * @brief Deserializes and creates a PDU by reading raw bytes from an input stream
    */
-  static std::unique_ptr<Pdu> deserialize(std::istream& is);
+  static Ptr deserialize(std::istream& is);
 
  protected:
   /**
@@ -72,7 +74,7 @@ class Pdu {
    * The purpose of the function is to deserialize the PDU body based
    * on the PDU command id
    */
-  using BodyFactory = std::function<std::unique_ptr<Pdu>(std::istream& is)>;
+  using BodyFactory = std::function<Ptr(std::istream& is)>;
 
   // Utility methods for serialization/deserialization
   virtual void serializeBody(std::ostream& os) const = 0;

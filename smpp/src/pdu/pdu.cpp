@@ -97,7 +97,7 @@ void Pdu::deserializeOptionalParameters(std::istream& is) {
   }
 }
 
-std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
+Pdu::Ptr Pdu::deserialize(std::istream& is) {
   // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);
   if (!util::isCommandLengthValid(nCommandLength)) {
