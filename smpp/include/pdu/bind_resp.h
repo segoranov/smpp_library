@@ -21,58 +21,79 @@ class BindResp : public PduResponse {
   friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
 
  private:
-  BindResp() : PduResponse{CommandId} {}
-
   std::string m_strSystemId;
 
  private:
-  virtual void serializeBody(std::ostream& os) const final override {
-    binary::serializeNullTerminatedString(m_strSystemId, os);
-    serializeOptionalParameters(os);
-  }
+  BindResp();
 
-  virtual void deserializeBody(std::istream& is) final override {
-    const std::string strSystemId = binary::deserializeNullTerminatedString(is);
-    m_strSystemId = strSystemId;
-
-    deserializeOptionalParameters(is);
-  }
-
-  static std::unique_ptr<BindResp> createPduBody(std::istream& is) {
-    auto bindRespPtr = std::unique_ptr<BindResp>{new BindResp{}};
-    bindRespPtr->deserializeBody(is);
-    return bindRespPtr;
-  }
+  virtual void serializeBody(std::ostream& os) const final override;
+  virtual void deserializeBody(std::istream& is) final override;
+  static std::unique_ptr<BindResp> createPduBody(std::istream& is);
 
  public:
-  explicit BindResp(const builder::BindRespBuilder& params) : PduResponse{CommandId} {
-    if (!params.m_optCommandLength.has_value())
-      throw UndefinedValueException("BindTransmitterResp(): Undefined command length");
+  explicit BindResp(const builder::BindRespBuilder& params);
 
-    if (!params.m_optCommandStatus.has_value())
-      throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
+  std::string getSystemId() const;
 
-    if (!params.m_optSequenceNumber.has_value())
-      throw UndefinedValueException("BindTransmitterResp(): Undefined sequence number");
-
-    if (!params.m_optSystemId.has_value())
-      throw UndefinedValueException("BindTransmitterResp(): Undefined system id");
-
-    // TODO SG: Throw exceptions here if invalid field exists
-    m_nCommandLength = params.m_optCommandLength.value();
-    m_nCommandStatus = params.m_optCommandStatus.value();
-    m_nSequenceNumber = params.m_optSequenceNumber.value();
-    m_strSystemId = params.m_optSystemId.value();
-    m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
-  }
-
-  std::string getSystemId() const { return m_strSystemId; }
-
-  virtual void serialize(std::ostream& os) const override {
-    serializeHeader(os);
-    serializeBody(os);
-  }
+  virtual void serialize(std::ostream& os) const override;
 };
+
+template <uint32_t CommandId>
+BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : PduResponse{CommandId} {
+  if (!params.m_optCommandLength.has_value())
+    throw UndefinedValueException("BindTransmitterResp(): Undefined command length");
+
+  if (!params.m_optCommandStatus.has_value())
+    throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
+
+  if (!params.m_optSequenceNumber.has_value())
+    throw UndefinedValueException("BindTransmitterResp(): Undefined sequence number");
+
+  if (!params.m_optSystemId.has_value())
+    throw UndefinedValueException("BindTransmitterResp(): Undefined system id");
+
+  // TODO SG: Throw exceptions here if invalid field exists
+  m_nCommandLength = params.m_optCommandLength.value();
+  m_nCommandStatus = params.m_optCommandStatus.value();
+  m_nSequenceNumber = params.m_optSequenceNumber.value();
+  m_strSystemId = params.m_optSystemId.value();
+  m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
+}
+
+template <uint32_t CommandId>
+std::string BindResp<CommandId>::getSystemId() const {
+  return m_strSystemId;
+}
+
+template <uint32_t CommandId>
+void BindResp<CommandId>::serialize(std::ostream& os) const {
+  serializeHeader(os);
+  serializeBody(os);
+}
+
+template <uint32_t CommandId>
+BindResp<CommandId>::BindResp() : PduResponse{CommandId} {}
+
+template <uint32_t CommandId>
+void BindResp<CommandId>::serializeBody(std::ostream& os) const {
+  binary::serializeNullTerminatedString(m_strSystemId, os);
+  serializeOptionalParameters(os);
+}
+
+template <uint32_t CommandId>
+void BindResp<CommandId>::deserializeBody(std::istream& is) {
+  const std::string strSystemId = binary::deserializeNullTerminatedString(is);
+  m_strSystemId = strSystemId;
+
+  deserializeOptionalParameters(is);
+}
+
+template <uint32_t CommandId>
+std::unique_ptr<BindResp<CommandId>> BindResp<CommandId>::createPduBody(std::istream& is) {
+  auto bindRespPtr = std::unique_ptr<BindResp>{new BindResp{}};
+  bindRespPtr->deserializeBody(is);
+  return bindRespPtr;
+}
 
 }  // namespace smpp
 
