@@ -15,7 +15,7 @@ constexpr int DATA_TYPE_INTEGER = 2;
 
 constexpr int PDU_HEADER_FIELD_LENGTH = 4;
 constexpr int PDU_HEADER_LENGTH = 16;
-constexpr int PDU_MAX_LENGTH = 140; // max octets for a PDU
+constexpr int PDU_MAX_LENGTH = 140;               // max octets for a PDU
 constexpr int PDU_CMD_ID_RESP_MASK = 0x80000000;  // 31st bit set to true
 // constexpr Address EMPTY_ADDRESS = new Address();
 
@@ -33,6 +33,14 @@ constexpr long DEFAULT_WINDOW_MONITOR_INTERVAL = -1;  // disabled
 constexpr int DEFAULT_SERVER_MAX_CONNECTION_SIZE = 100;
 constexpr bool DEFAULT_SERVER_NON_BLOCKING_SOCKETS_ENABLED = true;
 constexpr bool DEFAULT_SERVER_REUSE_ADDRESS = true;
+
+namespace null_settings {
+constexpr uint8_t NULL_INT8 = 0x00;
+constexpr uint16_t NULL_INT16 = 0x0000;
+constexpr uint32_t NULL_INT32 = 0x00000000;
+const std::string NULL_C_OCTET_STRING = "";
+
+}  // namespace null_settings
 
 //
 // SUBMIT_MULTI destination type flags

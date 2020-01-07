@@ -78,8 +78,11 @@ class Pdu {
   // Utility methods for serialization/deserialization
   virtual void serializeBody(std::ostream& os) const = 0;
   virtual void deserializeBody(std::istream& is) = 0;
+
   void serializeHeader(std::ostream& os) const;
+
   void serializeOptionalParameters(std::ostream& os) const;
+  void deserializeOptionalParameters(std::istream& is);
 };
 
 }  // namespace smpp

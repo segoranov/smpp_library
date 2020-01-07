@@ -18,18 +18,9 @@ void BaseBindResp::deserializeBody(std::istream& is) {
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
   m_strSystemId = strSystemId;
 
-  // TODO SG: Error handling and check for correctnes of tag...
-  if (!is.eof()) {
-    Tlv sc_interface_version;
-    sc_interface_version.deserialize(is);
-
-    if (!sc_interface_version.getTag() == constants::TAG_SC_INTERFACE_VERSION) {
-      throw InvalidTagException{
-          "Tag different than 'sc_interface_version' detected during deserialization of "
-          "BaseBindResp"};
-    }
-
-    m_vOptionalTlvParameters.push_back(sc_interface_version);
+  deserializeOptionalParameters(is);
+  if (m_vOptionalTlvParameters.size() > 1) {
+    throw InvalidTagException{};
   }
 }
 

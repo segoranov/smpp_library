@@ -51,7 +51,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       smpp::BindTransmitter bindTransmitterPdu{
           smpp::builder::BindTransmitterBuilder()
               .withCommandLength(47)  // 0x0000002F in hex is 47 in decimal
-              .withCommandStatus(0)
+              .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
               .withPassword("secret08")
@@ -59,7 +59,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
               .withInterfaceVersion(0x50)
               .withAddrTon(0x01)
               .withAddrNpi(0x01)
-              .withAddressRange("")};
+              .withAddressRange(smpp::constants::null_settings::NULL_C_OCTET_STRING)};
 
       WHEN("the BindTransmitter PDU is serialized into a stringstream") {
         std::stringstream ss;
@@ -150,7 +150,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       smpp::BindTransmitterResp bindTransmitterRespPdu{
           smpp::builder::BindTransmitterRespBuilder()
               .withCommandLength(31)
-              .withCommandStatus(0)
+              .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
               .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
@@ -206,28 +206,29 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
   }
 
   GIVEN("A sample submit sm pdu") {
-    smpp::SubmitSm submitSmPdu{smpp::builder::SubmitSmBuilder()
-                                   .withCommandLength(44)
-                                   .withCommandStatus(0)
-                                   .withSequenceNumber(378019)
-                                   .withServiceType("A")
-                                   .withSourceAddrTon(0x03)
-                                   .withSourceAddrNpi(0x01)
-                                   .withSourceAddr("B")
-                                   .withDestAddrTon(0x03)
-                                   .withDestAddrNpi(0x01)
-                                   .withDestinationAddr("C")
-                                   .withEsmClass(0)
-                                   .withProtocolId(0)
-                                   .withPriorityFlag(0)
-                                   .withScheduleDeliveryTime("")
-                                   .withValidityPeriod("D")
-                                   .withRegisteredDelivery(0x01)
-                                   .withReplaceIfPresentFlag(0)
-                                   .withDataCoding(0)
-                                   .withSmDefaultMsgId(0)
-                                   .withSmLength(7)
-                                   .withShortMessage("TEST_SM")};
+    smpp::SubmitSm submitSmPdu{
+        smpp::builder::SubmitSmBuilder()
+            .withCommandLength(44)
+            .withCommandStatus(smpp::constants::errors::ESME_ROK)
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withSmLength(7)
+            .withShortMessage("TEST_SM")};
 
     WHEN("the submit sm PDU is serialized into a stringstream") {
       std::stringstream ss;

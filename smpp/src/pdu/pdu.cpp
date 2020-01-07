@@ -90,6 +90,14 @@ void Pdu::serializeOptionalParameters(std::ostream& os) const {
   }
 }
 
+void Pdu::deserializeOptionalParameters(std::istream& is) {
+  while (is.peek() != EOF) {
+    Tlv tlv;
+    tlv.deserialize(is);
+    m_vOptionalTlvParameters.push_back(tlv);
+  }
+}
+
 std::unique_ptr<Pdu> Pdu::deserialize(std::istream& is) {
   // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);

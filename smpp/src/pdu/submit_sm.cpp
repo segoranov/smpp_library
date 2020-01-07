@@ -194,14 +194,7 @@ void SubmitSm::deserializeBody(std::istream& is) {
   const std::string strShortMessage = binary::deserializeOctetString(nSmLength, is);
   m_strShortMessage = strShortMessage;
 
-  // TODO SG: Error handling?
-  if (!is.peek() == EOF) {  // the remaining bytes are the optional parameters...
-    while (!is.eof()) {
-      Tlv tlv;
-      tlv.deserialize(is);
-      m_vOptionalTlvParameters.push_back(tlv);
-    }
-  }
+  deserializeOptionalParameters(is);
 }
 
 void SubmitSm::serialize(std::ostream& os) const {
