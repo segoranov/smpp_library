@@ -1,7 +1,6 @@
 #ifndef BASE_BIND_RESP_H
 #define BASE_BIND_RESP_H
 
-#include <cereal/types/base_class.hpp>
 #include <string>
 
 #include "pdu_response.h"

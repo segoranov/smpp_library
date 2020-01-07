@@ -25,6 +25,7 @@ class SubmitSmResp final : public BaseSubmissionResp {
 
   virtual void serialize(std::ostream& os) const override;
 };
+
 }  // namespace smpp
 
 #endif

@@ -3,9 +3,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-#include "pdu/bind_receiver.h"
-#include "pdu/bind_transceiver.h"
-#include "pdu/bind_transmitter.h"
+#include "pdu/bind.h"
 #include "pdu/bind_transmitter_resp.h"
 #include "pdu/submit_sm.h"
 #include "pdu/submit_sm_resp.h"

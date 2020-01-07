@@ -6,7 +6,7 @@
 namespace smpp {
 
 namespace builder {
-class BindTransmitterRespBuilder;
+class BindRespBuilder;
 }
 
 class BindTransmitterResp final : public BaseBindResp {
@@ -17,7 +17,7 @@ class BindTransmitterResp final : public BaseBindResp {
   static std::unique_ptr<BindTransmitterResp> createPduBody(std::istream& is);
 
  public:
-  explicit BindTransmitterResp(const builder::BindTransmitterRespBuilder& params);
+  explicit BindTransmitterResp(const builder::BindRespBuilder& params);
 
   virtual void serialize(std::ostream& os) const override;
 };

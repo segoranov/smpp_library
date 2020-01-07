@@ -19,9 +19,9 @@ constexpr int PDU_MAX_LENGTH = 140;               // max octets for a PDU
 constexpr int PDU_CMD_ID_RESP_MASK = 0x80000000;  // 31st bit set to true
 // constexpr Address EMPTY_ADDRESS = new Address();
 
-constexpr uint16_t VERSION_3_3 = 0x33;
-constexpr uint16_t VERSION_3_4 = 0x34;
-constexpr uint16_t VERSION_5_0 = 0x50;
+constexpr uint8_t VERSION_3_3 = 0x33;
+constexpr uint8_t VERSION_3_4 = 0x34;
+constexpr uint8_t VERSION_5_0 = 0x50;
 
 constexpr int DEFAULT_WINDOW_SIZE = 1;
 constexpr long DEFAULT_WINDOW_WAIT_TIMEOUT = 60000;

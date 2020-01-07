@@ -12,7 +12,6 @@ namespace smpp::builder {
 
 /**
  * Class used for creation of submit_sm PDUs in a more readable and reliable way.
- * Forces all objects to have their fields defined.
  *
  * The named parameter idiom is used
  * - https://isocpp.org/wiki/faq/ctors#named-parameter-idiom

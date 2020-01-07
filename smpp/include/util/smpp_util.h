@@ -3,7 +3,6 @@
 
 #include <inttypes.h>
 
-#include <cereal/archives/binary.hpp>
 #include <sstream>
 #include <utility>
 namespace smpp::util {
@@ -26,6 +25,11 @@ bool isTlvTagValid(uint16_t nTag);
  * @return true if the given tag is valid by SMPP specification; false otherwise
  */
 bool isCommandIdValid(uint32_t nCommandId);
+
+/**
+ * @brief Check if interface version is valid
+ */
+bool isInterfaceVersionValid(uint8_t nInterfaceVersion);
 
 }  // namespace smpp::util
 

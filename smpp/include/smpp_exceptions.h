@@ -61,8 +61,15 @@ class InvalidTagException : public SmppException {
   explicit InvalidTagException(const std::string& strError) : SmppException{strError} {}
 };
 
+class InvalidInterfaceVersionException : public SmppException {
+ public:
+  InvalidInterfaceVersionException() : SmppException{"Invalid interface version"} {}
+  explicit InvalidInterfaceVersionException(const std::string& strError)
+      : SmppException{strError} {}
+};
+
 class UndefinedValueException : public SmppException {
-  public:
+ public:
   UndefinedValueException() : SmppException{"Undefined value"} {}
   explicit UndefinedValueException(const std::string& strError) : SmppException{strError} {}
 };

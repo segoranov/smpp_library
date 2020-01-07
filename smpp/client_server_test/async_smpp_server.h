@@ -6,7 +6,7 @@
 
 #include "pdu/bind_transmitter.h"
 #include "pdu/bind_transmitter_resp.h"
-#include "pdu/builder/bind_transmitter_resp_builder.h"
+#include "pdu/builder/bind_resp_builder.h"
 #include "smpp_constants.h"
 
 using boost::asio::ip::tcp;
@@ -34,7 +34,7 @@ class session : public std::enable_shared_from_this<session> {
 
             std::stringstream ssSend;
             smpp::BindTransmitterResp bindTransmitterRespPdu =
-                smpp::builder::BindTransmitterRespBuilder()
+                smpp::builder::BindRespBuilder()
                     .withCommandLength(31)
                     .withCommandStatus(0)
                     .withSequenceNumber(0)

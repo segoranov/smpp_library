@@ -1,6 +1,6 @@
 #include "pdu/bind_transmitter_resp.h"
 
-#include "pdu/builder/bind_transmitter_resp_builder.h"
+#include "pdu/builder/bind_resp_builder.h"
 #include "smpp_constants.h"
 
 namespace smpp {
@@ -8,7 +8,7 @@ namespace smpp {
 BindTransmitterResp::BindTransmitterResp()
     : BaseBindResp{constants::CMD_ID_BIND_TRANSMITTER_RESP} {}
 
-BindTransmitterResp::BindTransmitterResp(const builder::BindTransmitterRespBuilder& params)
+BindTransmitterResp::BindTransmitterResp(const builder::BindRespBuilder& params)
     : BaseBindResp{constants::CMD_ID_BIND_TRANSMITTER_RESP} {
   if (!params.m_optCommandLength.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined command length");

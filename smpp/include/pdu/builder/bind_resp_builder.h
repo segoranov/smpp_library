@@ -12,14 +12,16 @@
 namespace smpp::builder {
 
 /**
- * Class used for creation of bind_transmitter_resp PDUs in a more readable and reliable way.
- * Forces all objects to have their fields defined.
+ * Class used for creation of bind_resp PDUs in a more readable and reliable way.
+ * - bind_transmitter_resp
+ * - bind transceiver_resp
+ * - bind_transceiver_resp
  *
  * The named parameter idiom is used
  * - https://isocpp.org/wiki/faq/ctors#named-parameter-idiom
  * - https://stackoverflow.com/questions/40264/how-many-constructor-arguments-is-too-many
  */
-class BindTransmitterRespBuilder {
+class BindRespBuilder {
  private:
   friend class smpp::BindTransmitterResp;
 
@@ -30,13 +32,18 @@ class BindTransmitterRespBuilder {
   std::vector<Tlv> m_vOptionalTlvParameters;
 
  public:
-  BindTransmitterRespBuilder() = default;
+  BindRespBuilder() = default;
 
-  BindTransmitterRespBuilder& withCommandLength(uint32_t nCommandLength);
-  BindTransmitterRespBuilder& withCommandStatus(uint32_t nCommandStatus);
-  BindTransmitterRespBuilder& withSequenceNumber(uint32_t nSequenceNumber);
-  BindTransmitterRespBuilder& withSystemId(const std::string& strSystemId);
-  BindTransmitterRespBuilder& withOptionalParameter(const smpp::Tlv& tlv);
+  BindRespBuilder& withCommandLength(uint32_t nCommandLength);
+  BindRespBuilder& withCommandStatus(uint32_t nCommandStatus);
+  BindRespBuilder& withSequenceNumber(uint32_t nSequenceNumber);
+  BindRespBuilder& withSystemId(const std::string& strSystemId);
+
+  /**
+   * Bind responses support only 1 optional TLV parameter:
+   * sc_interface_version
+   */
+  BindRespBuilder& withScInterfaceVersion(uint8_t nScInterfaceVersion);
 };
 
 }  // namespace smpp::builder

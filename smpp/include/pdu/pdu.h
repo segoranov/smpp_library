@@ -3,7 +3,6 @@
 
 #include <arpa/inet.h>
 
-#include <cereal/access.hpp>
 #include <functional>
 #include <memory>
 #include <optional>

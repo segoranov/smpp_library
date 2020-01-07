@@ -1,7 +1,6 @@
 #include "tlv/tlv.h"
 
 #include "catch.hpp"
-#include "cereal/archives/binary.hpp"
 #include "smpp_constants.h"
 
 SCENARIO("Tlv should have correct size", "[Tlv]") {

@@ -1,13 +1,12 @@
 #include "pdu/pdu.h"
 
-#include <cereal/archives/binary.hpp>
 #include <sstream>
 
 #include "catch.hpp"
-#include "pdu/bind_transmitter.h"
+#include "pdu/bind.h"
 #include "pdu/bind_transmitter_resp.h"
-#include "pdu/builder/bind_transmitter_builder.h"
-#include "pdu/builder/bind_transmitter_resp_builder.h"
+#include "pdu/builder/bind_builder.h"
+#include "pdu/builder/bind_resp_builder.h"
 #include "pdu/builder/submit_sm_builder.h"
 #include "pdu/builder/submit_sm_resp_builder.h"
 #include "smpp_constants.h"
@@ -50,7 +49,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
     AND_GIVEN("a BindTransmitter PDU corresponding to the raw PDU") {
       smpp::BindTransmitter bindTransmitterPdu{
-          smpp::builder::BindTransmitterBuilder()
+          smpp::builder::BindBuilder()
               .withCommandLength(47)  // 0x0000002F in hex is 47 in decimal
               .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
@@ -138,24 +137,23 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     53 4D 50 50 33 54 45 53 54 00       system_id (“SMPP3TEST”)
     02 10                               TLV sc_interface_version tag
     00 01                               TLV sc_interface_version length
-    01                                  TLV sc_interface_version value
+    50                                  TLV sc_interface_version value
     */
 
     const uint8_t samplePdu[] = {0x00, 0x00, 0x00, 0x1F, 0x80, 0x00, 0x00, 0x02, 0x00, 0x00, 0x00,
                                  0x00, 0x00, 0x00, 0x00, 0x01, 0x53, 0x4D, 0x50, 0x50, 0x33, 0x54,
-                                 0x45, 0x53, 0x54, 0x00, 0x02, 0x10, 0x00, 0x01, 0x01};
+                                 0x45, 0x53, 0x54, 0x00, 0x02, 0x10, 0x00, 0x01, 0x50};
 
     THEN("The size of the sample pdu should be 31") { REQUIRE(sizeof(samplePdu) == 31); }
 
     AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
       smpp::BindTransmitterResp bindTransmitterRespPdu{
-          smpp::builder::BindTransmitterRespBuilder()
+          smpp::builder::BindRespBuilder()
               .withCommandLength(31)
               .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
-              .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
-                                               static_cast<uint8_t>(0x01)})};
+              .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
 
       WHEN("the BindTransmitterResp PDU is serialized into a stringstream") {
         std::stringstream ss;
@@ -197,9 +195,9 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
                     bindTransmitterRespPdu.getSystemId());
 
             REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 1);
-            REQUIRE(
-                deserializedSubmitSmPdu->getOptionalParameters()[0] ==
-                smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION, static_cast<uint8_t>(0x01)});
+            REQUIRE(deserializedSubmitSmPdu->getOptionalParameters()[0] ==
+                    smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
+                              smpp::constants::VERSION_5_0});
           }
         }
       }
