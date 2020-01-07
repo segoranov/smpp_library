@@ -24,14 +24,13 @@ class BindTransmitterRespBuilder {
   friend class smpp::BindTransmitterResp;
 
   std::optional<uint32_t> m_optCommandLength;
-  uint32_t m_nCommandId;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
   std::optional<std::string> m_optSystemId;
   std::vector<Tlv> m_vOptionalTlvParameters;
 
  public:
-  BindTransmitterRespBuilder();
+  BindTransmitterRespBuilder() = default;
 
   BindTransmitterRespBuilder& withCommandLength(uint32_t nCommandLength);
   BindTransmitterRespBuilder& withCommandStatus(uint32_t nCommandStatus);

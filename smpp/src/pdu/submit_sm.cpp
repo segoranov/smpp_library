@@ -13,7 +13,6 @@ SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
     throw UndefinedValueException("SubmitSm(): Undefined command length");
   }
 
-  uint32_t m_nCommandId;
   if (!params.m_optCommandStatus.has_value()) {
     throw UndefinedValueException("SubmitSm(): Undefined command status");
   }

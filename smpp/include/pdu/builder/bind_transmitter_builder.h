@@ -24,7 +24,6 @@ class BindTransmitterBuilder {
   friend class smpp::BindTransmitter;
 
   std::optional<uint32_t> m_optCommandLength;
-  uint32_t m_nCommandId;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
 
@@ -37,7 +36,7 @@ class BindTransmitterBuilder {
   std::optional<std::string> m_optAddressRange;
 
  public:
-  BindTransmitterBuilder();
+  BindTransmitterBuilder() = default;
 
   BindTransmitterBuilder& withCommandLength(uint32_t nCommandLength);
   BindTransmitterBuilder& withCommandStatus(uint32_t nCommandStatus);

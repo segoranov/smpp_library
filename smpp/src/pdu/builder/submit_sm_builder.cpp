@@ -1,10 +1,6 @@
 #include "pdu/builder/submit_sm_builder.h"
 
-#include "smpp_constants.h"
-
 namespace smpp::builder {
-
-SubmitSmBuilder::SubmitSmBuilder() : m_nCommandId{constants::CMD_ID_SUBMIT_SM} {}
 
 SubmitSmBuilder& SubmitSmBuilder::withCommandLength(uint32_t nCommandLength) {
   m_optCommandLength = nCommandLength;

@@ -22,6 +22,7 @@ add_executable( run_tests
  ../src/pdu/builder/bind_transmitter_builder.cpp
  ../src/pdu/builder/bind_transmitter_resp_builder.cpp
  ../src/pdu/builder/submit_sm_builder.cpp
+ ../src/pdu/builder/submit_sm_resp_builder.cpp
  ../src/pdu/pdu_request.cpp
  ../src/pdu/pdu_response.cpp
  ../src/pdu/base_bind.cpp
@@ -33,6 +34,7 @@ add_executable( run_tests
  ../src/pdu/bind_receiver.cpp
  ../src/pdu/bind_transceiver.cpp
  ../src/pdu/submit_sm.cpp
+ ../src/pdu/submit_sm_resp.cpp
  ../src/util/print_util.cpp
  ../src/util/smpp_util.cpp
  ../src/util/serialization_util.cpp

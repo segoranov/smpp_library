@@ -9,6 +9,7 @@
 #include "pdu/builder/bind_transmitter_builder.h"
 #include "pdu/builder/bind_transmitter_resp_builder.h"
 #include "pdu/builder/submit_sm_builder.h"
+#include "pdu/builder/submit_sm_resp_builder.h"
 #include "smpp_constants.h"
 #include "smpp_exceptions.h"
 #include "util/smpp_util.h"
@@ -252,6 +253,44 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(deserializedSubmitSmPdu->getSequenceNumber() == submitSmPdu.getSequenceNumber());
           REQUIRE(deserializedSubmitSmPdu->getShortMessage() == submitSmPdu.getShortMessage());
           REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample submit sm resp pdu") {
+    smpp::SubmitSmResp submitSmRespPdu{smpp::builder::SubmitSmRespBuilder()
+                                           .withCommandLength(28)
+                                           .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                                           .withSequenceNumber(378019)
+                                           .withMessageId("0118Z-01026")};
+
+    WHEN("the submit sm PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      submitSmRespPdu.serialize(ss);
+
+      THEN("the stringstream size should be 28 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 28);
+      }
+
+      AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM_RESP);
+
+        auto deserializedSubmitSmRespPdu =
+            dynamic_cast<smpp::SubmitSmResp*>(deserializedPdu.get());
+        REQUIRE(deserializedSubmitSmRespPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedSubmitSmRespPdu->getCommandLength() ==
+                  submitSmRespPdu.getCommandLength());
+          REQUIRE(deserializedSubmitSmRespPdu->getCommandStatus() ==
+                  submitSmRespPdu.getCommandStatus());
+          REQUIRE(deserializedSubmitSmRespPdu->getSequenceNumber() ==
+                  submitSmRespPdu.getSequenceNumber());
+          REQUIRE(deserializedSubmitSmRespPdu->getMessageId() == submitSmRespPdu.getMessageId());
+          REQUIRE(deserializedSubmitSmRespPdu->getOptionalParameters().size() == 0);
         }
       }
     }

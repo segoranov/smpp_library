@@ -23,7 +23,6 @@ class SubmitSmBuilder {
   friend class smpp::SubmitSm;
 
   std::optional<uint32_t> m_optCommandLength;
-  uint32_t m_nCommandId;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
 
@@ -51,7 +50,7 @@ class SubmitSmBuilder {
   std::vector<Tlv> m_vOptionalTlvParameters;
 
  public:
-  SubmitSmBuilder();
+  SubmitSmBuilder() = default;
 
   SubmitSmBuilder& withCommandLength(uint32_t nCommandLength);
   SubmitSmBuilder& withCommandStatus(uint32_t nCommandStatus);

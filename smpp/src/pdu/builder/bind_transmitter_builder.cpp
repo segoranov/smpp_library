@@ -1,12 +1,6 @@
 #include "pdu/builder/bind_transmitter_builder.h"
 
-#include "smpp_constants.h"
-#include "smpp_exceptions.h"
-
 namespace smpp::builder {
-
-BindTransmitterBuilder::BindTransmitterBuilder()
-    : m_nCommandId{constants::CMD_ID_BIND_TRANSMITTER} {}
 
 BindTransmitterBuilder& BindTransmitterBuilder::withCommandLength(uint32_t nCommandLength) {
   m_optCommandLength = nCommandLength;
