@@ -13,7 +13,7 @@ namespace smpp {
 template <uint32_t CommandId>
 class BindResp;
 
-}
+}  // namespace smpp
 
 namespace smpp::builder {
 

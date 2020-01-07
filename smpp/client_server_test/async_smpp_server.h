@@ -4,8 +4,7 @@
 #include <memory>
 #include <utility>
 
-#include "pdu/bind_transmitter.h"
-#include "pdu/bind_transmitter_resp.h"
+#include "pdu/bind_resp.h"
 #include "pdu/builder/bind_resp_builder.h"
 #include "smpp_constants.h"
 
@@ -33,14 +32,13 @@ class session : public std::enable_shared_from_this<session> {
             std::cout << "Server sending bind transmitter resp...\n";
 
             std::stringstream ssSend;
-            smpp::BindTransmitterResp bindTransmitterRespPdu =
+            smpp::BindTransmitterResp bindTransmitterRespPdu{
                 smpp::builder::BindRespBuilder()
                     .withCommandLength(31)
                     .withCommandStatus(0)
                     .withSequenceNumber(0)
                     .withSystemId("SMPP3TEST")
-                    .withOptionalParameter(smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
-                                                     static_cast<uint8_t>(0x01)});
+                    .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
 
             bindTransmitterRespPdu.serialize(ssSend);
             boost::asio::async_write(
