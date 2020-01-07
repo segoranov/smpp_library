@@ -29,10 +29,6 @@ namespace smpp::builder {
  */
 class BindBuilder {
  private:
-  // friend class smpp::BindTransmitter;
-  // friend class smpp::BindTransceiver;
-  // friend class smpp::BindReceiver;
-
   template <uint32_t CommandId>
   friend class smpp::Bind;
 
