@@ -1,13 +1,19 @@
-#ifndef BIND_TRANSMITTER_RESP_BUILDER_H
-#define BIND_TRANSMITTER_RESP_BUILDER_H
+#ifndef BIND_RESP_BUILDER_H
+#define BIND_RESP_BUILDER_H
 
 #include <optional>
 #include <string>
 #include <vector>
 
-#include "pdu/bind_transmitter_resp.h"
 #include "pdu/pdu.h"
 #include "tlv/tlv.h"
+
+namespace smpp {
+
+template <uint32_t CommandId>
+class BindResp;
+
+}
 
 namespace smpp::builder {
 
@@ -23,7 +29,8 @@ namespace smpp::builder {
  */
 class BindRespBuilder {
  private:
-  friend class smpp::BindTransmitterResp;
+  template <uint32_t CommandId>
+  friend class smpp::BindResp;
 
   std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;

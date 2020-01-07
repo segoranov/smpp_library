@@ -4,7 +4,7 @@
 
 #include "catch.hpp"
 #include "pdu/bind.h"
-#include "pdu/bind_transmitter_resp.h"
+#include "pdu/bind_resp.h"
 #include "pdu/builder/bind_builder.h"
 #include "pdu/builder/bind_resp_builder.h"
 #include "pdu/builder/submit_sm_builder.h"

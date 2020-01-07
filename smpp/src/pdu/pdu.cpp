@@ -4,7 +4,7 @@
 #include <unordered_map>
 
 #include "pdu/bind.h"
-#include "pdu/bind_transmitter_resp.h"
+#include "pdu/bind_resp.h"
 #include "pdu/submit_sm.h"
 #include "pdu/submit_sm_resp.h"
 #include "smpp_constants.h"

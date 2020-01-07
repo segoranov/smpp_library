@@ -25,10 +25,8 @@ add_executable( run_tests
  ../src/pdu/builder/submit_sm_resp_builder.cpp
  ../src/pdu/pdu_request.cpp
  ../src/pdu/pdu_response.cpp
- ../src/pdu/base_bind_resp.cpp
  ../src/pdu/base_submit.cpp
  ../src/pdu/base_submission_resp.cpp
- ../src/pdu/bind_transmitter_resp.cpp
  ../src/pdu/submit_sm.cpp
  ../src/pdu/submit_sm_resp.cpp
  ../src/util/print_util.cpp

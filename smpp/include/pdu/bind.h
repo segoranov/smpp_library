@@ -1,5 +1,5 @@
-#ifndef BASE_BIND_H
-#define BASE_BIND_H
+#ifndef BIND_H
+#define BIND_H
 
 #include <string>
 
@@ -21,7 +21,7 @@ template <uint32_t CommandId>
 class Bind final : public PduRequest {
   friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
 
- protected:
+ private:
   Bind() : PduRequest{CommandId} {}
 
   std::string m_strSystemId;
@@ -32,7 +32,7 @@ class Bind final : public PduRequest {
   uint8_t m_nAddrNpi;
   std::string m_strAddressRange;
 
- protected:
+ private:
   virtual void serializeBody(std::ostream& os) const final override {
     binary::serializeNullTerminatedString(m_strSystemId, os);
     binary::serializeNullTerminatedString(m_strPassword, os);

@@ -5,10 +5,6 @@
 #include <string>
 #include <vector>
 
-// #include "pdu/bind_receiver.h"
-// #include "pdu/bind_transceiver.h"
-// #include "pdu/bind_transmitter.h"
-// #include "pdu/base_bind.h"
 #include "pdu/pdu.h"
 #include "tlv/tlv.h"
 

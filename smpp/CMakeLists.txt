@@ -17,12 +17,10 @@ add_library(smpp SHARED
     src/pdu/builder/bind_resp_builder.cpp
     src/pdu/builder/submit_sm_builder.cpp
     src/pdu/builder/submit_sm_resp_builder.cpp
-    src/pdu/base_bind_resp.cpp
     src/pdu/base_submit.cpp
     src/pdu/base_submission_resp.cpp
     src/pdu/pdu_request.cpp
     src/pdu/pdu_response.cpp
-    src/pdu/bind_transmitter_resp.cpp
     src/pdu/submit_sm.cpp
     src/pdu/submit_sm_resp.cpp
     src/tlv/tlv.cpp
