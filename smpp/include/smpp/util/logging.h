@@ -11,7 +11,7 @@
  * Use these conventions when logging:
  * https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
  */
-#define TRACE BOOOST_LOG_SEV(smpp_lib_logger::get(), boost::log::trivial::trace)
+#define TRACE BOOST_LOG_SEV(smpp_lib_logger::get(), boost::log::trivial::trace)
 #define DEBUG BOOST_LOG_SEV(smpp_lib_logger::get(), boost::log::trivial::debug)
 #define INFO BOOST_LOG_SEV(smpp_lib_logger::get(), boost::log::trivial::info)
 #define WARN BOOST_LOG_SEV(smpp_lib_logger::get(), boost::log::trivial::warning)

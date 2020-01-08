@@ -35,6 +35,17 @@ class DataSm final : public PduRequest {
   explicit DataSm(const builder::DataSmBuilder& params);
 
   virtual void serialize(std::ostream& os) const override;
+
+  std::string getServiceType() const;
+  uint8_t getSourceAddrTon() const;
+  uint8_t getSourceAddrNpi() const;
+  std::string getSourceAddr() const;
+  uint8_t getDestAddrTon() const;
+  uint8_t getDestAddrNpi() const;
+  std::string getDestinationAddr() const;
+  uint8_t getEsmClass() const;
+  uint8_t getRegisteredDelivery() const;
+  uint8_t getDataCoding() const;
 };
 
 }  // namespace smpp

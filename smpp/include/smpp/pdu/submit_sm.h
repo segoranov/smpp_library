@@ -28,6 +28,10 @@ class SubmitSm final : public BaseSubmit {
   explicit SubmitSm(const builder::SubmitSmBuilder& params);
 
   virtual void serialize(std::ostream& os) const override;
+
+  uint8_t getDestAddrTon() const;
+  uint8_t getDestAddrNpi() const;
+  std::string getDestinationAddr() const;
 };
 
 }  // namespace smpp

@@ -7,8 +7,10 @@
 #include "smpp/pdu/bind_resp.h"
 #include "smpp/pdu/builder/bind_builder.h"
 #include "smpp/pdu/builder/bind_resp_builder.h"
+#include "smpp/pdu/builder/data_sm_builder.h"
 #include "smpp/pdu/builder/submit_sm_builder.h"
 #include "smpp/pdu/builder/submit_sm_resp_builder.h"
+#include "smpp/pdu/data_sm.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/smpp_util.h"
@@ -289,6 +291,50 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
                   submitSmRespPdu.getSequenceNumber());
           REQUIRE(deserializedSubmitSmRespPdu->getMessageId() == submitSmRespPdu.getMessageId());
           REQUIRE(deserializedSubmitSmRespPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample data sm pdu") {
+    smpp::DataSm dataSmPdu{smpp::builder::DataSmBuilder()
+                               .withCommandLength(29)
+                               .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                               .withSequenceNumber(378019)
+                               .withServiceType("A")
+                               .withSourceAddrTon(0x03)
+                               .withSourceAddrNpi(0x01)
+                               .withSourceAddr("B")
+                               .withDestAddrTon(0x03)
+                               .withDestAddrNpi(0x01)
+                               .withDestinationAddr("C")
+                               .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+                               .withRegisteredDelivery(0x01)
+                               .withDataCoding(smpp::constants::null_settings::NULL_INT8)};
+
+    WHEN("the submit sm PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      dataSmPdu.serialize(ss);
+
+      THEN("the stringstream size should be 29 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 29);
+      }
+
+      AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_DATA_SM);
+
+        auto deserializedDataSmPdu = dynamic_cast<smpp::DataSm*>(deserializedPdu.get());
+        REQUIRE(deserializedDataSmPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedDataSmPdu->getCommandLength() == dataSmPdu.getCommandLength());
+          REQUIRE(deserializedDataSmPdu->getCommandStatus() == dataSmPdu.getCommandStatus());
+          REQUIRE(deserializedDataSmPdu->getSequenceNumber() == dataSmPdu.getSequenceNumber());
+          REQUIRE(deserializedDataSmPdu->getRegisteredDelivery() ==
+                  dataSmPdu.getRegisteredDelivery());
+          REQUIRE(deserializedDataSmPdu->getOptionalParameters().size() == 0);
         }
       }
     }

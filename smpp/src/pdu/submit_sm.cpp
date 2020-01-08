@@ -116,6 +116,12 @@ SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
   m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
 }
 
+uint8_t SubmitSm::getDestAddrTon() const { return m_nDestAddrTon; }
+
+uint8_t SubmitSm::getDestAddrNpi() const { return m_nDestAddrNpi; }
+
+std::string SubmitSm::getDestinationAddr() const { return m_strDestinationAddr; }
+
 void SubmitSm::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);

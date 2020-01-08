@@ -1,13 +1,13 @@
 #include "smpp/pdu/data_sm.h"
 
 #include "smpp/pdu/builder/data_sm_builder.h"
+#include "smpp/util/logging.h"
 #include "smpp/util/serialization_util.h"
-
 namespace smpp {
 
-DataSm::DataSm() : PduRequest{constants::CMD_ID_SUBMIT_SM} {}
+DataSm::DataSm() : PduRequest{constants::CMD_ID_DATA_SM} {}
 
-DataSm::DataSm(const builder::DataSmBuilder& params) : PduRequest{constants::CMD_ID_SUBMIT_SM} {
+DataSm::DataSm(const builder::DataSmBuilder& params) : PduRequest{constants::CMD_ID_DATA_SM} {
   if (!params.m_optCommandLength.has_value()) {
     throw UndefinedValueException("DataSm(): Undefined command length");
   }
@@ -76,6 +76,26 @@ DataSm::DataSm(const builder::DataSmBuilder& params) : PduRequest{constants::CMD
   m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
 }
 
+std::string DataSm::getServiceType() const { return m_strServiceType; }
+
+uint8_t DataSm::getSourceAddrTon() const { return m_nSourceAddrTon; }
+
+uint8_t DataSm::getSourceAddrNpi() const { return m_nSourceAddrNpi; }
+
+std::string DataSm::getSourceAddr() const { return m_strSourceAddr; }
+
+uint8_t DataSm::getDestAddrTon() const { return m_nDestAddrTon; }
+
+uint8_t DataSm::getDestAddrNpi() const { return m_nDestAddrNpi; }
+
+std::string DataSm::getDestinationAddr() const { return m_strDestinationAddr; }
+
+uint8_t DataSm::getEsmClass() const { return m_nEsmClass; }
+
+uint8_t DataSm::getRegisteredDelivery() const { return m_nRegisteredDelivery; }
+
+uint8_t DataSm::getDataCoding() const { return m_nDataCoding; }
+
 void DataSm::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
@@ -130,9 +150,11 @@ void DataSm::serialize(std::ostream& os) const {
 }
 
 std::unique_ptr<DataSm> DataSm::createPduBody(std::istream& is) {
-  auto DataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
-  DataSmPtr->deserializeBody(is);
-  return DataSmPtr;
+  TRACE << "createPduBody() begin";
+  auto dataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
+  dataSmPtr->deserializeBody(is);
+  TRACE << "createPduBody() before return";
+  return dataSmPtr;
 }
 
 }  // namespace smpp
