@@ -1,7 +1,6 @@
 #include "smpp/pdu/pdu.h"
 
 #include <algorithm>
-#include <boost/log/trivial.hpp>
 #include <unordered_map>
 
 #include "smpp/pdu/bind.h"
@@ -10,6 +9,7 @@
 #include "smpp/pdu/submit_sm_resp.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
+#include "smpp/util/logging.h"
 #include "smpp/util/serialization_util.h"
 #include "smpp/util/smpp_util.h"
 
@@ -99,7 +99,7 @@ void Pdu::deserializeOptionalParameters(std::istream& is) {
 }
 
 Pdu::Ptr Pdu::deserialize(std::istream& is) {
-  BOOST_LOG_TRIVIAL(debug) << __FUNCTION__ << ": Deserializing a PDU.";
+  INFO << __FUNCTION__ << ": Deserializing a PDU.";
   // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);
   if (!util::isCommandLengthValid(nCommandLength)) {

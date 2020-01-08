@@ -5,7 +5,9 @@ project(SMPP_UNIT_TESTS)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-find_package( Boost 1.69 COMPONENTS system thread REQUIRED )
+find_package( Boost 1.69 COMPONENTS system thread log REQUIRED )
+
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 include_directories( 
     ${Boost_INCLUDE_DIRS}
@@ -34,6 +36,6 @@ add_executable( run_tests
  ../src/tlv/tlv.cpp
  ../src/util/logging.cpp )
 
-set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)
+target_link_libraries(run_tests LINK_PUBLIC ${Boost_LIBRARIES})
 
-# target_link_libraries( run_tests LINK_PUBLIC ${Boost_LIBRARIES} )
+set_property(TARGET run_tests PROPERTY CXX_STANDARD 17)

@@ -2,9 +2,9 @@ cmake_minimum_required(VERSION 3.10)
 
 project(smpp_lib)
 
-add_definitions(-DBOOST_LOG_DYN_LINK)
-
 find_package(Boost 1.69 COMPONENTS system thread log REQUIRED)
+
+add_definitions(-DBOOST_LOG_DYN_LINK)
 
 include_directories(
     ${Boost_INCLUDE_DIRS}
