@@ -5,7 +5,7 @@ namespace expr = boost::log::expressions;
 namespace logging = boost::log;
 
 // Defines a global logger initialization routine
-BOOST_LOG_GLOBAL_LOGGER_INIT(my_logger, logger_t) {
+BOOST_LOG_GLOBAL_LOGGER_INIT(smpp_lib_logger, logger_t) {
   logger_t lg;
 
   logging::add_common_attributes();
