@@ -3,10 +3,10 @@
 
 #include <string>
 
-#include "pdu/builder/bind_builder.h"
+#include "smpp/pdu/builder/bind_builder.h"
 #include "pdu_request.h"
-#include "smpp_constants.h"
-#include "util/serialization_util.h"
+#include "smpp/smpp_constants.h"
+#include "smpp/util/serialization_util.h"
 
 namespace smpp {
 

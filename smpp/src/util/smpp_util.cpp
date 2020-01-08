@@ -1,9 +1,9 @@
-#include "util/smpp_util.h"
+#include "smpp/util/smpp_util.h"
 
 #include <algorithm>
 
-#include "smpp_constants.h"
-#include "smpp_exceptions.h"
+#include "smpp/smpp_constants.h"
+#include "smpp/smpp_exceptions.h"
 namespace smpp::util {
 
 bool isCommandLengthValid(uint32_t nCommandLength) {

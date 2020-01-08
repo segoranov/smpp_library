@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "pdu/pdu_request.h"
+#include "smpp/pdu/pdu_request.h"
 
 namespace smpp {
 

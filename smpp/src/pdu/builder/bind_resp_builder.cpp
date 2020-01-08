@@ -1,6 +1,6 @@
-#include "pdu/builder/bind_resp_builder.h"
+#include "smpp/pdu/builder/bind_resp_builder.h"
 
-#include "util/smpp_util.h"
+#include "smpp/util/smpp_util.h"
 
 namespace smpp::builder {
 

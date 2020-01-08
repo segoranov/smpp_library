@@ -3,8 +3,8 @@
 #include <thread>
 
 #include "async_smpp_server.h"
-#include "pdu/bind.h"
-#include "pdu/builder/bind_builder.h"
+#include "smpp/pdu/bind.h"
+#include "smpp/pdu/builder/bind_builder.h"
 
 const int max_length = 1000;
 
@@ -12,8 +12,7 @@ int main() {
   // START SMPP SERVER ON 7778
   boost::asio::io_context io_context;
   server s(io_context, 7778);
-  std::thread t1{[&io_context]() { io_context.run(); }};
-  std::cout << "Started server at port 7778\n";
+
 
   // SYNC CLIENT
   using boost::asio::ip::tcp;

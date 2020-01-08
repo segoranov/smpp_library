@@ -1,7 +1,7 @@
-#include "pdu/submit_sm_resp.h"
+#include "smpp/pdu/submit_sm_resp.h"
 
-#include "pdu/builder/submit_sm_resp_builder.h"
-#include "smpp_constants.h"
+#include "smpp/pdu/builder/submit_sm_resp_builder.h"
+#include "smpp/smpp_constants.h"
 
 namespace smpp {
 

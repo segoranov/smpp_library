@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "pdu/pdu.h"
-#include "tlv/tlv.h"
+#include "smpp/pdu/pdu.h"
+#include "smpp/tlv/tlv.h"
 
 namespace smpp {
 

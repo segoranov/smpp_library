@@ -1,9 +1,9 @@
-#include "tlv/tlv.h"
+#include "smpp/tlv/tlv.h"
 
 #include <algorithm>
 #include <iterator>
 
-#include "util/serialization_util.h"
+#include "smpp/util/serialization_util.h"
 
 namespace smpp {
 

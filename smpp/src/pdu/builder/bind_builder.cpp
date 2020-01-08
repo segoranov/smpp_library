@@ -1,4 +1,4 @@
-#include "pdu/builder/bind_builder.h"
+#include "smpp/pdu/builder/bind_builder.h"
 
 namespace smpp::builder {
 

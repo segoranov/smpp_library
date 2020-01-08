@@ -4,9 +4,9 @@
 #include <memory>
 #include <utility>
 
-#include "pdu/bind_resp.h"
-#include "pdu/builder/bind_resp_builder.h"
-#include "smpp_constants.h"
+#include "smpp/pdu/bind_resp.h"
+#include "smpp/pdu/builder/bind_resp_builder.h"
+#include "smpp/smpp_constants.h"
 
 using boost::asio::ip::tcp;
 

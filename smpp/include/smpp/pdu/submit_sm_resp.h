@@ -1,7 +1,7 @@
 #ifndef SUBMIT_SM_RESP_H
 #define SUBMIT_SM_RESP_H
 
-#include "pdu/base_submission_resp.h"
+#include "smpp/pdu/base_submission_resp.h"
 
 namespace smpp {
 

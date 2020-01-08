@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "pdu/submit_sm_resp.h"
-#include "tlv/tlv.h"
+#include "smpp/pdu/submit_sm_resp.h"
+#include "smpp/tlv/tlv.h"
 
 namespace smpp::builder {
 

@@ -8,7 +8,7 @@
 #include <string>
 #include <utility>
 
-#include "pdu/pdu.h"
+#include "smpp/pdu/pdu.h"
 
 namespace smpp {
 

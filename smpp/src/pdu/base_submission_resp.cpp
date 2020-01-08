@@ -1,6 +1,6 @@
-#include "pdu/base_submission_resp.h"
+#include "smpp/pdu/base_submission_resp.h"
 
-#include "util/serialization_util.h"
+#include "smpp/util/serialization_util.h"
 
 namespace smpp {
 

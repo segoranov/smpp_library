@@ -1,16 +1,16 @@
-#include "pdu/pdu.h"
+#include "smpp/pdu/pdu.h"
 
 #include <algorithm>
 #include <unordered_map>
 
-#include "pdu/bind.h"
-#include "pdu/bind_resp.h"
-#include "pdu/submit_sm.h"
-#include "pdu/submit_sm_resp.h"
-#include "smpp_constants.h"
-#include "smpp_exceptions.h"
-#include "util/serialization_util.h"
-#include "util/smpp_util.h"
+#include "smpp/pdu/bind.h"
+#include "smpp/pdu/bind_resp.h"
+#include "smpp/pdu/submit_sm.h"
+#include "smpp/pdu/submit_sm_resp.h"
+#include "smpp/smpp_constants.h"
+#include "smpp/smpp_exceptions.h"
+#include "smpp/util/serialization_util.h"
+#include "smpp/util/smpp_util.h"
 
 namespace smpp {
 

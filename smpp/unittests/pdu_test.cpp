@@ -1,17 +1,17 @@
-#include "pdu/pdu.h"
+#include "smpp/pdu/pdu.h"
 
 #include <sstream>
 
 #include "catch.hpp"
-#include "pdu/bind.h"
-#include "pdu/bind_resp.h"
-#include "pdu/builder/bind_builder.h"
-#include "pdu/builder/bind_resp_builder.h"
-#include "pdu/builder/submit_sm_builder.h"
-#include "pdu/builder/submit_sm_resp_builder.h"
-#include "smpp_constants.h"
-#include "smpp_exceptions.h"
-#include "util/smpp_util.h"
+#include "smpp/pdu/bind.h"
+#include "smpp/pdu/bind_resp.h"
+#include "smpp/pdu/builder/bind_builder.h"
+#include "smpp/pdu/builder/bind_resp_builder.h"
+#include "smpp/pdu/builder/submit_sm_builder.h"
+#include "smpp/pdu/builder/submit_sm_resp_builder.h"
+#include "smpp/smpp_constants.h"
+#include "smpp/smpp_exceptions.h"
+#include "smpp/util/smpp_util.h"
 
 SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
   GIVEN("A sample BindTransmitter pdu defined as raw data (array of hex bytes)") {

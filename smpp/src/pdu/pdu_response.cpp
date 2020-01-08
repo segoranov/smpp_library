@@ -1,4 +1,4 @@
-#include "pdu/pdu_response.h"
+#include "smpp/pdu/pdu_response.h"
 
 namespace smpp {
 

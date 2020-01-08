@@ -10,10 +10,10 @@
 #include <string>
 #include <unordered_map>
 
-#include "smpp_constants.h"
-#include "smpp_exceptions.h"
-#include "tlv/tlv.h"
-#include "util/smpp_util.h"
+#include "smpp/smpp_constants.h"
+#include "smpp/smpp_exceptions.h"
+#include "smpp/tlv/tlv.h"
+#include "smpp/util/smpp_util.h"
 
 namespace smpp {
 

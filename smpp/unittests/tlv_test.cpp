@@ -1,7 +1,7 @@
-#include "tlv/tlv.h"
+#include "smpp/tlv/tlv.h"
 
 #include "catch.hpp"
-#include "smpp_constants.h"
+#include "smpp/smpp_constants.h"
 
 SCENARIO("Tlv should have correct size", "[Tlv]") {
   GIVEN("some test values with different types and sizes") {

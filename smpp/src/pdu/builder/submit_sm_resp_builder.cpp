@@ -1,4 +1,4 @@
-#include "pdu/builder/submit_sm_resp_builder.h"
+#include "smpp/pdu/builder/submit_sm_resp_builder.h"
 
 namespace smpp::builder {
 

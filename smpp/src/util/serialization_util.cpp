@@ -1,4 +1,4 @@
-#include "util/serialization_util.h"
+#include "smpp/util/serialization_util.h"
 
 namespace binary {
 
