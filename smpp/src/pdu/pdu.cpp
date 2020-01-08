@@ -5,6 +5,7 @@
 
 #include "smpp/pdu/bind.h"
 #include "smpp/pdu/bind_resp.h"
+#include "smpp/pdu/data_sm.h"
 #include "smpp/pdu/submit_sm.h"
 #include "smpp/pdu/submit_sm_resp.h"
 #include "smpp/smpp_constants.h"
@@ -30,6 +31,7 @@ const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryM
           {constants::CMD_ID_BIND_TRANSCEIVER, BindTransceiver::createPduBody},
           {constants::CMD_ID_SUBMIT_SM, SubmitSm::createPduBody},
           {constants::CMD_ID_SUBMIT_SM_RESP, SubmitSmResp::createPduBody},
+          {constants::CMD_ID_DATA_SM, DataSm::createPduBody},
       };
   return *commandIdToFactoryMap;
 }

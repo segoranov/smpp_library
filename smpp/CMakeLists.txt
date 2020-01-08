@@ -19,12 +19,14 @@ add_library(smpp SHARED
     src/pdu/builder/bind_resp_builder.cpp
     src/pdu/builder/submit_sm_builder.cpp
     src/pdu/builder/submit_sm_resp_builder.cpp
+    src/pdu/builder/data_sm_builder.cpp
     src/pdu/base_submit.cpp
     src/pdu/base_submission_resp.cpp
     src/pdu/pdu_request.cpp
     src/pdu/pdu_response.cpp
     src/pdu/submit_sm.cpp
     src/pdu/submit_sm_resp.cpp
+    src/pdu/data_sm.cpp
     src/tlv/tlv.cpp
     src/util/logging.cpp
 )
