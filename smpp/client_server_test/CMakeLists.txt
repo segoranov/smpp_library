@@ -4,7 +4,10 @@ project(smpp_lib)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-find_package(Boost 1.69 COMPONENTS system thread REQUIRED)
+add_definitions(-DBOOST_LOG_DYN_LINK)
+
+find_package(Boost 1.69 COMPONENTS system thread log REQUIRED)
+
 link_directories(../build)
 
 include_directories(
