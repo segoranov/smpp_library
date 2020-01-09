@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "smpp/pdu/builder/bind_builder.h"
 #include "pdu_request.h"
+#include "smpp/pdu/builder/bind_builder.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/util/serialization_util.h"
 
@@ -65,6 +65,9 @@ Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId
 
   if (!params.m_optSystemId.has_value())
     throw UndefinedValueException("Bind(): Undefined system id");
+
+  if (!params.m_optPassword.has_value())
+    throw UndefinedValueException("Bind(): Undefined password");
 
   if (!params.m_optSystemType.has_value())
     throw UndefinedValueException("Bind(): Undefined system type");

@@ -3,6 +3,7 @@
 #include "smpp/pdu/builder/data_sm_builder.h"
 #include "smpp/util/logging.h"
 #include "smpp/util/serialization_util.h"
+
 namespace smpp {
 
 DataSm::DataSm() : PduRequest{constants::CMD_ID_DATA_SM} {}
@@ -111,35 +112,46 @@ void DataSm::serializeBody(std::ostream& os) const {
 }
 
 void DataSm::deserializeBody(std::istream& is) {
+  INFO << "DataSm::deserializeBody()";
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   m_strServiceType = strServiceType;
+  DEBUG << "DataSm::deserializeBody() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   m_nSourceAddrTon = nSourceAddrTon;
+  DEBUG << "DataSm::deserializeBody() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   m_nSourceAddrNpi = nSourceAddrNpi;
+  DEBUG << "DataSm::deserializeBody() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   m_strSourceAddr = strSourceAddr;
+  DEBUG << "DataSm::deserializeBody() strSourceAddr = [" << strSourceAddr << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
   m_nDestAddrTon = nDestAddrTon;
+  DEBUG << "DataSm::deserializeBody() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
   m_nDestAddrNpi = nDestAddrNpi;
+  DEBUG << "DataSm::deserializeBody() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
   m_strDestinationAddr = strDestinationAddr;
+  DEBUG << "DataSm::deserializeBody() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   m_nEsmClass = nEsmClass;
+  DEBUG << "DataSm::deserializeBody() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   m_nRegisteredDelivery = nRegisteredDelivery;
+  DEBUG << "DataSm::deserializeBody() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   m_nDataCoding = nDataCoding;
+  DEBUG << "DataSm::deserializeBody() nDataCoding = [" << nDataCoding << "]";
 
   deserializeOptionalParameters(is);
 }
@@ -150,10 +162,8 @@ void DataSm::serialize(std::ostream& os) const {
 }
 
 std::unique_ptr<DataSm> DataSm::createPduBody(std::istream& is) {
-  TRACE << "createPduBody() begin";
   auto dataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
   dataSmPtr->deserializeBody(is);
-  TRACE << "createPduBody() before return";
   return dataSmPtr;
 }
 

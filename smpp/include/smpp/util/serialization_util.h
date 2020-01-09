@@ -7,6 +7,23 @@
 
 namespace binary {
 
+class BinaryException : public std::exception {
+ private:
+  std::string m_strError;
+
+ public:
+  BinaryException() : m_strError("Default binary exception") {}
+  explicit BinaryException(const std::string& strError) : m_strError{strError} {}
+  virtual const char* what() const noexcept override { return m_strError.c_str(); }
+};
+
+class NotEnoughBytesInStreamException : public BinaryException {
+ public:
+  NotEnoughBytesInStreamException() : BinaryException{"Not enough bytes in stream"} {}
+  explicit NotEnoughBytesInStreamException(const std::string& strError)
+      : BinaryException{strError} {}
+};
+
 void serializeInt8(uint8_t nValue, std::ostream& os);
 
 void serializeInt16(uint16_t nValue, std::ostream& os);

@@ -6,6 +6,7 @@
 #include "smpp/pdu/bind.h"
 #include "smpp/pdu/bind_resp.h"
 #include "smpp/pdu/data_sm.h"
+#include "smpp/pdu/outbind.h"
 #include "smpp/pdu/submit_sm.h"
 #include "smpp/pdu/submit_sm_resp.h"
 #include "smpp/smpp_constants.h"
@@ -32,6 +33,7 @@ const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryM
           {constants::CMD_ID_SUBMIT_SM, SubmitSm::createPduBody},
           {constants::CMD_ID_SUBMIT_SM_RESP, SubmitSmResp::createPduBody},
           {constants::CMD_ID_DATA_SM, DataSm::createPduBody},
+          {constants::CMD_ID_OUTBIND, Outbind::createPduBody},
       };
   return *commandIdToFactoryMap;
 }
@@ -101,7 +103,8 @@ void Pdu::deserializeOptionalParameters(std::istream& is) {
 }
 
 Pdu::Ptr Pdu::deserialize(std::istream& is) {
-  INFO << __FUNCTION__ << ": Deserializing a PDU.";
+  INFO << "Pdu::deserialize()";
+
   // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);
   if (!util::isCommandLengthValid(nCommandLength)) {
@@ -111,6 +114,8 @@ Pdu::Ptr Pdu::deserialize(std::istream& is) {
     throw InvalidCommandLengthException(error.str());
   }
 
+  INFO << "command length: [" << nCommandLength << "]";
+
   const uint32_t nCommandId = binary::deserializeInt32(is);
   if (!util::isCommandIdValid(nCommandId)) {
     std::stringstream error;
@@ -118,10 +123,14 @@ Pdu::Ptr Pdu::deserialize(std::istream& is) {
     throw InvalidCommandIdException(error.str());
   }
 
+  INFO << "command id: [" << util::commandIdToString(nCommandId) << "]";
+
   // TODO SG validate
   const uint32_t nCommandStatus = binary::deserializeInt32(is);
+  INFO << "command status: [" << nCommandStatus << "]";
 
   const uint32_t nSequenceNumber = binary::deserializeInt32(is);
+  INFO << "sequence number: [" << nSequenceNumber << "]";
 
   // 2. Deserialize PDU body
   auto deserializedPdu = getCommandIdToBodyFactoryMap().at(nCommandId)(is);

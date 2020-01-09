@@ -31,6 +31,11 @@ bool isCommandIdValid(uint32_t nCommandId);
  */
 bool isInterfaceVersionValid(uint8_t nInterfaceVersion);
 
+/**
+ * @brief Converts command id to human readable text
+ */
+std::string commandIdToString(uint32_t nCommandId);
+
 }  // namespace smpp::util
 
 #endif

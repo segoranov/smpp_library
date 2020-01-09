@@ -1,6 +1,7 @@
 #include "smpp/pdu/submit_sm.h"
 
 #include "smpp/pdu/builder/submit_sm_builder.h"
+#include "smpp/util/logging.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -145,64 +146,86 @@ void SubmitSm::serializeBody(std::ostream& os) const {
 }
 
 void SubmitSm::deserializeBody(std::istream& is) {
+  INFO << "SubmitSm::deserializeBody()";
+
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   m_strServiceType = strServiceType;
+  DEBUG << "SubmitSm::deserializeBody() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   m_nSourceAddrTon = nSourceAddrTon;
+  DEBUG << "SubmitSm::deserializeBody() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   m_nSourceAddrNpi = nSourceAddrNpi;
+  DEBUG << "SubmitSm::deserializeBody() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   m_strSourceAddr = strSourceAddr;
+  DEBUG << "SubmitSm::deserializeBody() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
   m_nDestAddrTon = nDestAddrTon;
+  DEBUG << "SubmitSm::deserializeBody() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
   m_nDestAddrNpi = nDestAddrNpi;
+  DEBUG << "SubmitSm::deserializeBody() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
   m_strDestinationAddr = strDestinationAddr;
+  DEBUG << "SubmitSm::deserializeBody() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   m_nEsmClass = nEsmClass;
+  DEBUG << "SubmitSm::deserializeBody() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nProtocolId = binary::deserializeInt8(is);
   m_nProtocolId = nProtocolId;
+  DEBUG << "SubmitSm::deserializeBody() nProtocolId = [" << nProtocolId << "]";
 
   const uint8_t nPriorityFlag = binary::deserializeInt8(is);
   m_nPriorityFlag = nPriorityFlag;
+  DEBUG << "SubmitSm::deserializeBody() nPriorityFlag = [" << nPriorityFlag << "]";
 
   const std::string strScheduleDeliveryTime = binary::deserializeNullTerminatedString(is);
   m_strScheduleDeliveryTime = strScheduleDeliveryTime;
+  DEBUG << "SubmitSm::deserializeBody() strScheduleDeliveryTime = [" << strScheduleDeliveryTime
+        << "]";
 
   const std::string strValidityPeriod = binary::deserializeNullTerminatedString(is);
   m_strValidityPeriod = strValidityPeriod;
+  DEBUG << "SubmitSm::deserializeBody() strValidityPeriod = [" << strValidityPeriod << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   m_nRegisteredDelivery = nRegisteredDelivery;
+  DEBUG << "SubmitSm::deserializeBody() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nReplaceIfPresentFlag = binary::deserializeInt8(is);
   m_nReplaceIfPresentFlag = nReplaceIfPresentFlag;
+  DEBUG << "SubmitSm::deserializeBody() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   m_nDataCoding = nDataCoding;
+  DEBUG << "SubmitSm::deserializeBody() nDataCoding = [" << nDataCoding << "]";
 
   const uint8_t nSmDefaultMsgId = binary::deserializeInt8(is);
   m_nSmDefaultMsgId = nSmDefaultMsgId;
+  DEBUG << "SubmitSm::deserializeBody() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
 
   const uint8_t nSmLength = binary::deserializeInt8(is);
   m_nSmLength = nSmLength;
+  DEBUG << "SubmitSm::deserializeBody() nSmLength = [" << nSmLength << "]";
 
   const std::string strShortMessage = binary::deserializeOctetString(nSmLength, is);
   m_strShortMessage = strShortMessage;
+  DEBUG << "SubmitSm::deserializeBody() strShortMessage = [" << strShortMessage << "]";
 
   deserializeOptionalParameters(is);
 }
 
 void SubmitSm::serialize(std::ostream& os) const {
+  INFO << "SubmitSm::serialize()";
   serializeHeader(os);
   serializeBody(os);
 }

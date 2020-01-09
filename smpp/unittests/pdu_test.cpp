@@ -8,9 +8,11 @@
 #include "smpp/pdu/builder/bind_builder.h"
 #include "smpp/pdu/builder/bind_resp_builder.h"
 #include "smpp/pdu/builder/data_sm_builder.h"
+#include "smpp/pdu/builder/outbind_builder.h"
 #include "smpp/pdu/builder/submit_sm_builder.h"
 #include "smpp/pdu/builder/submit_sm_resp_builder.h"
 #include "smpp/pdu/data_sm.h"
+#include "smpp/pdu/outbind.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/smpp_util.h"
@@ -265,7 +267,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
                                            .withSequenceNumber(378019)
                                            .withMessageId("0118Z-01026")};
 
-    WHEN("the submit sm PDU is serialized into a stringstream") {
+    WHEN("the submit sm resp PDU is serialized into a stringstream") {
       std::stringstream ss;
       submitSmRespPdu.serialize(ss);
 
@@ -273,7 +275,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(ss.str().size() == 28);
       }
 
-      AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
+      AND_WHEN("a submit sm resp PDU is deserialized from the stringstream") {
         auto deserializedPdu = smpp::Pdu::deserialize(ss);
 
         REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM_RESP);
@@ -312,7 +314,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
                                .withRegisteredDelivery(0x01)
                                .withDataCoding(smpp::constants::null_settings::NULL_INT8)};
 
-    WHEN("the submit sm PDU is serialized into a stringstream") {
+    WHEN("the data sm PDU is serialized into a stringstream") {
       std::stringstream ss;
       dataSmPdu.serialize(ss);
 
@@ -320,7 +322,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(ss.str().size() == 29);
       }
 
-      AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
+      AND_WHEN("a data sm PDU is deserialized from the stringstream") {
         auto deserializedPdu = smpp::Pdu::deserialize(ss);
 
         REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_DATA_SM);
@@ -335,6 +337,47 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(deserializedDataSmPdu->getRegisteredDelivery() ==
                   dataSmPdu.getRegisteredDelivery());
           REQUIRE(deserializedDataSmPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample outbind pdu") {
+    smpp::Outbind outbindPdu{smpp::builder::OutbindBuilder()
+                                 .withCommandLength(35)
+                                 .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                                 .withSequenceNumber(378019)
+                                 .withSystemId("SMPP3TEST")
+                                 .withPassword("secret08")};
+
+    WHEN("the outbind PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      outbindPdu.serialize(ss);
+
+      THEN("the stringstream size should be 35 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 35);
+      }
+
+      AND_WHEN("an outbind PDU is deserialized from the stringstream") {
+        smpp::Pdu::Ptr deserializedPdu;
+        try {
+          deserializedPdu = smpp::Pdu::deserialize(ss);
+        } catch (const binary::NotEnoughBytesInStreamException& ex) {
+          FAIL("Could not deserialize PDU: " << ex.what());
+        }
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_OUTBIND);
+
+        auto deserializedOutbindPdu = dynamic_cast<smpp::Outbind*>(deserializedPdu.get());
+        REQUIRE(deserializedOutbindPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedOutbindPdu->getCommandLength() == outbindPdu.getCommandLength());
+          REQUIRE(deserializedOutbindPdu->getCommandStatus() == outbindPdu.getCommandStatus());
+          REQUIRE(deserializedOutbindPdu->getSequenceNumber() == outbindPdu.getSequenceNumber());
+          REQUIRE(deserializedOutbindPdu->getSystemId() == outbindPdu.getSystemId());
+          REQUIRE(deserializedOutbindPdu->getPassword() == outbindPdu.getPassword());
+          REQUIRE(deserializedOutbindPdu->getOptionalParameters().size() == 0);
         }
       }
     }

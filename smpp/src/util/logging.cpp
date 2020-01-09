@@ -11,23 +11,25 @@ BOOST_LOG_GLOBAL_LOGGER_INIT(smpp_lib_logger, logger_t) {
   logging::add_common_attributes();
 
   logging::add_file_log(
-      boost::log::keywords::auto_flush = true,
-      boost::log::keywords::file_name = LOG_FILE,
+      boost::log::keywords::auto_flush = true, boost::log::keywords::file_name = LOG_FILE,
       boost::log::keywords::format =
-          (expr::stream << expr::format_date_time<boost::posix_time::ptime>("TimeStamp",
-                                                                            "%Y-%m-%d %H:%M:%S")
-                        << " [" << expr::attr<boost::log::trivial::severity_level>("Severity")
-                        << "]: " << expr::smessage));
+          (expr::stream
+           << expr::format_date_time<boost::posix_time::ptime>("TimeStamp", "%Y-%m-%d %H:%M:%S")
+           << " ThreadID=["
+           << logging::expressions::attr<logging::attributes::current_thread_id::value_type>(
+                  "ThreadID")
+           << "] [" << expr::attr<boost::log::trivial::severity_level>("Severity") << "] "
+           << expr::smessage));
 
-  logging::add_console_log(
-      std::cout,
-      boost::log::keywords::format =
-          (expr::stream << expr::format_date_time<boost::posix_time::ptime>("TimeStamp",
-                                                                            "%Y-%m-%d %H:%M:%S")
-                        << " [" << expr::attr<boost::log::trivial::severity_level>("Severity")
-                        << "]: " << expr::smessage));
+  // logging::add_console_log(
+  //     std::cout,
+  //     boost::log::keywords::format =
+  //         (expr::stream << expr::format_date_time<boost::posix_time::ptime>("TimeStamp",
+  //                                                                           "%Y-%m-%d %H:%M:%S")
+  //                       << " [" << expr::attr<boost::log::trivial::severity_level>("Severity")
+  //                       << "]: " << expr::smessage));
 
-  logging::core::get()->set_filter(logging::trivial::severity >= logging::trivial::info);
+  // logging::core::get()->set_filter(logging::trivial::severity >= logging::trivial::info);
 
   return lg;
 }
