@@ -119,6 +119,15 @@ class SmppSession {
    */
   virtual long getBoundTime() const = 0;
 
+  enum class SmppBindType { TRANSCEIVER, TRANSMITTER, RECEIVER };
+
+  /**
+   * Gets the type of bind for this session such as "transceiver", "receiver",
+   * or "transmitter".
+   * @return The type of bind for this session
+   */
+  virtual SmppBindType getBindType() = 0;
+
   /**
    * Gets the name of the current state of the session.
    * @return The current state of the session by name such as "CLOSED"
