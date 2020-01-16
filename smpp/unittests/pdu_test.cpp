@@ -1,18 +1,7 @@
-#include "smpp/pdu/pdu.h"
-
 #include <sstream>
 
 #include "catch.hpp"
-#include "smpp/pdu/bind.h"
-#include "smpp/pdu/bind_resp.h"
-#include "smpp/pdu/builder/bind_builder.h"
-#include "smpp/pdu/builder/bind_resp_builder.h"
-#include "smpp/pdu/builder/data_sm_builder.h"
-#include "smpp/pdu/builder/outbind_builder.h"
-#include "smpp/pdu/builder/submit_sm_builder.h"
-#include "smpp/pdu/builder/submit_sm_resp_builder.h"
-#include "smpp/pdu/data_sm.h"
-#include "smpp/pdu/outbind.h"
+#include "smpp/commands.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/smpp_util.h"
