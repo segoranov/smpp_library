@@ -20,11 +20,13 @@ enum class SessionState {
    */
   BINDING,
 
-  /** Session is bound (ready to process requests) */
-  BOUND,
+  /** Session is bound as transceiver, receiver or transceiver (ready to process requests) */
+  BOUND_TX,
+  BOUND_RX,
+  BOUND_TRX,
 
   /**
-   * Session is in the process of un-binding. This may have been initiated by us or them.
+   * Session is in the process of unbinding. This may have been initiated by us or them.
    */
   UNBINDING,
 
