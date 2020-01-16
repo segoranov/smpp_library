@@ -14,6 +14,7 @@ add_library(smpp SHARED
     src/util/print_util.cpp
     src/util/smpp_util.cpp
     src/util/serialization_util.cpp
+    src/util/smpp_session_util.cpp
     src/pdu/pdu.cpp
     src/pdu/builder/bind_builder.cpp
     src/pdu/builder/bind_resp_builder.cpp
@@ -31,6 +32,7 @@ add_library(smpp SHARED
     src/pdu/outbind.cpp
     src/tlv/tlv.cpp
     src/util/logging.cpp
+    src/smpp_client.cpp
 )
 
 target_link_libraries(smpp LINK_PUBLIC ${Boost_LIBRARIES})

@@ -74,5 +74,24 @@ class UndefinedValueException : public SmppException {
   explicit UndefinedValueException(const std::string& strError) : SmppException{strError} {}
 };
 
+class InvalidSessionStateException : public SmppException {
+ public:
+  InvalidSessionStateException() : SmppException{"Invalid session state"} {}
+  explicit InvalidSessionStateException(const std::string& strError) : SmppException{strError} {}
+};
+
+/**
+ * Exception thrown when there are TCP connection related issues
+ */
+class TransportException : public std::exception {
+ private:
+  std::string m_strError;
+
+ public:
+  TransportException() : m_strError("Default transport exception") {}
+  explicit TransportException(const std::string& strError) : m_strError{strError} {}
+  virtual const char* what() const noexcept override { return m_strError.c_str(); }
+};
+
 }  // namespace smpp
 #endif  // SMPP_EXCEPTIONS_H
