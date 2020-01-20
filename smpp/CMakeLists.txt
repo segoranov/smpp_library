@@ -33,6 +33,7 @@ add_library(smpp SHARED
     src/tlv/tlv.cpp
     src/util/logging.cpp
     src/smpp_client.cpp
+    src/smpp_server/smpp_session_handler.cpp
 )
 
 target_link_libraries(smpp LINK_PUBLIC ${Boost_LIBRARIES})
