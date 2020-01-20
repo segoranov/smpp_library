@@ -51,4 +51,40 @@ void SmppSessionHandler::readPdu(uint32_t nCommandLength) {
                           });
 }
 
+void SmppSessionHandler::sendPdu(smpp::Pdu::Ptr pdu) {
+  boost::asio::post(m_ioContext, m_writeStrand.wrap([me = shared_from_this(), &pdu] {
+    me->queuePdu(std::move(pdu));
+  }));
+}
+
+void SmppSessionHandler::queuePdu(smpp::Pdu::Ptr pdu) {
+  // this is thread safe because of the strand
+  const bool bWriteInProgress = !m_sendPduQueue.empty();
+  m_sendPduQueue.push_back(std::move(pdu));
+
+  if (!bWriteInProgress) {
+    startPduSend();
+  }
+}
+
+void SmppSessionHandler::startPduSend() {
+  std::stringstream sendPduStream;
+  m_sendPduQueue.front()->serialize(sendPduStream);
+  boost::asio::async_write(
+      m_socket, boost::asio::buffer(sendPduStream.str()),
+      m_writeStrand.wrap([me = shared_from_this()](const boost::system::error_code& ec,
+                                                   std::size_t) { me->pduSendDone(ec); }));
+}
+
+void SmppSessionHandler::pduSendDone(const boost::system::error_code& ec) {
+  if (!ec) {
+    m_sendPduQueue.pop_front();
+    if (!m_sendPduQueue.empty()) {
+      startPduSend();
+    }
+  } else {
+    // throw transport exception maybe
+  }
+}
+
 }  // namespace smpp
