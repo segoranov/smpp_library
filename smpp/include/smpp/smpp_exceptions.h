@@ -95,12 +95,6 @@ class TransportException : public std::exception {
   virtual const char* what() const noexcept override { return m_strError.c_str(); }
 };
 
-// void throwTransportExceptionByErrCode(const boost::system::error_code& ec) {
-//   std::stringstream error;
-//   error << "Error code: " << ec.value() << "; error message: " << ec.message();
-//   throw TransportException(error.str());
-// }
-
 }  // namespace smpp
 
 #endif  // SMPP_EXCEPTIONS_H

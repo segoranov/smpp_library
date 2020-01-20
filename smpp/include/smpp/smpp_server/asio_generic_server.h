@@ -53,7 +53,9 @@ template <typename ConnectionHandler>
 void AsioGenericServer<ConnectionHandler>::handleNewConnection(
     shared_handler_t handler, const boost::system::error_code& ec) {
   if (ec) {
-    // smpp::throwTransportExceptionByErrCode(ec);
+    std::stringstream error;
+    error << "Error code: " << ec.value() << "; error message: " << ec.message();
+    throw TransportException(error.str());
   }
 
   handler->start();
