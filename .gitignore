@@ -1,4 +1,4 @@
 build/
 utests/build/
 .vscode/
-build_all.sh
+run_with_build.sh

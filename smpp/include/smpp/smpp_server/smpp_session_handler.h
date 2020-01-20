@@ -17,7 +17,7 @@ class SmppSessionHandler : public std::enable_shared_from_this<SmppSessionHandle
   boost::asio::io_context& m_ioContext;
   boost::asio::ip::tcp::socket m_socket;
   boost::asio::io_context::strand m_writeStrand;
-  std::deque<Pdu::Ptr> m_sendPduQueue;
+  std::deque<std::string> m_sendPduQueue;
   std::list<Pdu::Ptr> m_receivePduQueue;
   std::atomic<session_util::SessionState> m_enSessionState;
 
@@ -34,10 +34,10 @@ class SmppSessionHandler : public std::enable_shared_from_this<SmppSessionHandle
   void readPduAfterCommandLength(uint32_t nCommandLength);
   void onReceivedPdu(Pdu::Ptr pdu);
 
-  void handleReceivedBindTransmitter(Pdu::Ptr pdu);
+  void onReceivedBindTransmitter(Pdu::Ptr pdu);
 
-  void sendPdu(Pdu::Ptr pdu);
-  void queuePdu(Pdu::Ptr pdu);
+  void sendPdu(const std::string& strPdu);
+  void queuePdu(const std::string& strPdu);
   void startPduSend();
   void pduSendDone(const boost::system::error_code& ec);
 };
