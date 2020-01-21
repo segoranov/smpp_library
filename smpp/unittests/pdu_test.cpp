@@ -346,13 +346,16 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     }
   }
 
-  GIVEN("A sample outbind pdu") {
+  GIVEN("A sample outbind pdu with size 35 bytes") {
     smpp::Outbind outbindPdu{smpp::builder::OutbindBuilder()
-                                 .withCommandLength(35)
                                  .withCommandStatus(smpp::constants::errors::ESME_ROK)
                                  .withSequenceNumber(378019)
                                  .withSystemId("SMPP3TEST")
                                  .withPassword("secret08")};
+
+    THEN("The command length of the pdu should be 35 bytes") {
+      REQUIRE(outbindPdu.getCommandLength() == 35);
+    }
 
     WHEN("the outbind PDU is serialized into a stringstream") {
       std::stringstream ss;

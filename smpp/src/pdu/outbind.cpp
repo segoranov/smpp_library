@@ -9,10 +9,6 @@ namespace smpp {
 Outbind::Outbind() : PduRequest{constants::CMD_ID_OUTBIND} {}
 
 Outbind::Outbind(const builder::OutbindBuilder& params) : PduRequest{constants::CMD_ID_OUTBIND} {
-  if (!params.m_optCommandLength.has_value()) {
-    throw UndefinedValueException("Outbind(): Undefined command length");
-  }
-
   if (!params.m_optCommandStatus.has_value()) {
     throw UndefinedValueException("Outbind(): Undefined command status");
   }
@@ -27,11 +23,20 @@ Outbind::Outbind(const builder::OutbindBuilder& params) : PduRequest{constants::
   if (!params.m_optPassword.has_value())
     throw UndefinedValueException("Outbind(): Undefined password");
 
-  m_nCommandLength = params.m_optCommandLength.value();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strSystemId = params.m_optSystemId.value();
   m_strPassword = params.m_optPassword.value();
+
+  // Add PDU header to command length
+  m_nCommandLength = smpp::constants::PDU_HEADER_LENGTH;
+
+  // Add C-octet strings to command length without forgetting to add 1
+  // for the null terminating character
+  m_nCommandLength += m_strSystemId.size() + 1;
+  m_nCommandLength += m_strPassword.size() + 1;
+
+  // No optional parameters for outbind
 }
 
 std::string Outbind::getSystemId() const { return m_strSystemId; }

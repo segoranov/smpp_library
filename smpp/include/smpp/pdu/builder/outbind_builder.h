@@ -21,7 +21,6 @@ class OutbindBuilder {
  private:
   friend class smpp::Outbind;
 
-  std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
   std::optional<std::string> m_optSystemId;
@@ -30,7 +29,6 @@ class OutbindBuilder {
  public:
   OutbindBuilder() = default;
 
-  OutbindBuilder& withCommandLength(uint32_t nCommandLength);
   OutbindBuilder& withCommandStatus(uint32_t nCommandStatus);
   OutbindBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   OutbindBuilder& withSystemId(const std::string& strSystemId);
