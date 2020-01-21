@@ -2,11 +2,6 @@
 
 namespace smpp::builder {
 
-DataSmBuilder& DataSmBuilder::withCommandLength(uint32_t nCommandLength) {
-  m_optCommandLength = nCommandLength;
-  return *this;
-}
-
 DataSmBuilder& DataSmBuilder::withCommandStatus(uint32_t nCommandStatus) {
   m_optCommandStatus = nCommandStatus;
   return *this;
