@@ -2,11 +2,6 @@
 
 namespace smpp::builder {
 
-SubmitSmRespBuilder& SubmitSmRespBuilder::withCommandLength(uint32_t nCommandLength) {
-  m_optCommandLength = nCommandLength;
-  return *this;
-}
-
 SubmitSmRespBuilder& SubmitSmRespBuilder::withCommandStatus(uint32_t nCommandStatus) {
   m_optCommandStatus = nCommandStatus;
   return *this;

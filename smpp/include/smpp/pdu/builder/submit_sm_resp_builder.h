@@ -21,7 +21,6 @@ class SubmitSmRespBuilder {
  private:
   friend class smpp::SubmitSmResp;
 
-  std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
 
@@ -32,7 +31,6 @@ class SubmitSmRespBuilder {
  public:
   SubmitSmRespBuilder() = default;
 
-  SubmitSmRespBuilder& withCommandLength(uint32_t nCommandLength);
   SubmitSmRespBuilder& withCommandStatus(uint32_t nCommandStatus);
   SubmitSmRespBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   SubmitSmRespBuilder& withMessageId(const std::string& strMessageId);
