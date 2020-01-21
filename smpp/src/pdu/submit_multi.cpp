@@ -262,7 +262,7 @@ SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
   m_nCommandLength += m_strSourceAddr.size() + 1;
   m_nCommandLength += m_strScheduleDeliveryTime.size() + 1;
   m_nCommandLength += m_strValidityPeriod.size() + 1;
-  m_nCommandLength += m_strShortMessage.size() + 1;
+  m_nCommandLength += m_strShortMessage.size();  // short message is not null terminated
 
   // Add destination addresses' size to command length
   m_nCommandLength += m_destinationAddresses.size();
@@ -274,6 +274,10 @@ SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
   for (const auto& tlv : m_vOptionalTlvParameters) {
     m_nCommandLength += tlv.size();
   }
+}
+
+SubmitMultiDestinationAddresses SubmitMulti::getDestinationAddresses() const {
+  return m_destinationAddresses;
 }
 
 void SubmitMulti::serializeBody(std::ostream& os) const {
@@ -318,8 +322,9 @@ void SubmitMulti::deserializeBody(std::istream& is) {
 
   SubmitMultiDestinationAddresses destinationAddresses;
   destinationAddresses.deserialize(is);
-  DEBUG << "SubmitMulti::deserializeBody() nDestAddrTon = [" << destinationAddresses.toString()
-        << "]";
+  DEBUG << "SubmitMulti::deserializeBody() destinationAddresses = ["
+        << destinationAddresses.toString() << "]";
+  m_destinationAddresses = destinationAddresses;
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   m_nEsmClass = nEsmClass;

@@ -389,6 +389,92 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
     }
   }
+
+  GIVEN("A sample submit multi pdu with size 119 bytes") {
+    smpp::SubmitMultiDestinationAddresses destAddresses;
+    destAddresses.addSMEDestAddress(
+        smpp::SMEDestAddress{0x01, 0x01, "TEST1"});  // 1 + 1 + 1 + 5 + 1  = 9 bytes
+    destAddresses.addSMEDestAddress(
+        smpp::SMEDestAddress{0x01, 0x01, "TEST23"});  // 1 + 1 + 1 + 6 + 1  = 10 bytes
+    destAddresses.addSMEDestAddress(
+        smpp::SMEDestAddress{0x01, 0x01, "TEST345"});  // 1 + 1 + 1 + 7 + 1  = 11 bytes
+
+    destAddresses.addDistributionListDestAddress(
+        smpp::DistributionListDestAddress{"TEST_DLNAME_1"});  // 1 + 13 + 1 = 15 bytes
+    destAddresses.addDistributionListDestAddress(
+        smpp::DistributionListDestAddress{"TEST_DLNAME_23"});  // 1 + 14 + 1 = 16 bytes
+    destAddresses.addDistributionListDestAddress(
+        smpp::DistributionListDestAddress{"TEST_DLNAME_345"});  // 1 + 15 + 1 = 17 bytes
+
+    /* Total size of dest addresses is 79:
+        number of dests -> 1 byte
+        3 SME dest addresses -> 9 + 10 + 11 = 30 bytes;
+        3 Distribution list dest addresses -> 15 + 16 + 17 = 48 bytes
+
+        Total: 1 + 30 + 48 = 79
+    */
+
+    smpp::SubmitMulti submitMultiPdu{
+        smpp::builder::SubmitMultiBuilder()
+            .withCommandStatus(smpp::constants::errors::ESME_ROK)
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestinationAddresses(destAddresses)  // 79 bytes
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withSmLength(7)
+            .withShortMessage("TEST_SM")};
+
+    THEN("the command length of the PDU should be 119") {
+      REQUIRE(submitMultiPdu.getCommandLength() == 119);
+    }
+
+    WHEN("the submit multi PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      submitMultiPdu.serialize(ss);
+
+      THEN("the stringstream size should be 119 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 119);
+      }
+
+      AND_WHEN("a submit multi PDU is deserialized from the stringstream") {
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_MULTI);
+
+        auto deserializedSubmitMultiPdu = dynamic_cast<smpp::SubmitMulti*>(deserializedPdu.get());
+        REQUIRE(deserializedSubmitMultiPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedSubmitMultiPdu->getCommandLength() ==
+                  submitMultiPdu.getCommandLength());
+
+          REQUIRE(deserializedSubmitMultiPdu->getCommandStatus() ==
+                  submitMultiPdu.getCommandStatus());
+
+          REQUIRE(deserializedSubmitMultiPdu->getSequenceNumber() ==
+                  submitMultiPdu.getSequenceNumber());
+
+          REQUIRE(deserializedSubmitMultiPdu->getDestinationAddresses() ==
+                  submitMultiPdu.getDestinationAddresses());
+
+          REQUIRE(deserializedSubmitMultiPdu->getShortMessage() ==
+                  submitMultiPdu.getShortMessage());
+          REQUIRE(deserializedSubmitMultiPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
 }
 
 SCENARIO("Deserialiation of malformed PDUs throws proper exceptions", "[malformed_pdu]") {
