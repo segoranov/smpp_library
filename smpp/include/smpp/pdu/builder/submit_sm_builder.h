@@ -21,7 +21,6 @@ class SubmitSmBuilder {
  private:
   friend class smpp::SubmitSm;
 
-  std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
 
@@ -51,7 +50,6 @@ class SubmitSmBuilder {
  public:
   SubmitSmBuilder() = default;
 
-  SubmitSmBuilder& withCommandLength(uint32_t nCommandLength);
   SubmitSmBuilder& withCommandStatus(uint32_t nCommandStatus);
   SubmitSmBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   SubmitSmBuilder& withServiceType(const std::string& strServiceType);

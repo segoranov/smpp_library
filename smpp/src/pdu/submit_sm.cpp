@@ -10,10 +10,6 @@ SubmitSm::SubmitSm() : BaseSubmit{constants::CMD_ID_SUBMIT_SM} {}
 
 SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
     : BaseSubmit{constants::CMD_ID_SUBMIT_SM} {
-  if (!params.m_optCommandLength.has_value()) {
-    throw UndefinedValueException("SubmitSm(): Undefined command length");
-  }
-
   if (!params.m_optCommandStatus.has_value()) {
     throw UndefinedValueException("SubmitSm(): Undefined command status");
   }
@@ -94,7 +90,6 @@ SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
     throw UndefinedValueException("SubmitSm(): Undefined short message");
   }
 
-  m_nCommandLength = params.m_optCommandLength.value();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();
@@ -115,6 +110,26 @@ SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
   m_nSmLength = params.m_optSmLength.value();
   m_strShortMessage = params.m_optShortMessage.value();
   m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
+
+  // Add PDU header to command length
+  m_nCommandLength = smpp::constants::PDU_HEADER_LENGTH;
+
+  // Add C-octet strings to command length without forgetting to add 1
+  // for the null terminating character
+  m_nCommandLength += m_strServiceType.size() + 1;
+  m_nCommandLength += m_strSourceAddr.size() + 1;
+  m_nCommandLength += m_strDestinationAddr.size() + 1;
+  m_nCommandLength += m_strScheduleDeliveryTime.size() + 1;
+  m_nCommandLength += m_strValidityPeriod.size() + 1;
+  m_nCommandLength += m_strShortMessage.size() + 1;
+
+  // 11 more mandatory fields with size 1 byte
+  m_nCommandLength += 11;
+
+  // Add optional parameters size to command length
+  for (const auto& tlv : m_vOptionalTlvParameters) {
+    m_nCommandLength += tlv.size();
+  }
 }
 
 uint8_t SubmitSm::getDestAddrTon() const { return m_nDestAddrTon; }

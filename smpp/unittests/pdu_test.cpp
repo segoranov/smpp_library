@@ -203,10 +203,9 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     }
   }
 
-  GIVEN("A sample submit sm pdu") {
+  GIVEN("A sample submit sm pdu with size 44 bytes") {
     smpp::SubmitSm submitSmPdu{
         smpp::builder::SubmitSmBuilder()
-            .withCommandLength(44)
             .withCommandStatus(smpp::constants::errors::ESME_ROK)
             .withSequenceNumber(378019)
             .withServiceType("A")
@@ -227,6 +226,10 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
             .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
             .withSmLength(7)
             .withShortMessage("TEST_SM")};
+
+    THEN("the command length of the PDU should be 44") {
+      REQUIRE(submitSmPdu.getCommandLength() == 44);
+    }
 
     WHEN("the submit sm PDU is serialized into a stringstream") {
       std::stringstream ss;
