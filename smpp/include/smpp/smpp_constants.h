@@ -42,12 +42,6 @@ const std::string NULL_C_OCTET_STRING = "";
 
 }  // namespace null_settings
 
-//
-// SUBMIT_MULTI destination type flags
-//
-// constexpr int SME_ADDRESS = 1;
-// constexpr int DISTRIBUTION_LIST_NAME = 2;
-
 /**
  * SMPP Command ID (Requests)
  */
@@ -230,8 +224,8 @@ constexpr int SM_NOREPLACE = 0;
 constexpr int SM_REPLACE = 1;
 
 // Destination flag
-constexpr int SM_DEST_SME_ADDRESS = 1;
-constexpr int SM_DEST_DL_NAME = 2;
+constexpr uint8_t SME_FORMAT_DESTINATION_ADDRESS = 0x01;
+constexpr uint8_t DISTRIBUTION_LIST_FORMAT_DESTINATION_ADDRESS = 0x02;
 
 // Higher Layer Message Type
 constexpr int SM_LAYER_WDP = 0;

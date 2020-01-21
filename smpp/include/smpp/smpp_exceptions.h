@@ -70,6 +70,13 @@ class InvalidInterfaceVersionException : public SmppException {
       : SmppException{strError} {}
 };
 
+class InvalidFieldException : public SmppException {
+ public:
+  InvalidFieldException() : SmppException{"Invalid interface version"} {}
+  explicit InvalidFieldException(const std::string& strError)
+      : SmppException{strError} {}
+};
+
 class UndefinedValueException : public SmppException {
  public:
   UndefinedValueException() : SmppException{"Undefined value"} {}
@@ -80,6 +87,12 @@ class InvalidSessionStateException : public SmppException {
  public:
   InvalidSessionStateException() : SmppException{"Invalid session state"} {}
   explicit InvalidSessionStateException(const std::string& strError) : SmppException{strError} {}
+};
+
+class FieldOutOfRangeException : public SmppException {
+ public:
+  FieldOutOfRangeException() : SmppException{"Field out of range exception"} {}
+  explicit FieldOutOfRangeException(const std::string& strError) : SmppException{strError} {}
 };
 
 /**

@@ -19,6 +19,7 @@ add_executable( run_tests
  tlv_test.cpp
  smpp_util_test.cpp
  print_util_test.cpp
+ submit_multi_destination_addresses_test.cpp
  ../src/pdu/pdu.cpp
  ../src/pdu/builder/bind_builder.cpp
  ../src/pdu/builder/bind_resp_builder.cpp
@@ -26,6 +27,7 @@ add_executable( run_tests
  ../src/pdu/builder/submit_sm_resp_builder.cpp
  ../src/pdu/builder/data_sm_builder.cpp
  ../src/pdu/builder/outbind_builder.cpp
+ ../src/pdu/builder/submit_multi_builder.cpp
  ../src/pdu/pdu_request.cpp
  ../src/pdu/pdu_response.cpp
  ../src/pdu/base_submit.cpp
@@ -34,6 +36,7 @@ add_executable( run_tests
  ../src/pdu/submit_sm_resp.cpp
  ../src/pdu/data_sm.cpp
  ../src/pdu/outbind.cpp
+ ../src/pdu/submit_multi.cpp
  ../src/util/print_util.cpp
  ../src/util/smpp_util.cpp
  ../src/util/serialization_util.cpp
