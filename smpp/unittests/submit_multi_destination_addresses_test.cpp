@@ -47,7 +47,11 @@ SCENARIO("Destination addresses should have correct size", "[dest_addr]") {
         smpp::SubmitMultiDestinationAddresses deserialized;
         deserialized.deserialize(ss);
 
-        THEN("the old and new structures should be equal") {
+        THEN("the deserialized structure should be 79 bytes of size") {
+          REQUIRE(deserialized.size() == 79);
+        }
+
+        AND_THEN("the old and new structures should be equal") {
           REQUIRE(deserialized == destAddresses);
         }
       }
