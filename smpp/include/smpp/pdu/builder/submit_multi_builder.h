@@ -38,7 +38,6 @@ class SubmitMultiBuilder {
   std::optional<uint8_t> m_optReplaceIfPresentFlag;
   std::optional<uint8_t> m_optDataCoding;
   std::optional<uint8_t> m_optSmDefaultMsgId;
-  std::optional<uint8_t> m_optSmLength;
   std::optional<std::string> m_optShortMessage;
 
   std::vector<Tlv> m_vOptionalTlvParameters;
@@ -63,7 +62,6 @@ class SubmitMultiBuilder {
   SubmitMultiBuilder& withReplaceIfPresentFlag(uint8_t nReplaceIfPresentFlag);
   SubmitMultiBuilder& withDataCoding(uint8_t nDataCoding);
   SubmitMultiBuilder& withSmDefaultMsgId(uint8_t nSmDefaultMsgId);
-  SubmitMultiBuilder& withSmLength(uint8_t nSmLength);
   SubmitMultiBuilder& withShortMessage(const std::string& strShortMessage);
   SubmitMultiBuilder& withOptionalParameters(const std::vector<Tlv>& tlvs);
 };

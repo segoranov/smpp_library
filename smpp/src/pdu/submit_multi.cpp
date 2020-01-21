@@ -226,10 +226,6 @@ SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
     throw UndefinedValueException("SubmitMulti(): Undefined sm default msg id");
   }
 
-  if (!params.m_optSmLength.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined sm length");
-  }
-
   if (!params.m_optShortMessage.has_value()) {
     throw UndefinedValueException("SubmitMulti(): Undefined short message");
   }
@@ -249,7 +245,7 @@ SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
   m_nReplaceIfPresentFlag = params.m_optReplaceIfPresentFlag.value();
   m_nDataCoding = params.m_optDataCoding.value();
   m_nSmDefaultMsgId = params.m_optSmDefaultMsgId.value();
-  m_nSmLength = params.m_optSmLength.value();
+  m_nSmLength = params.m_optShortMessage.value().size();
   m_strShortMessage = params.m_optShortMessage.value();
   m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
 

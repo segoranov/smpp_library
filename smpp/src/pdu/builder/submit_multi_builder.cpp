@@ -83,11 +83,6 @@ SubmitMultiBuilder& SubmitMultiBuilder::withSmDefaultMsgId(uint8_t nSmDefaultMsg
   return *this;
 }
 
-SubmitMultiBuilder& SubmitMultiBuilder::withSmLength(uint8_t nSmLength) {
-  m_optSmLength = nSmLength;
-  return *this;
-}
-
 SubmitMultiBuilder& SubmitMultiBuilder::withShortMessage(const std::string& strShortMessage) {
   m_optShortMessage = strShortMessage;
   return *this;

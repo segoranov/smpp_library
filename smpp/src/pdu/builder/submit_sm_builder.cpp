@@ -92,11 +92,6 @@ SubmitSmBuilder& SubmitSmBuilder::withSmDefaultMsgId(uint8_t nSmDefaultMsgId) {
   return *this;
 }
 
-SubmitSmBuilder& SubmitSmBuilder::withSmLength(uint8_t nSmLength) {
-  m_optSmLength = nSmLength;
-  return *this;
-}
-
 SubmitSmBuilder& SubmitSmBuilder::withShortMessage(const std::string& strShortMessage) {
   m_optShortMessage = strShortMessage;
   return *this;

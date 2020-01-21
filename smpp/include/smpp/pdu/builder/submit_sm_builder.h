@@ -42,7 +42,6 @@ class SubmitSmBuilder {
   std::optional<uint8_t> m_optReplaceIfPresentFlag;
   std::optional<uint8_t> m_optDataCoding;
   std::optional<uint8_t> m_optSmDefaultMsgId;
-  std::optional<uint8_t> m_optSmLength;
   std::optional<std::string> m_optShortMessage;
 
   std::vector<Tlv> m_vOptionalTlvParameters;
@@ -68,7 +67,6 @@ class SubmitSmBuilder {
   SubmitSmBuilder& withReplaceIfPresentFlag(uint8_t nReplaceIfPresentFlag);
   SubmitSmBuilder& withDataCoding(uint8_t nDataCoding);
   SubmitSmBuilder& withSmDefaultMsgId(uint8_t nSmDefaultMsgId);
-  SubmitSmBuilder& withSmLength(uint8_t nSmLength);
   SubmitSmBuilder& withShortMessage(const std::string& strShortMessage);
   SubmitSmBuilder& withOptionalParameters(const std::vector<Tlv>& tlvs);
 };

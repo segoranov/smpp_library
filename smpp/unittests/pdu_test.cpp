@@ -224,7 +224,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
             .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
             .withDataCoding(smpp::constants::null_settings::NULL_INT8)
             .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
-            .withSmLength(7)
             .withShortMessage("TEST_SM")};
 
     THEN("the command length of the PDU should be 44") {
@@ -432,7 +431,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
             .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
             .withDataCoding(smpp::constants::null_settings::NULL_INT8)
             .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
-            .withSmLength(7)
             .withShortMessage("TEST_SM")};
 
     THEN("the command length of the PDU should be 119") {
