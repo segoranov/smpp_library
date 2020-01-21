@@ -32,7 +32,6 @@ class BindBuilder {
   template <uint32_t CommandId>
   friend class smpp::Bind;
 
-  std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
 
@@ -47,7 +46,6 @@ class BindBuilder {
  public:
   BindBuilder() = default;
 
-  BindBuilder& withCommandLength(uint32_t nCommandLength);
   BindBuilder& withCommandStatus(uint32_t nCommandStatus);
   BindBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   BindBuilder& withSystemId(const std::string& strSystemId);

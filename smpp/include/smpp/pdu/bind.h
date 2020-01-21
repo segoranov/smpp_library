@@ -54,9 +54,6 @@ class Bind final : public PduRequest {
 
 template <uint32_t CommandId>
 Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId} {
-  if (!params.m_optCommandLength.has_value())
-    throw UndefinedValueException("Bind(): Undefined command length");
-
   if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("Bind(): Undefined command status");
 
@@ -85,7 +82,6 @@ Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId
     throw UndefinedValueException("Bind(): Undefined address range");
 
   // TODO SG: Validation
-  m_nCommandLength = params.m_optCommandLength.value();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
 
@@ -97,6 +93,21 @@ Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId
   m_nAddrTon = params.m_optAddrTon.value();
   m_nAddrNpi = params.m_optAddrNpi.value();
   m_strAddressRange = params.m_optAddressRange.value();
+
+  // Add PDU header to command length
+  m_nCommandLength = smpp::constants::PDU_HEADER_LENGTH;
+
+  // Add C-octet strings to command length without forgetting to add 1
+  // for the null terminating character
+  m_nCommandLength += m_strSystemId.size() + 1;
+  m_nCommandLength += m_strPassword.size() + 1;
+  m_nCommandLength += m_strSystemType.size() + 1;
+  m_nCommandLength += m_strAddressRange.size() + 1;
+
+  // 3 more mandatory fields with size 1 byte
+  m_nCommandLength += 3;
+
+  // No optional parameters for bind operations to add to command length
 }
 
 template <uint32_t CommandId>

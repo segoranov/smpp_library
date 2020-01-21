@@ -2,11 +2,6 @@
 
 namespace smpp::builder {
 
-BindBuilder& BindBuilder::withCommandLength(uint32_t nCommandLength) {
-  m_optCommandLength = nCommandLength;
-  return *this;
-}
-
 BindBuilder& BindBuilder::withCommandStatus(uint32_t nCommandStatus) {
   m_optCommandStatus = nCommandStatus;
   return *this;
