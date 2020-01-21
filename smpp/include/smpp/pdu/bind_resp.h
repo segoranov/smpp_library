@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "smpp/pdu/builder/bind_resp_builder.h"
 #include "pdu_response.h"
+#include "smpp/pdu/builder/bind_resp_builder.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -40,9 +40,6 @@ class BindResp : public PduResponse {
 
 template <uint32_t CommandId>
 BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : PduResponse{CommandId} {
-  if (!params.m_optCommandLength.has_value())
-    throw UndefinedValueException("BindTransmitterResp(): Undefined command length");
-
   if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
 
@@ -53,11 +50,22 @@ BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : PduRespo
     throw UndefinedValueException("BindTransmitterResp(): Undefined system id");
 
   // TODO SG: Throw exceptions here if invalid field exists
-  m_nCommandLength = params.m_optCommandLength.value();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strSystemId = params.m_optSystemId.value();
   m_vOptionalTlvParameters = params.m_vOptionalTlvParameters;
+
+  // Add PDU header to command length
+  m_nCommandLength = smpp::constants::PDU_HEADER_LENGTH;
+
+  // Add C-octet strings to command length without forgetting to add 1
+  // for the null terminating character
+  m_nCommandLength += m_strSystemId.size() + 1;
+
+  // Add optional parameters size to command length
+  for (const auto& tlv : m_vOptionalTlvParameters) {
+    m_nCommandLength += tlv.size();
+  }
 }
 
 template <uint32_t CommandId>

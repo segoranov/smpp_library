@@ -145,11 +145,14 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
       smpp::BindTransmitterResp bindTransmitterRespPdu{
           smpp::builder::BindRespBuilder()
-              .withCommandLength(31)
               .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
               .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
+
+      THEN("the command length of the PDU should be 31") {
+        REQUIRE(bindTransmitterRespPdu.getCommandLength() == 31);
+      }
 
       WHEN("the BindTransmitterResp PDU is serialized into a stringstream") {
         std::stringstream ss;

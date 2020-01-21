@@ -32,7 +32,6 @@ class BindRespBuilder {
   template <uint32_t CommandId>
   friend class smpp::BindResp;
 
-  std::optional<uint32_t> m_optCommandLength;
   std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
   std::optional<std::string> m_optSystemId;
@@ -41,7 +40,6 @@ class BindRespBuilder {
  public:
   BindRespBuilder() = default;
 
-  BindRespBuilder& withCommandLength(uint32_t nCommandLength);
   BindRespBuilder& withCommandStatus(uint32_t nCommandStatus);
   BindRespBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   BindRespBuilder& withSystemId(const std::string& strSystemId);
