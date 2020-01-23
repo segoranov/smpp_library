@@ -162,74 +162,7 @@ SubmitMulti::SubmitMulti() : BaseSubmit{constants::CMD_ID_SUBMIT_MULTI} {}
 SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
     : BaseSubmit{constants::CMD_ID_SUBMIT_MULTI} {
   INFO << "SubmitMulti(builder) constructor";
-  if (!params.m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined command status");
-  }
-
-  if (!params.m_optSequenceNumber.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined sequence number");
-  }
-
-  if (!params.m_optServiceType.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined service type");
-  }
-
-  if (!params.m_optSourceAddrTon.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined source addr ton");
-  }
-
-  if (!params.m_optSourceAddrNpi.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined source addr npi");
-  }
-
-  if (!params.m_optSourceAddr.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined source addr");
-  }
-
-  if (!params.m_optDestinationAddresses.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined destination addresses");
-  }
-
-  if (!params.m_optEsmClass.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined esm class");
-  }
-
-  if (!params.m_optProtocolId.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined protocol id");
-  }
-
-  if (!params.m_optPriorityFlag.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined priority flag");
-  }
-
-  if (!params.m_optScheduleDeliveryTime.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined schedule delivery time");
-  }
-
-  if (!params.m_optValidityPeriod.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined validity period");
-  }
-
-  if (!params.m_optRegisteredDelivery.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined registered delivery");
-  }
-
-  if (!params.m_optReplaceIfPresentFlag.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined replace if present flag");
-  }
-
-  if (!params.m_optDataCoding.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined data coding");
-  }
-
-  if (!params.m_optSmDefaultMsgId.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined sm default msg id");
-  }
-
-  if (!params.m_optShortMessage.has_value()) {
-    throw UndefinedValueException("SubmitMulti(): Undefined short message");
-  }
-
+  params.checkAllValuesArePresent();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();

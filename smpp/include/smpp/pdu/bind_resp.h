@@ -38,14 +38,7 @@ class BindResp : public Pdu {
 
 template <uint32_t CommandId>
 BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : Pdu{CommandId} {
-  if (!params.m_optCommandStatus.has_value())
-    throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
-
-  if (!params.m_optSequenceNumber.has_value())
-    throw UndefinedValueException("BindTransmitterResp(): Undefined sequence number");
-
-  if (!params.m_optSystemId.has_value())
-    throw UndefinedValueException("BindTransmitterResp(): Undefined system id");
+  params.checkAllValuesArePresent();
 
   // TODO SG: Throw exceptions here if invalid field exists
   m_nCommandStatus = params.m_optCommandStatus.value();

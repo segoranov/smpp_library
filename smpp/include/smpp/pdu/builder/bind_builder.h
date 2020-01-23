@@ -43,6 +43,12 @@ class BindBuilder {
   std::optional<uint8_t> m_optAddrNpi;
   std::optional<std::string> m_optAddressRange;
 
+  /**
+   * @brief Checks to see if all values are present in the optionals
+   * @throw UndefinedValueException if some value is not present
+   */
+  void checkAllValuesArePresent() const;
+
  public:
   BindBuilder() = default;
 

@@ -42,10 +42,47 @@ BindBuilder& BindBuilder::withAddrNpi(uint8_t nAddrNpi) {
   return *this;
 }
 
-BindBuilder& BindBuilder::withAddressRange(
-    const std::string& strAddressRange) {
+BindBuilder& BindBuilder::withAddressRange(const std::string& strAddressRange) {
   m_optAddressRange = strAddressRange;
   return *this;
+}
+
+void BindBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined sequence number");
+  }
+
+  if (!m_optSystemId.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined system id");
+  }
+
+  if (!m_optPassword.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined password");
+  }
+
+  if (!m_optSystemType.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined system type");
+  }
+
+  if (!m_optInterfaceVersion.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined interface version");
+  }
+
+  if (!m_optAddrTon.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined addr ton");
+  }
+
+  if (!m_optAddrNpi.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined addr npi");
+  }
+
+  if (!m_optAddressRange.has_value()) {
+    throw UndefinedValueException("BindBuilder: Undefined address range");
+  }
 }
 
 }  // namespace smpp::builder

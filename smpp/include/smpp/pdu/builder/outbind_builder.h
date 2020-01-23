@@ -26,6 +26,12 @@ class OutbindBuilder {
   std::optional<std::string> m_optSystemId;
   std::optional<std::string> m_optPassword;
 
+  /**
+   * @brief Checks to see if all values are present in the optionals
+   * @throw UndefinedValueException if some value is not present
+   */
+  void checkAllValuesArePresent() const;
+
  public:
   OutbindBuilder() = default;
 

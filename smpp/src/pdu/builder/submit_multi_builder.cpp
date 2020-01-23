@@ -93,4 +93,74 @@ SubmitMultiBuilder& SubmitMultiBuilder::withOptionalParameters(const std::vector
   return *this;
 }
 
+void SubmitMultiBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined sequence number");
+  }
+
+  if (!m_optServiceType.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined service type");
+  }
+
+  if (!m_optSourceAddrTon.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined source addr ton");
+  }
+
+  if (!m_optSourceAddrNpi.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined source addr npi");
+  }
+
+  if (!m_optSourceAddr.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined source addr");
+  }
+
+  if (!m_optDestinationAddresses.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined destination addresses");
+  }
+
+  if (!m_optEsmClass.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined esm class");
+  }
+
+  if (!m_optProtocolId.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined protocol id");
+  }
+
+  if (!m_optPriorityFlag.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined priority flag");
+  }
+
+  if (!m_optScheduleDeliveryTime.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined schedule delivery time");
+  }
+
+  if (!m_optValidityPeriod.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined validity period");
+  }
+
+  if (!m_optRegisteredDelivery.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined registered delivery");
+  }
+
+  if (!m_optReplaceIfPresentFlag.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined replace if present flag");
+  }
+
+  if (!m_optDataCoding.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined data coding");
+  }
+
+  if (!m_optSmDefaultMsgId.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined sm default msg id");
+  }
+
+  if (!m_optShortMessage.has_value()) {
+    throw UndefinedValueException("SubmitMultiBuilder: Undefined short message");
+  }
+}
+
 }  // namespace smpp::builder

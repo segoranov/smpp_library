@@ -35,6 +35,12 @@ class DataSmBuilder {
   std::optional<uint8_t> m_optDataCoding;
   std::vector<Tlv> m_vOptionalTlvParameters;
 
+  /**
+   * @brief Checks to see if all values are present in the optionals
+   * @throw UndefinedValueException if some value is not present
+   */
+  void checkAllValuesArePresent() const;
+
  public:
   DataSmBuilder() = default;
 

@@ -9,54 +9,7 @@ namespace smpp {
 DataSm::DataSm() : Pdu{constants::CMD_ID_DATA_SM} {}
 
 DataSm::DataSm(const builder::DataSmBuilder& params) : Pdu{constants::CMD_ID_DATA_SM} {
-  if (!params.m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined command status");
-  }
-
-  if (!params.m_optSequenceNumber.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined sequence number");
-  }
-
-  if (!params.m_optServiceType.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined service type");
-  }
-
-  if (!params.m_optSourceAddrTon.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined source addr ton");
-  }
-
-  if (!params.m_optSourceAddrNpi.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined source addr npi");
-  }
-
-  if (!params.m_optSourceAddr.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined source addr");
-  }
-
-  if (!params.m_optDestAddrTon.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined dest addr ton");
-  }
-
-  if (!params.m_optDestAddrNpi.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined dest addr npi");
-  }
-
-  if (!params.m_optDestinationAddr.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined destination addr");
-  }
-
-  if (!params.m_optEsmClass.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined esm class");
-  }
-
-  if (!params.m_optRegisteredDelivery.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined registered delivery");
-  }
-
-  if (!params.m_optDataCoding.has_value()) {
-    throw UndefinedValueException("DataSm(): Undefined data coding");
-  }
-
+  params.checkAllValuesArePresent();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();

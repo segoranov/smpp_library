@@ -51,33 +51,7 @@ class Bind final : public Pdu {
 
 template <uint32_t CommandId>
 Bind<CommandId>::Bind(const builder::BindBuilder& params) : Pdu{CommandId} {
-  if (!params.m_optCommandStatus.has_value())
-    throw UndefinedValueException("Bind(): Undefined command status");
-
-  if (!params.m_optSequenceNumber.has_value())
-    throw UndefinedValueException("Bind(): Undefined sequence number");
-
-  if (!params.m_optSystemId.has_value())
-    throw UndefinedValueException("Bind(): Undefined system id");
-
-  if (!params.m_optPassword.has_value())
-    throw UndefinedValueException("Bind(): Undefined password");
-
-  if (!params.m_optSystemType.has_value())
-    throw UndefinedValueException("Bind(): Undefined system type");
-
-  if (!params.m_optInterfaceVersion.has_value())
-    throw UndefinedValueException("Bind(): Undefined interface version");
-
-  if (!params.m_optAddrTon.has_value())
-    throw UndefinedValueException("Bind(): Undefined addr ton");
-
-  if (!params.m_optAddrNpi.has_value())
-    throw UndefinedValueException("Bind(): Undefined addr npi");
-
-  if (!params.m_optAddressRange.has_value())
-    throw UndefinedValueException("Bind(): Undefined address range");
-
+  params.checkAllValuesArePresent();
   // TODO SG: Validation
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();

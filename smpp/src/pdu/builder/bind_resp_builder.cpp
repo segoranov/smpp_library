@@ -33,4 +33,18 @@ BindRespBuilder& BindRespBuilder::withScInterfaceVersion(uint8_t nScInterfaceVer
   return *this;
 }
 
+void BindRespBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("BindRespBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("BindRespBuilder: Undefined sequence number");
+  }
+
+  if (!m_optSystemId.has_value()) {
+    throw UndefinedValueException("BindRespBuilder: Undefined system id");
+  }
+}
+
 }  // namespace smpp::builder

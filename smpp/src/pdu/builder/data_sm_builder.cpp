@@ -66,4 +66,54 @@ DataSmBuilder& DataSmBuilder::withOptionalParameters(const std::vector<Tlv>& tlv
   return *this;
 }
 
+void DataSmBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined sequence number");
+  }
+
+  if (!m_optServiceType.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined service type");
+  }
+
+  if (!m_optSourceAddrTon.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined source addr ton");
+  }
+
+  if (!m_optSourceAddrNpi.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined source addr npi");
+  }
+
+  if (!m_optSourceAddr.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined source addr");
+  }
+
+  if (!m_optDestAddrTon.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined dest addr ton");
+  }
+
+  if (!m_optDestAddrNpi.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined dest addr npi");
+  }
+
+  if (!m_optDestinationAddr.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined destination addr");
+  }
+
+  if (!m_optEsmClass.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined esm class");
+  }
+
+  if (!m_optRegisteredDelivery.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined registered delivery");
+  }
+
+  if (!m_optDataCoding.has_value()) {
+    throw UndefinedValueException("DataSmBuilder: Undefined data coding");
+  }
+}
+
 }  // namespace smpp::builder

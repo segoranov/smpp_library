@@ -22,4 +22,18 @@ SubmitSmRespBuilder& SubmitSmRespBuilder::withOptionalParameters(const std::vect
   return *this;
 }
 
+void SubmitSmRespBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("SubmitSmRespBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("SubmitSmRespBuilder: Undefined sequence number");
+  }
+
+  if (!m_optMessageId.has_value()) {
+    throw UndefinedValueException("SubmitSmRespBuilder: Undefined message id");
+  }
+}
+
 }  // namespace smpp::builder

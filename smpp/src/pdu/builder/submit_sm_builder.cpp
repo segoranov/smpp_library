@@ -102,4 +102,82 @@ SubmitSmBuilder& SubmitSmBuilder::withOptionalParameters(const std::vector<Tlv>&
   return *this;
 }
 
+void SubmitSmBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined sequence number");
+  }
+
+  if (!m_optServiceType.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined service type");
+  }
+
+  if (!m_optSourceAddrTon.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined source addr ton");
+  }
+
+  if (!m_optSourceAddrNpi.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined source addr npi");
+  }
+
+  if (!m_optSourceAddr.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined source addr");
+  }
+
+  if (!m_optDestAddrTon.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined dest addr ton");
+  }
+
+  if (!m_optDestAddrNpi.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined dest addr npi");
+  }
+
+  if (!m_optDestinationAddr.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined destination addr");
+  }
+
+  if (!m_optEsmClass.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined esm class");
+  }
+
+  if (!m_optProtocolId.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined protocol id");
+  }
+
+  if (!m_optPriorityFlag.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined priority flag");
+  }
+
+  if (!m_optScheduleDeliveryTime.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined schedule delivery time");
+  }
+
+  if (!m_optValidityPeriod.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined validity period");
+  }
+
+  if (!m_optRegisteredDelivery.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined registered delivery");
+  }
+
+  if (!m_optReplaceIfPresentFlag.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined replace if present flag");
+  }
+
+  if (!m_optDataCoding.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined data coding");
+  }
+
+  if (!m_optSmDefaultMsgId.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined sm default msg id");
+  }
+
+  if (!m_optShortMessage.has_value()) {
+    throw UndefinedValueException("SubmitSmBuilder: Undefined short message");
+  }
+}
+
 }  // namespace smpp::builder

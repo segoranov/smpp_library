@@ -22,4 +22,20 @@ OutbindBuilder& OutbindBuilder::withPassword(const std::string& strPassword) {
   return *this;
 }
 
+void OutbindBuilder::checkAllValuesArePresent() const {
+  if (!m_optCommandStatus.has_value()) {
+    throw UndefinedValueException("OutbindBuilder: Undefined command status");
+  }
+
+  if (!m_optSequenceNumber.has_value()) {
+    throw UndefinedValueException("OutbindBuilder: Undefined sequence number");
+  }
+
+  if (!m_optSystemId.has_value())
+    throw UndefinedValueException("OutbindBuilder: Undefined system id");
+
+  if (!m_optPassword.has_value())
+    throw UndefinedValueException("OutbindBuilder: Undefined password");
+}
+
 }  // namespace smpp::builder

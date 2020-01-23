@@ -28,6 +28,12 @@ class SubmitSmRespBuilder {
 
   std::vector<Tlv> m_vOptionalTlvParameters;
 
+  /**
+   * @brief Checks to see if all values are present in the optionals
+   * @throw UndefinedValueException if some value is not present
+   */
+  void checkAllValuesArePresent() const;
+
  public:
   SubmitSmRespBuilder() = default;
 

@@ -9,20 +9,7 @@ namespace smpp {
 Outbind::Outbind() : Pdu{constants::CMD_ID_OUTBIND} {}
 
 Outbind::Outbind(const builder::OutbindBuilder& params) : Pdu{constants::CMD_ID_OUTBIND} {
-  if (!params.m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("Outbind(): Undefined command status");
-  }
-
-  if (!params.m_optSequenceNumber.has_value()) {
-    throw UndefinedValueException("Outbind(): Undefined sequence number");
-  }
-
-  if (!params.m_optSystemId.has_value())
-    throw UndefinedValueException("Outbind(): Undefined system id");
-
-  if (!params.m_optPassword.has_value())
-    throw UndefinedValueException("Outbind(): Undefined password");
-
+  params.checkAllValuesArePresent();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strSystemId = params.m_optSystemId.value();

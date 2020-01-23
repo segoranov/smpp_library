@@ -10,18 +10,7 @@ SubmitSmResp::SubmitSmResp() : BaseSubmissionResp{constants::CMD_ID_SUBMIT_SM_RE
 
 SubmitSmResp::SubmitSmResp(const builder::SubmitSmRespBuilder& params)
     : BaseSubmissionResp{constants::CMD_ID_SUBMIT_SM_RESP} {
-  if (!params.m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("SubmitSmResp(): Undefined command status");
-  }
-
-  if (!params.m_optSequenceNumber.has_value()) {
-    throw UndefinedValueException("SubmitSmResp(): Undefined sequence number");
-  }
-
-  if (!params.m_optMessageId.has_value()) {
-    throw UndefinedValueException("SubmitSmResp(): Undefined message id");
-  }
-
+  params.checkAllValuesArePresent();
   m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
 
