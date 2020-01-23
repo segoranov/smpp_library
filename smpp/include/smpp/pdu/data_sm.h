@@ -1,7 +1,7 @@
 #ifndef DATA_SM_H
 #define DATA_SM_H
 
-#include "smpp/pdu/pdu_request.h"
+#include "smpp/pdu/pdu.h"
 
 namespace smpp {
 
@@ -9,7 +9,7 @@ namespace builder {
 class DataSmBuilder;
 }
 
-class DataSm final : public PduRequest {
+class DataSm final : public Pdu {
  private:
   DataSm();
 

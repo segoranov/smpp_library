@@ -1,11 +1,11 @@
 #include "smpp/pdu/base_submit.h"
 
-#include "smpp/pdu/pdu_request.h"
+#include "smpp/pdu/pdu.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
 
-BaseSubmit::BaseSubmit(uint32_t nCommandId) : PduRequest{nCommandId} {}
+BaseSubmit::BaseSubmit(uint32_t nCommandId) : Pdu{nCommandId} {}
 
 std::string BaseSubmit::getServiceType() const { return m_strServiceType; }
 

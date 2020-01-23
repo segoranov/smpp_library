@@ -34,13 +34,11 @@ class Pdu {
 
   std::vector<Tlv> m_vOptionalTlvParameters;
 
-  const bool m_bIsRequest;
-
  public:
   /**
    * @throw InvalidCommandIdException if the given command id is invalid
    */
-  explicit Pdu(uint32_t nCommandId, bool bIsRequest);
+  explicit Pdu(uint32_t nCommandId);
 
   using Ptr = std::unique_ptr<Pdu>;
 
@@ -52,10 +50,6 @@ class Pdu {
 
   bool hasOptionalParameter(uint16_t nTag) const;
 
-  bool isRequest() const;
-  bool isResponse() const;
-
-  // Serialization/deserialization interface
   /**
    * @brief Serializes a PDU by writing raw bytes to an output stream
    */

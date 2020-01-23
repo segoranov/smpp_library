@@ -6,9 +6,9 @@
 
 namespace smpp {
 
-DataSm::DataSm() : PduRequest{constants::CMD_ID_DATA_SM} {}
+DataSm::DataSm() : Pdu{constants::CMD_ID_DATA_SM} {}
 
-DataSm::DataSm(const builder::DataSmBuilder& params) : PduRequest{constants::CMD_ID_DATA_SM} {
+DataSm::DataSm(const builder::DataSmBuilder& params) : Pdu{constants::CMD_ID_DATA_SM} {
   if (!params.m_optCommandStatus.has_value()) {
     throw UndefinedValueException("DataSm(): Undefined command status");
   }

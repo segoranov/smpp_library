@@ -1,7 +1,7 @@
 #ifndef OUTBIND_H
 #define OUTBIND_H
 
-#include "smpp/pdu/pdu_request.h"
+#include "smpp/pdu/pdu.h"
 
 namespace smpp {
 
@@ -9,7 +9,7 @@ namespace builder {
 class OutbindBuilder;
 }
 
-class Outbind final : public PduRequest {
+class Outbind final : public Pdu {
  private:
   Outbind();
 

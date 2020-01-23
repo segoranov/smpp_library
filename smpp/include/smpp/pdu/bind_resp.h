@@ -3,7 +3,7 @@
 
 #include <string>
 
-#include "pdu_response.h"
+#include "smpp/pdu/pdu.h"
 #include "smpp/pdu/builder/bind_resp_builder.h"
 #include "smpp/util/serialization_util.h"
 
@@ -17,7 +17,7 @@ using BindTransceiverResp = BindResp<constants::CMD_ID_BIND_TRANSCEIVER_RESP>;
 using BindReceiverResp = BindResp<constants::CMD_ID_BIND_RECEIVER_RESP>;
 
 template <uint32_t CommandId>
-class BindResp : public PduResponse {
+class BindResp : public Pdu {
   friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
 
  private:
@@ -39,7 +39,7 @@ class BindResp : public PduResponse {
 };
 
 template <uint32_t CommandId>
-BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : PduResponse{CommandId} {
+BindResp<CommandId>::BindResp(const builder::BindRespBuilder& params) : Pdu{CommandId} {
   if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("BindTransmitterResp(): Undefined command status");
 
@@ -80,7 +80,7 @@ void BindResp<CommandId>::serialize(std::ostream& os) const {
 }
 
 template <uint32_t CommandId>
-BindResp<CommandId>::BindResp() : PduResponse{CommandId} {}
+BindResp<CommandId>::BindResp() : Pdu{CommandId} {}
 
 template <uint32_t CommandId>
 void BindResp<CommandId>::serializeBody(std::ostream& os) const {

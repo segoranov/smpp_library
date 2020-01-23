@@ -1,6 +1,7 @@
 #include "smpp/pdu/pdu.h"
 
 #include <algorithm>
+#include <sstream>
 #include <unordered_map>
 
 #include "smpp/pdu/bind.h"
@@ -40,11 +41,12 @@ const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryM
   return *commandIdToFactoryMap;
 }
 
-Pdu::Pdu(uint32_t nCommandId, bool bIsRequest) : m_bIsRequest{bIsRequest} {
+Pdu::Pdu(uint32_t nCommandId) {
   if (!util::isCommandIdValid(nCommandId)) {
-    throw InvalidCommandIdException("Invalid command id while constructing a PDU");
+    std::stringstream error;
+    error << "Invalid command id while constructing a PDU - [ " << nCommandId << "]";
+    throw InvalidCommandIdException();
   }
-
   m_nCommandId = nCommandId;
 }
 
@@ -57,10 +59,6 @@ uint32_t Pdu::getCommandStatus() const { return m_nCommandStatus; }
 uint32_t Pdu::getSequenceNumber() const { return m_nSequenceNumber; }
 
 std::vector<Tlv> Pdu::getOptionalParameters() const { return m_vOptionalTlvParameters; }
-
-bool Pdu::isRequest() const { return m_bIsRequest; }
-
-bool Pdu::isResponse() const { return !m_bIsRequest; }
 
 bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   auto iterTlv = std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),

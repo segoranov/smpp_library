@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "smpp/pdu/pdu_response.h"
+#include "smpp/pdu/pdu.h"
 
 namespace smpp {
 
-class BaseSubmissionResp : public PduResponse {
+class BaseSubmissionResp : public Pdu {
  protected:
   std::string m_strMessageId;
 

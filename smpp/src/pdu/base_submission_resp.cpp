@@ -4,7 +4,7 @@
 
 namespace smpp {
 
-BaseSubmissionResp::BaseSubmissionResp(uint32_t nCommandId) : PduResponse{nCommandId} {}
+BaseSubmissionResp::BaseSubmissionResp(uint32_t nCommandId) : Pdu{nCommandId} {}
 
 void BaseSubmissionResp::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strMessageId, os);

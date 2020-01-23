@@ -6,9 +6,9 @@
 
 namespace smpp {
 
-Outbind::Outbind() : PduRequest{constants::CMD_ID_OUTBIND} {}
+Outbind::Outbind() : Pdu{constants::CMD_ID_OUTBIND} {}
 
-Outbind::Outbind(const builder::OutbindBuilder& params) : PduRequest{constants::CMD_ID_OUTBIND} {
+Outbind::Outbind(const builder::OutbindBuilder& params) : Pdu{constants::CMD_ID_OUTBIND} {
   if (!params.m_optCommandStatus.has_value()) {
     throw UndefinedValueException("Outbind(): Undefined command status");
   }

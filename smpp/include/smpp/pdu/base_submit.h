@@ -3,11 +3,11 @@
 
 #include <string>
 
-#include "smpp/pdu/pdu_request.h"
+#include "smpp/pdu/pdu.h"
 
 namespace smpp {
 
-class BaseSubmit : public PduRequest {
+class BaseSubmit : public Pdu {
  protected:
   std::string m_strServiceType;
   uint8_t m_nSourceAddrTon;

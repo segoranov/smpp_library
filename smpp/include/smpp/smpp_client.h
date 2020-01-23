@@ -20,7 +20,7 @@ class SmppClient {
   std::shared_ptr<TcpSocket> m_ptrTcpSocket;
 
   using PduResponsePtr = std::shared_ptr<Pdu>;
-  std::list<PduResponse::Ptr> m_pduResponseQueue;
+  std::list<Pdu::Ptr> m_pduResponseQueue;
 
  public:
   SmppClient(std::shared_ptr<TcpSocket> tcpSocket) {}
@@ -56,7 +56,7 @@ class SmppClient {
   /**
    * Sends a request PDU through the socket
    */
-  void sendPdu(PduRequest::Ptr pdu);
+  void sendPdu(Pdu::Ptr pdu);
 
   void readPduBlocking();
 
@@ -74,9 +74,9 @@ class SmppClient {
    * @param nCommandId Command id to look for.
    * @return PDU response to PDU with the given sequence number and command id.
    */
-  PduResponse::Ptr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
+  Pdu::Ptr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
-  PduResponse::Ptr readPdu(bool bSynchronous);
+  Pdu::Ptr readPdu(bool bSynchronous);
 };
 
 template <uint32_t CommandId>

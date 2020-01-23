@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "pdu_request.h"
 #include "smpp/pdu/builder/bind_builder.h"
+#include "smpp/pdu/pdu.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/util/serialization_util.h"
 
@@ -18,7 +18,7 @@ using BindTransceiver = Bind<constants::CMD_ID_BIND_TRANSCEIVER>;
 using BindReceiver = Bind<constants::CMD_ID_BIND_RECEIVER>;
 
 template <uint32_t CommandId>
-class Bind final : public PduRequest {
+class Bind final : public Pdu {
   friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
 
  private:
@@ -31,7 +31,7 @@ class Bind final : public PduRequest {
   std::string m_strAddressRange;
 
  private:
-  Bind() : PduRequest{CommandId} {}
+  Bind();
 
   virtual void serializeBody(std::ostream& os) const final override;
   virtual void deserializeBody(std::istream& is) final override;
@@ -53,7 +53,7 @@ class Bind final : public PduRequest {
 };
 
 template <uint32_t CommandId>
-Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId} {
+Bind<CommandId>::Bind(const builder::BindBuilder& params) : Pdu{CommandId} {
   if (!params.m_optCommandStatus.has_value())
     throw UndefinedValueException("Bind(): Undefined command status");
 
@@ -109,6 +109,9 @@ Bind<CommandId>::Bind(const builder::BindBuilder& params) : PduRequest{CommandId
 
   // No optional parameters for bind operations to add to command length
 }
+
+template <uint32_t CommandId>
+Bind<CommandId>::Bind() : Pdu{CommandId} {}
 
 template <uint32_t CommandId>
 std::string Bind<CommandId>::getSystemId() const {
