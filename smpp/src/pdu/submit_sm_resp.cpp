@@ -2,6 +2,7 @@
 
 #include "smpp/pdu/builder/submit_sm_resp_builder.h"
 #include "smpp/smpp_constants.h"
+#include "smpp/util/serialization_util.h"
 
 namespace smpp {
 
@@ -40,25 +41,21 @@ SubmitSmResp::SubmitSmResp(const builder::SubmitSmRespBuilder& params)
   }
 }
 
-std::unique_ptr<SubmitSmResp> SubmitSmResp::createPduBody(std::istream& is) {
+std::unique_ptr<SubmitSmResp> SubmitSmResp::create(std::istream& is) {
   auto submitSmRespPtr = std::unique_ptr<SubmitSmResp>{new SubmitSmResp{}};
-  submitSmRespPtr->deserializeBody(is);
+
+  const std::string strMessageId = binary::deserializeNullTerminatedString(is);
+  submitSmRespPtr->m_strMessageId = strMessageId;
+
+  submitSmRespPtr->deserializeOptionalParameters(is);
+
   return submitSmRespPtr;
-}
-
-void SubmitSmResp::serializeBody(std::ostream& os) const {
-  BaseSubmissionResp::serializeBody(os);
-  serializeOptionalParameters(os);
-}
-
-void SubmitSmResp::deserializeBody(std::istream& is) {
-  BaseSubmissionResp::deserializeBody(is);
-  deserializeOptionalParameters(is);
 }
 
 void SubmitSmResp::serialize(std::ostream& os) const {
   serializeHeader(os);
-  serializeBody(os);
+  binary::serializeNullTerminatedString(m_strMessageId, os);
+  serializeOptionalParameters(os);
 }
 
 }  // namespace smpp

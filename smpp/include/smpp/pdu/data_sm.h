@@ -25,11 +25,8 @@ class DataSm final : public Pdu {
   uint8_t m_nDataCoding;
 
  private:
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
-  static std::unique_ptr<DataSm> createPduBody(std::istream& is);
-
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
+  static std::unique_ptr<DataSm> create(std::istream& is);
 
  public:
   explicit DataSm(const builder::DataSmBuilder& params);

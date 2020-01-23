@@ -43,32 +43,26 @@ std::string Outbind::getSystemId() const { return m_strSystemId; }
 
 std::string Outbind::getPassword() const { return m_strPassword; }
 
-void Outbind::serializeBody(std::ostream& os) const {
+void Outbind::serialize(std::ostream& os) const {
+  serializeHeader(os);
   binary::serializeNullTerminatedString(m_strSystemId, os);
   binary::serializeNullTerminatedString(m_strPassword, os);
 }
 
-void Outbind::deserializeBody(std::istream& is) {
-  INFO << "Outbind::deserializeBody()";
+std::unique_ptr<Outbind> Outbind::create(std::istream& is) {
+  INFO << "Outbind::create()";
+
+  auto outbindPtr = std::unique_ptr<Outbind>{new Outbind{}};
 
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
-  m_strSystemId = strSystemId;
-  DEBUG << "Outbind::deserializeBody() strSystemId = [" << strSystemId << "]";
+  outbindPtr->m_strSystemId = strSystemId;
+  DEBUG << "Outbind::create() strSystemId = [" << strSystemId << "]";
 
   const std::string strPassword = binary::deserializeNullTerminatedString(is);
-  m_strPassword = strPassword;
-  DEBUG << "Outbind::deserializeBody() strPassword = [" << strPassword << "]";
-}
+  outbindPtr->m_strPassword = strPassword;
+  DEBUG << "Outbind::create() strPassword = [" << strPassword << "]";
 
-void Outbind::serialize(std::ostream& os) const {
-  serializeHeader(os);
-  serializeBody(os);
-}
-
-std::unique_ptr<Outbind> Outbind::createPduBody(std::istream& is) {
-  auto OutbindPtr = std::unique_ptr<Outbind>{new Outbind{}};
-  OutbindPtr->deserializeBody(is);
-  return OutbindPtr;
+  return outbindPtr;
 }
 
 }  // namespace smpp

@@ -11,10 +11,6 @@ class BaseSubmissionResp : public Pdu {
  protected:
   std::string m_strMessageId;
 
- protected:
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
-
  public:
   explicit BaseSubmissionResp(uint32_t nCommandId);
 

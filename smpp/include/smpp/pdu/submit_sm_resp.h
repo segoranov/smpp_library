@@ -14,11 +14,8 @@ class SubmitSmResp final : public BaseSubmissionResp {
   SubmitSmResp();
 
  private:
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
-  static std::unique_ptr<SubmitSmResp> createPduBody(std::istream& is);
-
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
+  static std::unique_ptr<SubmitSmResp> create(std::istream& is);
 
  public:
   explicit SubmitSmResp(const builder::SubmitSmRespBuilder& params);

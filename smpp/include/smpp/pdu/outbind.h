@@ -17,11 +17,8 @@ class Outbind final : public Pdu {
   std::string m_strPassword;
 
  private:
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
-  static std::unique_ptr<Outbind> createPduBody(std::istream& is);
-
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
+  static std::unique_ptr<Outbind> create(std::istream& is);
 
  public:
   explicit Outbind(const builder::OutbindBuilder& params);

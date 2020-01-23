@@ -68,14 +68,10 @@ class Pdu {
    * The purpose of the function is to deserialize the PDU body based
    * on the PDU command id
    */
-  using BodyFactory = std::function<Ptr(std::istream& is)>;
+  using Factory = std::function<Ptr(std::istream& is)>;
 
   // Utility methods for serialization/deserialization
-  virtual void serializeBody(std::ostream& os) const = 0;
-  virtual void deserializeBody(std::istream& is) = 0;
-
   void serializeHeader(std::ostream& os) const;
-
   void serializeOptionalParameters(std::ostream& os) const;
   void deserializeOptionalParameters(std::istream& is);
 };

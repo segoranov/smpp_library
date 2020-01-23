@@ -19,7 +19,7 @@ using BindReceiver = Bind<constants::CMD_ID_BIND_RECEIVER>;
 
 template <uint32_t CommandId>
 class Bind final : public Pdu {
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
 
  private:
   std::string m_strSystemId;
@@ -33,10 +33,7 @@ class Bind final : public Pdu {
  private:
   Bind();
 
-  virtual void serializeBody(std::ostream& os) const final override;
-  virtual void deserializeBody(std::istream& is) final override;
-
-  static std::unique_ptr<Bind<CommandId>> createPduBody(std::istream& is);
+  static std::unique_ptr<Bind<CommandId>> create(std::istream& is);
 
  public:
   explicit Bind(const builder::BindBuilder& params);
@@ -151,11 +148,6 @@ std::string Bind<CommandId>::getAddressRange() const {
 template <uint32_t CommandId>
 void Bind<CommandId>::serialize(std::ostream& os) const {
   serializeHeader(os);
-  serializeBody(os);
-}
-
-template <uint32_t CommandId>
-void Bind<CommandId>::serializeBody(std::ostream& os) const {
   binary::serializeNullTerminatedString(m_strSystemId, os);
   binary::serializeNullTerminatedString(m_strPassword, os);
   binary::serializeNullTerminatedString(m_strSystemType, os);
@@ -167,33 +159,30 @@ void Bind<CommandId>::serializeBody(std::ostream& os) const {
 }
 
 template <uint32_t CommandId>
-void Bind<CommandId>::deserializeBody(std::istream& is) {
+std::unique_ptr<Bind<CommandId>> Bind<CommandId>::create(std::istream& is) {
+  auto bindPtr = std::unique_ptr<Bind<CommandId>>{new Bind<CommandId>{}};
+
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
-  m_strSystemId = strSystemId;
+  bindPtr->m_strSystemId = strSystemId;
 
   const std::string strPassword = binary::deserializeNullTerminatedString(is);
-  m_strPassword = strPassword;
+  bindPtr->m_strPassword = strPassword;
 
   const std::string strSystemType = binary::deserializeNullTerminatedString(is);
-  m_strSystemType = strSystemType;
+  bindPtr->m_strSystemType = strSystemType;
 
   const uint8_t nInterfaceVersion = binary::deserializeInt8(is);
-  m_nInterfaceVersion = nInterfaceVersion;
+  bindPtr->m_nInterfaceVersion = nInterfaceVersion;
 
   const uint8_t nAddrTon = binary::deserializeInt8(is);
-  m_nAddrTon = nAddrTon;
+  bindPtr->m_nAddrTon = nAddrTon;
 
   const uint8_t nAddrNpi = binary::deserializeInt8(is);
-  m_nAddrNpi = nAddrNpi;
+  bindPtr->m_nAddrNpi = nAddrNpi;
 
   const std::string strAddressRange = binary::deserializeNullTerminatedString(is);
-  m_strAddressRange = strAddressRange;
-}
+  bindPtr->m_strAddressRange = strAddressRange;
 
-template <uint32_t CommandId>
-std::unique_ptr<Bind<CommandId>> Bind<CommandId>::createPduBody(std::istream& is) {
-  auto bindPtr = std::unique_ptr<Bind<CommandId>>{new Bind<CommandId>{}};
-  bindPtr->deserializeBody(is);
   return bindPtr;
 }
 

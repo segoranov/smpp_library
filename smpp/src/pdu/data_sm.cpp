@@ -109,7 +109,8 @@ uint8_t DataSm::getRegisteredDelivery() const { return m_nRegisteredDelivery; }
 
 uint8_t DataSm::getDataCoding() const { return m_nDataCoding; }
 
-void DataSm::serializeBody(std::ostream& os) const {
+void DataSm::serialize(std::ostream& os) const {
+  serializeHeader(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
   binary::serializeInt8(m_nSourceAddrNpi, os);
@@ -123,59 +124,51 @@ void DataSm::serializeBody(std::ostream& os) const {
   serializeOptionalParameters(os);  // optional parameters are part of the body
 }
 
-void DataSm::deserializeBody(std::istream& is) {
-  INFO << "DataSm::deserializeBody()";
+std::unique_ptr<DataSm> DataSm::create(std::istream& is) {
+  auto dataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
+
+  INFO << "DataSm::create()";
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
-  m_strServiceType = strServiceType;
-  DEBUG << "DataSm::deserializeBody() strServiceType = [" << strServiceType << "]";
+  dataSmPtr->m_strServiceType = strServiceType;
+  DEBUG << "DataSm::create() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
-  m_nSourceAddrTon = nSourceAddrTon;
-  DEBUG << "DataSm::deserializeBody() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  dataSmPtr->m_nSourceAddrTon = nSourceAddrTon;
+  DEBUG << "DataSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
-  m_nSourceAddrNpi = nSourceAddrNpi;
-  DEBUG << "DataSm::deserializeBody() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
+  dataSmPtr->m_nSourceAddrNpi = nSourceAddrNpi;
+  DEBUG << "DataSm::create() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
-  m_strSourceAddr = strSourceAddr;
-  DEBUG << "DataSm::deserializeBody() strSourceAddr = [" << strSourceAddr << "]";
+  dataSmPtr->m_strSourceAddr = strSourceAddr;
+  DEBUG << "DataSm::create() strSourceAddr = [" << strSourceAddr << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
-  m_nDestAddrTon = nDestAddrTon;
-  DEBUG << "DataSm::deserializeBody() nDestAddrTon = [" << nDestAddrTon << "]";
+  dataSmPtr->m_nDestAddrTon = nDestAddrTon;
+  DEBUG << "DataSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
-  m_nDestAddrNpi = nDestAddrNpi;
-  DEBUG << "DataSm::deserializeBody() nDestAddrNpi = [" << nDestAddrNpi << "]";
+  dataSmPtr->m_nDestAddrNpi = nDestAddrNpi;
+  DEBUG << "DataSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
-  m_strDestinationAddr = strDestinationAddr;
-  DEBUG << "DataSm::deserializeBody() strDestinationAddr = [" << strDestinationAddr << "]";
+  dataSmPtr->m_strDestinationAddr = strDestinationAddr;
+  DEBUG << "DataSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
-  m_nEsmClass = nEsmClass;
-  DEBUG << "DataSm::deserializeBody() nEsmClass = [" << nEsmClass << "]";
+  dataSmPtr->m_nEsmClass = nEsmClass;
+  DEBUG << "DataSm::create() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
-  m_nRegisteredDelivery = nRegisteredDelivery;
-  DEBUG << "DataSm::deserializeBody() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
+  dataSmPtr->m_nRegisteredDelivery = nRegisteredDelivery;
+  DEBUG << "DataSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
-  m_nDataCoding = nDataCoding;
-  DEBUG << "DataSm::deserializeBody() nDataCoding = [" << nDataCoding << "]";
+  dataSmPtr->m_nDataCoding = nDataCoding;
+  DEBUG << "DataSm::create() nDataCoding = [" << nDataCoding << "]";
 
-  deserializeOptionalParameters(is);
-}
-
-void DataSm::serialize(std::ostream& os) const {
-  serializeHeader(os);
-  serializeBody(os);
-}
-
-std::unique_ptr<DataSm> DataSm::createPduBody(std::istream& is) {
-  auto dataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
-  dataSmPtr->deserializeBody(is);
+  dataSmPtr->deserializeOptionalParameters(is);
   return dataSmPtr;
 }
 

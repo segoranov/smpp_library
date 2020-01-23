@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "smpp/pdu/pdu.h"
 #include "smpp/pdu/builder/bind_resp_builder.h"
+#include "smpp/pdu/pdu.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -18,7 +18,7 @@ using BindReceiverResp = BindResp<constants::CMD_ID_BIND_RECEIVER_RESP>;
 
 template <uint32_t CommandId>
 class BindResp : public Pdu {
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
 
  private:
   std::string m_strSystemId;
@@ -26,9 +26,7 @@ class BindResp : public Pdu {
  private:
   BindResp();
 
-  virtual void serializeBody(std::ostream& os) const final override;
-  virtual void deserializeBody(std::istream& is) final override;
-  static std::unique_ptr<BindResp> createPduBody(std::istream& is);
+  static std::unique_ptr<BindResp> create(std::istream& is);
 
  public:
   explicit BindResp(const builder::BindRespBuilder& params);
@@ -76,30 +74,22 @@ std::string BindResp<CommandId>::getSystemId() const {
 template <uint32_t CommandId>
 void BindResp<CommandId>::serialize(std::ostream& os) const {
   serializeHeader(os);
-  serializeBody(os);
+  binary::serializeNullTerminatedString(m_strSystemId, os);
+  serializeOptionalParameters(os);
 }
 
 template <uint32_t CommandId>
 BindResp<CommandId>::BindResp() : Pdu{CommandId} {}
 
 template <uint32_t CommandId>
-void BindResp<CommandId>::serializeBody(std::ostream& os) const {
-  binary::serializeNullTerminatedString(m_strSystemId, os);
-  serializeOptionalParameters(os);
-}
-
-template <uint32_t CommandId>
-void BindResp<CommandId>::deserializeBody(std::istream& is) {
-  const std::string strSystemId = binary::deserializeNullTerminatedString(is);
-  m_strSystemId = strSystemId;
-
-  deserializeOptionalParameters(is);
-}
-
-template <uint32_t CommandId>
-std::unique_ptr<BindResp<CommandId>> BindResp<CommandId>::createPduBody(std::istream& is) {
+std::unique_ptr<BindResp<CommandId>> BindResp<CommandId>::create(std::istream& is) {
   auto bindRespPtr = std::unique_ptr<BindResp>{new BindResp{}};
-  bindRespPtr->deserializeBody(is);
+
+  const std::string strSystemId = binary::deserializeNullTerminatedString(is);
+  bindRespPtr->m_strSystemId = strSystemId;
+
+  bindRespPtr->deserializeOptionalParameters(is);
+
   return bindRespPtr;
 }
 

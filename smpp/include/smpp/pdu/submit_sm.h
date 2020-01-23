@@ -18,11 +18,8 @@ class SubmitSm final : public BaseSubmit {
   std::string m_strDestinationAddr;
 
  private:
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
-  static std::unique_ptr<SubmitSm> createPduBody(std::istream& is);
-
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
+  static std::unique_ptr<SubmitSm> create(std::istream& is);
 
  public:
   explicit SubmitSm(const builder::SubmitSmBuilder& params);

@@ -90,11 +90,8 @@ class SubmitMulti final : public BaseSubmit {
   SubmitMultiDestinationAddresses m_destinationAddresses;
 
  private:
-  friend const std::unordered_map<uint32_t, Pdu::BodyFactory>& getCommandIdToBodyFactoryMap();
-  static std::unique_ptr<SubmitMulti> createPduBody(std::istream& is);
-
-  virtual void serializeBody(std::ostream& os) const override;
-  virtual void deserializeBody(std::istream& is) override;
+  friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
+  static std::unique_ptr<SubmitMulti> create(std::istream& is);
 
  public:
   explicit SubmitMulti(const builder::SubmitMultiBuilder& params);
