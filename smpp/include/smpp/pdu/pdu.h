@@ -32,12 +32,9 @@ class Pdu {
 
   std::vector<Tlv> m_vOptionalTlvParameters;
 
- public:
-  /**
-   * @throw InvalidCommandIdException if the given command id is invalid
-   */
   explicit Pdu(uint32_t nCommandId);
 
+ public:
   // Aliases for convenience
   using UPtr = std::unique_ptr<Pdu>;
   using SPtr = std::shared_ptr<Pdu>;
