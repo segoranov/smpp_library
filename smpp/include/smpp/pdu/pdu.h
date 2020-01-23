@@ -1,8 +1,6 @@
 #ifndef PDU_H
 #define PDU_H
 
-#include <arpa/inet.h>
-
 #include <functional>
 #include <memory>
 #include <optional>
