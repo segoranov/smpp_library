@@ -365,7 +365,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("an outbind PDU is deserialized from the stringstream") {
-        smpp::Pdu::Ptr deserializedPdu;
+        smpp::Pdu::UPtr deserializedPdu;
         try {
           deserializedPdu = smpp::Pdu::deserialize(ss);
         } catch (const binary::NotEnoughBytesInStreamException& ex) {

@@ -6,6 +6,7 @@
 #include <list>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "smpp/commands.h"
 #include "smpp/util/smpp_session_util.h"
@@ -14,11 +15,13 @@ namespace smpp {
 
 class SmppSessionHandler : public std::enable_shared_from_this<SmppSessionHandler> {
  private:
+  using PduRawBytes = std::vector<char>;
+
   boost::asio::io_context& m_ioContext;
   boost::asio::ip::tcp::socket m_socket;
   boost::asio::io_context::strand m_writeStrand;
-  std::deque<std::string> m_sendPduQueue;
-  std::list<Pdu::Ptr> m_receivePduQueue;
+  std::deque<PduRawBytes> m_sendPduQueue;
+  std::list<Pdu::UPtr> m_receivePduQueue;
   std::atomic<session_util::SessionState> m_enSessionState;
 
  public:
@@ -32,12 +35,12 @@ class SmppSessionHandler : public std::enable_shared_from_this<SmppSessionHandle
   void readPdu();
   void readPduCommandLength();
   void readPduAfterCommandLength(uint32_t nCommandLength);
-  void onReceivedPdu(Pdu::Ptr pdu);
+  void onReceivedPdu(Pdu::SPtr pdu);
 
-  void onReceivedBindTransmitter(Pdu::Ptr pdu);
+  void onReceivedBindTransmitter(Pdu::SPtr pdu);
 
-  void sendPdu(const std::string& strPdu);
-  void queuePdu(const std::string& strPdu);
+  void sendPdu(const PduRawBytes& pdu);
+  void queuePdu(const PduRawBytes& pdu);
   void startPduSend();
   void pduSendDone(const boost::system::error_code& ec);
 };

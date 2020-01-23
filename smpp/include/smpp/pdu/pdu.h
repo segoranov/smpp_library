@@ -40,7 +40,9 @@ class Pdu {
    */
   explicit Pdu(uint32_t nCommandId);
 
-  using Ptr = std::unique_ptr<Pdu>;
+  // Aliases for convenience
+  using UPtr = std::unique_ptr<Pdu>;
+  using SPtr = std::shared_ptr<Pdu>;
 
   uint32_t getCommandLength() const;
   uint32_t getCommandId() const;
@@ -58,7 +60,7 @@ class Pdu {
   /**
    * @brief Deserializes and creates a PDU by reading raw bytes from an input stream
    */
-  static Ptr deserialize(std::istream& is);
+  static UPtr deserialize(std::istream& is);
 
  protected:
   /**
@@ -68,7 +70,7 @@ class Pdu {
    * The purpose of the function is to deserialize the PDU body based
    * on the PDU command id
    */
-  using Factory = std::function<Ptr(std::istream& is)>;
+  using Factory = std::function<UPtr(std::istream& is)>;
 
   // Utility methods for serialization/deserialization
   void serializeHeader(std::ostream& os) const;

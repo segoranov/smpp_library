@@ -106,7 +106,7 @@ void Pdu::deserializeOptionalParameters(std::istream& is) {
   }
 }
 
-Pdu::Ptr Pdu::deserialize(std::istream& is) {
+Pdu::UPtr Pdu::deserialize(std::istream& is) {
   INFO << "Pdu::deserialize()";
 
   // 1. Deserialize all 4 PDU header fields

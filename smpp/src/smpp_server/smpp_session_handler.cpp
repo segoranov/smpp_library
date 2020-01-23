@@ -64,20 +64,20 @@ void SmppSessionHandler::readPduAfterCommandLength(uint32_t nCommandLength) {
         for (int byte = 0; byte < nCommandLength - 4; byte++) {
           binary::serializeInt8(pduBuffer[byte], ssPdu);
         }
-        auto receivedPdu = Pdu::deserialize(ssPdu);
+        Pdu::SPtr receivedPdu = Pdu::deserialize(ssPdu);
         readPdu();
-        me->onReceivedPdu(std::move(receivedPdu));
+        me->onReceivedPdu(receivedPdu);
       });
 }
 
-void SmppSessionHandler::onReceivedPdu(Pdu::Ptr pdu) {
+void SmppSessionHandler::onReceivedPdu(Pdu::SPtr pdu) {
   INFO << "SmppSessionHandler::onReceivedPdu()";
   DEBUG << "Pdu is of type [" << util::commandIdToString(pdu->getCommandId()) << "]";
   // m_receivePduQueue.push_back(std::move(pdu));
 
   switch (pdu->getCommandId()) {
     case constants::CMD_ID_BIND_TRANSMITTER: {
-      onReceivedBindTransmitter(std::move(pdu));
+      onReceivedBindTransmitter(pdu);
       break;
     }
     default: {
@@ -85,7 +85,7 @@ void SmppSessionHandler::onReceivedPdu(Pdu::Ptr pdu) {
   }
 }
 
-void SmppSessionHandler::onReceivedBindTransmitter(Pdu::Ptr pdu) {
+void SmppSessionHandler::onReceivedBindTransmitter(Pdu::SPtr pdu) {
   INFO << "SmppSessionHandler::onReceivedBindTransmitter()";
   auto bindTransmitterPdu = dynamic_cast<BindTransmitter*>(pdu.get());
 
@@ -106,20 +106,21 @@ void SmppSessionHandler::onReceivedBindTransmitter(Pdu::Ptr pdu) {
 
   std::stringstream pduBuffer;
   bindTransmitterRespPdu.serialize(pduBuffer);
-  sendPdu(pduBuffer.str());
+  sendPdu(PduRawBytes{pduBuffer.str().begin(), pduBuffer.str().end()});
 }
 
-void SmppSessionHandler::sendPdu(const std::string& strPdu) {
+void SmppSessionHandler::sendPdu(const PduRawBytes& pdu) {
   INFO << "SmppSessionHandler::sendPdu()";
-  boost::asio::post(m_ioContext, m_writeStrand.wrap(
-                                     [me = shared_from_this(), strPdu] { me->queuePdu(strPdu); }));
+  boost::asio::post(m_ioContext,
+                    m_writeStrand.wrap([me = shared_from_this(), pdu] { me->queuePdu(pdu); }));
 }
 
-void SmppSessionHandler::queuePdu(const std::string& strPdu) {
+void SmppSessionHandler::queuePdu(const PduRawBytes& pdu) {
   INFO << "SmppSessionHandler::queuePdu()";
   // this is thread safe because of the strand
   const bool bWriteInProgress = !m_sendPduQueue.empty();
-  m_sendPduQueue.push_back(strPdu);
+
+  m_sendPduQueue.push_back(pdu);
 
   if (!bWriteInProgress) {
     startPduSend();

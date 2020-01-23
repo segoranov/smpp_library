@@ -27,7 +27,7 @@ void SmppClient::checkSessionState(session_util::SessionState enDesiredSessionSt
   }
 }
 
-void SmppClient::sendPdu(Pdu::Ptr pdu) {
+void SmppClient::sendPdu(Pdu::UPtr pdu) {
   checkTcpConnection();
 
   // TODO SG: Add timer
@@ -86,11 +86,11 @@ void SmppClient::readPduBlocking(boost::shared_array<uint8_t> commandLengthBuffe
 //       });
 }
 
-Pdu::Ptr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId) {
+Pdu::UPtr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId) {
   //   uint32_t responseCommandId = smpp::constants::CMD_ID_GENERIC_NACK | nCommandId;
 
   //   auto itResponse = std::find_if(m_pduResponseQueue.begin(), m_pduResponseQueue.end(),
-  //                                  [&](Pdu::Ptr pdu) {
+  //                                  [&](Pdu::UPtr pdu) {
   //                                    return pdu->getSequenceNumber() == nSequenceNumber &&
   //                                           pdu->getCommandId() == responseCommandId;
   //                                  });
@@ -117,7 +117,7 @@ Pdu::Ptr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nCommand
   //   return pdu;
 }
 
-Pdu::Ptr SmppClient::readPdu(bool bSynchronous) {
+Pdu::UPtr SmppClient::readPdu(bool bSynchronous) {
 
 }
 
