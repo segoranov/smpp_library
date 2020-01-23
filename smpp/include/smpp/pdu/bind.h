@@ -5,17 +5,9 @@
 
 #include "smpp/pdu/builder/bind_builder.h"
 #include "smpp/pdu/pdu.h"
-#include "smpp/smpp_constants.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
-
-template <uint32_t CommandId>
-class Bind;
-
-using BindTransmitter = Bind<constants::CMD_ID_BIND_TRANSMITTER>;
-using BindTransceiver = Bind<constants::CMD_ID_BIND_TRANSCEIVER>;
-using BindReceiver = Bind<constants::CMD_ID_BIND_RECEIVER>;
 
 template <uint32_t CommandId>
 class Bind final : public Pdu {

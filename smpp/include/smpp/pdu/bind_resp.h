@@ -8,14 +8,6 @@
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
-
-template <uint32_t CommandId>
-class BindResp;
-
-using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
-using BindTransceiverResp = BindResp<constants::CMD_ID_BIND_TRANSCEIVER_RESP>;
-using BindReceiverResp = BindResp<constants::CMD_ID_BIND_RECEIVER_RESP>;
-
 template <uint32_t CommandId>
 class BindResp : public Pdu {
   friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();

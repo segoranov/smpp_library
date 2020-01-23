@@ -4,13 +4,7 @@
 #include <sstream>
 #include <unordered_map>
 
-#include "smpp/pdu/bind.h"
-#include "smpp/pdu/bind_resp.h"
-#include "smpp/pdu/data_sm.h"
-#include "smpp/pdu/outbind.h"
-#include "smpp/pdu/submit_multi.h"
-#include "smpp/pdu/submit_sm.h"
-#include "smpp/pdu/submit_sm_resp.h"
+#include "smpp/commands.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/logging.h"

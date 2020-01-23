@@ -1,8 +1,13 @@
 #ifndef COMMANDS_H
 #define COMMANDS_H
 
-#include "smpp/pdu/bind.h"
+#include "smpp/pdu/bind_receiver.h"
+#include "smpp/pdu/bind_receiver_resp.h"
 #include "smpp/pdu/bind_resp.h"
+#include "smpp/pdu/bind_transceiver.h"
+#include "smpp/pdu/bind_transceiver_resp.h"
+#include "smpp/pdu/bind_transmitter.h"
+#include "smpp/pdu/bind_transmitter_resp.h"
 #include "smpp/pdu/builder/bind_builder.h"
 #include "smpp/pdu/builder/bind_resp_builder.h"
 #include "smpp/pdu/builder/data_sm_builder.h"
