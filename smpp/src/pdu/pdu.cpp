@@ -6,6 +6,7 @@
 #include <unordered_map>
 
 #include "smpp/commands.h"
+#include "smpp/pdu/submit_sm.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/logging.h"
@@ -62,6 +63,14 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   return iterTlv != m_vOptionalTlvParameters.end();
 }
 
+SubmitSm* Pdu::asSubmitSm() {
+  if (m_nCommandId != constants::CMD_ID_SUBMIT_SM) {
+    return nullptr;
+  }
+
+  return static_cast<SubmitSm*>(this);
+}
+
 bool Pdu::equals(const Pdu& other) const {
   INFO << "Pdu::equals()";
   if (typeid(*this) != typeid(other)) {
@@ -70,8 +79,8 @@ bool Pdu::equals(const Pdu& other) const {
 
   return m_nCommandLength == other.m_nCommandLength && m_nCommandId == other.m_nCommandId &&
          m_nCommandStatus == other.m_nCommandStatus &&
-         m_nSequenceNumber == other.m_nSequenceNumber; // &&
-         // m_vOptionalTlvParameters == other.m_vOptionalTlvParameters; TODO
+         m_nSequenceNumber == other.m_nSequenceNumber;  // &&
+  // m_vOptionalTlvParameters == other.m_vOptionalTlvParameters; TODO
 }
 
 void Pdu::serializeHeader(std::ostream& os) const {

@@ -243,7 +243,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
         REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM);
 
-        auto deserializedSubmitSmPdu = dynamic_cast<smpp::SubmitSm*>(deserializedPdu.get());
+        auto deserializedSubmitSmPdu = deserializedPdu->asSubmitSm();
         REQUIRE(deserializedSubmitSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {

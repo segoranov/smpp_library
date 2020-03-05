@@ -15,6 +15,8 @@
 
 namespace smpp {
 
+class SubmitSm;
+
 /**
  * Base class for all SMPP PDUs
  *
@@ -46,6 +48,8 @@ class Pdu {
   std::vector<Tlv> getOptionalParameters() const;
 
   bool hasOptionalParameter(uint16_t nTag) const;
+
+  SubmitSm* asSubmitSm();
 
   /**
    * @brief Compare two PDUs
