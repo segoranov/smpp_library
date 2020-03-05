@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 
 project(smpp_lib)
 
-find_package(Boost 1.69 COMPONENTS system thread log REQUIRED)
+find_package(Boost 1.69 REQUIRED COMPONENTS log)
 
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
@@ -32,8 +32,6 @@ add_library(smpp SHARED
     src/pdu/submit_multi.cpp
     src/tlv/tlv.cpp
     src/util/logging.cpp
-    src/smpp_client.cpp
-    src/smpp_server/smpp_session_handler.cpp
 )
 
 target_link_libraries(smpp LINK_PUBLIC ${Boost_LIBRARIES})

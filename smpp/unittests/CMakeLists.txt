@@ -5,7 +5,7 @@ project(SMPP_UNIT_TESTS)
 
 set(CMAKE_BUILD_TYPE Debug)
 
-find_package( Boost 1.69 COMPONENTS system thread log REQUIRED )
+find_package(Boost 1.69 REQUIRED COMPONENTS log)
 
 add_definitions(-DBOOST_LOG_DYN_LINK)
 
@@ -13,7 +13,7 @@ include_directories(
     ${Boost_INCLUDE_DIRS}
     ../include )
 
-add_executable( run_tests 
+add_executable(run_tests
  main.cpp 
  pdu_test.cpp
  tlv_test.cpp
@@ -41,8 +41,6 @@ add_executable( run_tests
  ../src/util/smpp_session_util.cpp
  ../src/tlv/tlv.cpp
  ../src/util/logging.cpp
- ../src/smpp_client.cpp
- ../src/smpp_server/smpp_session_handler.cpp
 )
 
 target_link_libraries(run_tests LINK_PUBLIC ${Boost_LIBRARIES})
