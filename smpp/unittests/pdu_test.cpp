@@ -247,11 +247,10 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(deserializedSubmitSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedSubmitSmPdu->getCommandLength() == submitSmPdu.getCommandLength());
-          REQUIRE(deserializedSubmitSmPdu->getCommandStatus() == submitSmPdu.getCommandStatus());
-          REQUIRE(deserializedSubmitSmPdu->getSequenceNumber() == submitSmPdu.getSequenceNumber());
-          REQUIRE(deserializedSubmitSmPdu->getShortMessage() == submitSmPdu.getShortMessage());
-          REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 0);
+          // test the same thing in different ways to make sure everything is OK
+          REQUIRE(deserializedPdu->equals(submitSmPdu));
+          REQUIRE(deserializedSubmitSmPdu->equals(submitSmPdu));
+          REQUIRE(submitSmPdu.equals(*deserializedPdu));
         }
       }
     }
