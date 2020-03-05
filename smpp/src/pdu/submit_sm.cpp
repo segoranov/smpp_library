@@ -22,6 +22,7 @@ SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
   m_strDestinationAddr = params.m_optDestinationAddr.value();
   m_nEsmClass = params.m_optEsmClass.value();
   m_nProtocolId = params.m_optProtocolId.value();
+  m_nPriorityFlag = params.m_optPriorityFlag.value();
   m_strScheduleDeliveryTime = params.m_optScheduleDeliveryTime.value();
   m_strValidityPeriod = params.m_optValidityPeriod.value();
   m_nRegisteredDelivery = params.m_optRegisteredDelivery.value();
@@ -163,6 +164,18 @@ std::unique_ptr<SubmitSm> SubmitSm::create(std::istream& is) {
   submitSmPtr->deserializeOptionalParameters(is);
 
   return submitSmPtr;
+}
+
+bool SubmitSm::equals(const Pdu& other) const {
+  if (!BaseSubmit::equals(other)) {
+    return false;
+  }
+
+  auto otherBase = static_cast<const SubmitSm*>(&other);
+
+  return m_nDestAddrTon == otherBase->m_nDestAddrTon &&
+         m_nDestAddrNpi == otherBase->m_nDestAddrNpi &&
+         m_strDestinationAddr == otherBase->m_strDestinationAddr;
 }
 
 }  // namespace smpp

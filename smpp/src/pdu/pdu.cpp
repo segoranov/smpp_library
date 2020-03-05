@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <sstream>
+#include <typeinfo>
 #include <unordered_map>
 
 #include "smpp/commands.h"
@@ -59,6 +60,18 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   auto iterTlv = std::find_if(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
                               [nTag](Tlv tlv) { return tlv.getTag() == nTag; });
   return iterTlv != m_vOptionalTlvParameters.end();
+}
+
+bool Pdu::equals(const Pdu& other) const {
+  INFO << "Pdu::equals()";
+  if (typeid(*this) != typeid(other)) {
+    return false;
+  }
+
+  return m_nCommandLength == other.m_nCommandLength && m_nCommandId == other.m_nCommandId &&
+         m_nCommandStatus == other.m_nCommandStatus &&
+         m_nSequenceNumber == other.m_nSequenceNumber; // &&
+         // m_vOptionalTlvParameters == other.m_vOptionalTlvParameters; TODO
 }
 
 void Pdu::serializeHeader(std::ostream& os) const {

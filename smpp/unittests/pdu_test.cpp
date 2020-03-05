@@ -510,3 +510,77 @@ SCENARIO("Deserialiation of malformed PDUs throws proper exceptions", "[malforme
     }
   }
 }
+
+SCENARIO("Comparison of Pdu's using equals() method is correct") {
+  auto createTestSubmitSmPdu = [] {
+    return smpp::SubmitSm{
+        smpp::builder::SubmitSmBuilder()
+            .withCommandStatus(smpp::constants::errors::ESME_ROK)
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_SM")};
+  };
+
+  auto createTestBindPdu = [] {
+    return smpp::BindTransmitterResp{smpp::builder::BindRespBuilder()
+                                         .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                                         .withSequenceNumber(1)
+                                         .withSystemId("SMPP3TEST")
+                                         .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
+  };
+
+  GIVEN("Two equal submit sm PDUs") {
+    auto pdu1 = createTestSubmitSmPdu();
+    auto pdu2 = createTestSubmitSmPdu();
+    THEN("they should be equal") { REQUIRE(pdu1.equals(pdu2)); }
+  }
+
+  GIVEN("Two non-equal submit sm PDUs") {
+    auto pdu1 = createTestSubmitSmPdu();
+
+    // make the destination addr the only difference
+    smpp::SubmitSm pdu2{
+        smpp::builder::SubmitSmBuilder()
+            .withCommandStatus(smpp::constants::errors::ESME_ROK)
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("D")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_SM")};
+    THEN("they should not be equal") { REQUIRE_FALSE(pdu1.equals(pdu2)); }
+  }
+
+  GIVEN("A submit sm PDU and a bind PDU") {
+    auto pdu1 = createTestSubmitSmPdu();
+    auto pdu2 = createTestBindPdu();
+    THEN("they should not be equal") { REQUIRE_FALSE(pdu1.equals(pdu2)); }
+  }
+}

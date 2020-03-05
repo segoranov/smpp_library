@@ -48,6 +48,13 @@ class Pdu {
   bool hasOptionalParameter(uint16_t nTag) const;
 
   /**
+   * @brief Compare two PDUs
+   *
+   * @return true if they are of the same type and have equal fields; false otherwise
+   */
+  virtual bool equals(const Pdu& other) const;
+
+  /**
    * @brief Serializes a PDU by writing raw bytes to an output stream
    */
   virtual void serialize(std::ostream& os) const = 0;

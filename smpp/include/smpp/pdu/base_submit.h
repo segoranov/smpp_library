@@ -43,6 +43,8 @@ class BaseSubmit : public Pdu {
   uint8_t getSmDefaultMsgId() const;
   uint8_t getSmLength() const;
   std::string getShortMessage() const;
+
+  virtual bool equals(const Pdu& other) const override;
 };
 
 }  // namespace smpp

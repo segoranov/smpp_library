@@ -29,6 +29,8 @@ class SubmitSm final : public BaseSubmit {
   uint8_t getDestAddrTon() const;
   uint8_t getDestAddrNpi() const;
   std::string getDestinationAddr() const;
+
+  virtual bool equals(const Pdu& other) const override;
 };
 
 }  // namespace smpp

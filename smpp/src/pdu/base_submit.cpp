@@ -35,4 +35,26 @@ uint8_t BaseSubmit::getSmLength() const { return m_nSmLength; }
 
 std::string BaseSubmit::getShortMessage() const { return m_strShortMessage; }
 
+bool BaseSubmit::equals(const Pdu& other) const {
+  if (!Pdu::equals(other)) {
+    return false;
+  }
+
+  auto otherBase = static_cast<const BaseSubmit*>(&other);
+
+  return m_strServiceType == otherBase->m_strServiceType &&
+         m_nSourceAddrTon == otherBase->m_nSourceAddrTon &&
+         m_nSourceAddrNpi == otherBase->m_nSourceAddrNpi &&
+         m_strSourceAddr == otherBase->m_strSourceAddr && m_nEsmClass == otherBase->m_nEsmClass &&
+         m_nProtocolId == otherBase->m_nProtocolId &&
+         m_nPriorityFlag == otherBase->m_nPriorityFlag &&
+         m_strScheduleDeliveryTime == otherBase->m_strScheduleDeliveryTime &&
+         m_strValidityPeriod == otherBase->m_strValidityPeriod &&
+         m_nReplaceIfPresentFlag == otherBase->m_nReplaceIfPresentFlag &&
+         m_nDataCoding == otherBase->m_nDataCoding &&
+         m_nSmDefaultMsgId == otherBase->m_nSmDefaultMsgId &&
+         m_nSmLength == otherBase->m_nSmLength &&
+         m_strShortMessage == otherBase->m_strShortMessage;
+}
+
 }  // namespace smpp
