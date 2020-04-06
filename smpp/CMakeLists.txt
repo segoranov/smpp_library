@@ -32,9 +32,8 @@ add_library(smpp SHARED
     src/pdu/submit_multi.cpp
     src/tlv/tlv.cpp
     src/util/logging.cpp
+    src/smpp_client.cpp
 )
 
 target_link_libraries(smpp LINK_PUBLIC ${Boost_LIBRARIES})
-
 set_property(TARGET smpp PROPERTY CXX_STANDARD 17)
-

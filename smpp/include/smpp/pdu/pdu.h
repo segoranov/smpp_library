@@ -16,6 +16,10 @@
 namespace smpp {
 
 class SubmitSm;
+template <uint32_t CommandId>
+class BindResp;
+
+using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
 
 /**
  * Base class for all SMPP PDUs
@@ -49,7 +53,9 @@ class Pdu {
 
   bool hasOptionalParameter(uint16_t nTag) const;
 
+  // TODO for other PDUs
   SubmitSm* asSubmitSm();
+  BindTransmitterResp* asBindTransmitterResp();
 
   /**
    * @brief Compare two PDUs

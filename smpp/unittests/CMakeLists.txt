@@ -41,6 +41,7 @@ add_executable(run_tests
  ../src/util/smpp_session_util.cpp
  ../src/tlv/tlv.cpp
  ../src/util/logging.cpp
+ ../src/smpp_client.cpp
 )
 
 target_link_libraries(run_tests LINK_PUBLIC ${Boost_LIBRARIES})

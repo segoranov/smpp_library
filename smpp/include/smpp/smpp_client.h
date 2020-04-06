@@ -4,6 +4,7 @@
 #include <atomic>
 #include <boost/asio.hpp>
 #include <boost/shared_array.hpp>
+#include <iostream>
 #include <list>
 #include <memory>
 
@@ -13,32 +14,24 @@
 namespace smpp {
 
 class SmppClient {
- private:
-  std::atomic<session_util::SessionState> m_enSessionState;
-
-  using TcpSocket = boost::asio::ip::tcp::socket;
-  std::shared_ptr<TcpSocket> m_ptrTcpSocket;
-
-  using PduResponsePtr = std::shared_ptr<Pdu>;
-  std::list<Pdu::UPtr> m_pduResponseQueue;
-
  public:
-  SmppClient(std::shared_ptr<TcpSocket> tcpSocket) {}
+  using TcpSocket = boost::asio::ip::tcp::socket;
+  SmppClient(std::shared_ptr<TcpSocket> ptrTcpSocket);
 
-  void bindTransmitter(const BindTransmitter& pdu);
-  void bindTransceiver(const BindTransceiver& pdu);
-  void bindReceiver(const BindReceiver& pdu);
-
- private:
   /**
    * @brief Sends bind PDU to the server
    *
+   * The function blocks until the corresponding bind_resp is returned
+   *
    * @throw TransportException if something is wrong with the TCP connection
    * @throw InvalidSessionStateException if the session is not in OPEN state
+   *
+   * @return bind response
    */
   template <uint32_t CommandId>
-  void bind(const Bind<CommandId>& pdu);
+  Pdu::UPtr bind(const Bind<CommandId>& pdu);
 
+ private:
   /**
    * @brief Checks whether the TCP socket is open
    *
@@ -58,11 +51,6 @@ class SmppClient {
    */
   void sendPdu(Pdu::UPtr pdu);
 
-  void readPduBlocking();
-
-  void readPduBlocking(boost::shared_array<uint8_t> commandLengthBuffer);
-
-
   /**
    * Returns a response for a PDU we have sent,
    * specified by its sequence number and its command id.
@@ -76,29 +64,39 @@ class SmppClient {
    */
   Pdu::UPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
-  Pdu::UPtr readPdu(bool bSynchronous);
+  Pdu::UPtr readPduBlocking();
+
+ private:
+  session_util::SessionState m_enSessionState;
+  std::shared_ptr<TcpSocket> m_ptrTcpSocket;
+
+  using PduResponsePtr = std::shared_ptr<Pdu>;
+  std::list<Pdu::UPtr> m_pduResponseQueue;
 };
 
 template <uint32_t CommandId>
-void SmppClient::bind(const Bind<CommandId>& pdu) {
-  // check if TCP connection is okay
-  // if it is not OKAY, throw TransportException
+Pdu::UPtr SmppClient::bind(const Bind<CommandId>& pdu) {
   checkTcpConnection();
-
-  // check if session state is OPEN
-  // if it is not OPEN, throw InvalidSessionStateException
   checkSessionState(session_util::SessionState::OPEN);
 
-  // send the pdu through the socket
-  // receive the pdu response
-  sendPdu(pdu);
-  auto pduResponse = readPduResponse(pdu->getSequenceNumber(), pdu->getCommandId());
+  sendPdu(std::make_unique<Bind<CommandId>>(pdu));
+  auto pduResponse = readPduResponse(pdu.getSequenceNumber(), pdu.getCommandId());
 
-  // check if the response is OK
-  // if it is not ok, check the command status and throw proper exception
-  // for example InvalidPassswordException or InvalidSystemIdException
+  if (pdu.getCommandStatus() == constants::errors::ESME_ROK) {
+    switch (CommandId) {
+      case constants::CMD_ID_BIND_RECEIVER: {
+        m_enSessionState = session_util::SessionState::BOUND_RX;
+      }
+      case constants::CMD_ID_BIND_TRANSMITTER: {
+        m_enSessionState = session_util::SessionState::BOUND_TX;
+      }
+      case constants::CMD_ID_BIND_TRANSCEIVER: {
+        m_enSessionState = session_util::SessionState::BOUND_TRX;
+      }
+    }
+  }
 
-  // if the response is OK, set the session state to BOUND
+  return pduResponse;
 }
 
 }  // namespace smpp

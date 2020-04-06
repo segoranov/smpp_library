@@ -6,7 +6,6 @@
 #include <unordered_map>
 
 #include "smpp/commands.h"
-#include "smpp/pdu/submit_sm.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
 #include "smpp/util/logging.h"
@@ -69,6 +68,14 @@ SubmitSm* Pdu::asSubmitSm() {
   }
 
   return static_cast<SubmitSm*>(this);
+}
+
+BindTransmitterResp* Pdu::asBindTransmitterResp() {
+  if (m_nCommandId != constants::CMD_ID_BIND_TRANSMITTER_RESP) {
+    return nullptr;
+  }
+
+  return static_cast<BindTransmitterResp*>(this);
 }
 
 bool Pdu::equals(const Pdu& other) const {
