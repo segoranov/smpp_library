@@ -27,6 +27,8 @@ class Outbind final : public Pdu {
 
   std::string getSystemId() const;
   std::string getPassword() const;
+
+  virtual bool equals(const Pdu& other) const override;
 };
 
 }  // namespace smpp

@@ -16,6 +16,7 @@
 namespace smpp {
 
 class SubmitSm;
+class DeliverSm;
 template <uint32_t CommandId>
 class BindResp;
 
@@ -55,6 +56,7 @@ class Pdu {
 
   // TODO for other PDUs
   SubmitSm* asSubmitSm();
+  DeliverSm* asDeliverSm();
   BindTransmitterResp* asBindTransmitterResp();
 
   /**

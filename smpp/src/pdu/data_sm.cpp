@@ -126,4 +126,23 @@ std::unique_ptr<DataSm> DataSm::create(std::istream& is) {
   return dataSmPtr;
 }
 
+bool DataSm::equals(const Pdu& other) const {
+  if (!Pdu::equals(other)) {
+    return false;
+  }
+
+  auto otherDataSm = static_cast<const DataSm*>(&other);
+
+  return m_strServiceType == otherDataSm->m_strServiceType &&
+         m_nSourceAddrTon == otherDataSm->m_nSourceAddrTon &&
+         m_nSourceAddrNpi == otherDataSm->m_nSourceAddrNpi &&
+         m_strSourceAddr == otherDataSm->m_strSourceAddr &&
+         m_nDestAddrTon == otherDataSm->m_nDestAddrTon &&
+         m_nDestAddrNpi == otherDataSm->m_nDestAddrNpi &&
+         m_strDestinationAddr == otherDataSm->m_strDestinationAddr &&
+         m_nEsmClass == otherDataSm->m_nEsmClass &&
+         m_nRegisteredDelivery == otherDataSm->m_nRegisteredDelivery &&
+         m_nDataCoding == otherDataSm->m_nDataCoding;
+}
+
 }  // namespace smpp

@@ -254,6 +254,58 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     }
   }
 
+  GIVEN("A sample deliver sm pdu with size 44 bytes") {
+    smpp::DeliverSm deliverSmPdu{
+        smpp::builder::DeliverSmBuilder()
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_DM")};
+
+    THEN("the command length of the PDU should be 44") {
+      REQUIRE(deliverSmPdu.getCommandLength() == 44);
+    }
+
+    WHEN("the deliver sm PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      deliverSmPdu.serialize(ss);
+
+      THEN("the stringstream size should be 44 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 44);
+      }
+
+      AND_WHEN("a deliverSmPdu sm PDU is deserialized from the stringstream") {
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+
+        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_DELIVER_SM);
+
+        auto deserializedDeliverSmPdu = deserializedPdu->asDeliverSm();
+        REQUIRE(deserializedDeliverSmPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          // test the same thing in different ways to make sure everything is OK
+          REQUIRE(deserializedPdu->equals(deliverSmPdu));
+          REQUIRE(deserializedDeliverSmPdu->equals(deliverSmPdu));
+          REQUIRE(deliverSmPdu.equals(*deserializedPdu));
+        }
+      }
+    }
+  }
+
   GIVEN("A sample submit sm resp pdu with size 28 bytes") {
     smpp::SubmitSmResp submitSmRespPdu{smpp::builder::SubmitSmRespBuilder()
                                            .withCommandStatus(smpp::constants::errors::ESME_ROK)

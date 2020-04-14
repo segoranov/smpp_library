@@ -1,17 +1,17 @@
-#ifndef DATA_SM_H
-#define DATA_SM_H
+#ifndef DELIVER_SM_H
+#define DELIVER_SM_H
 
 #include "smpp/pdu/pdu.h"
 
 namespace smpp {
 
 namespace builder {
-class DataSmBuilder;
+class DeliverSmBuilder;
 }
 
-class DataSm final : public Pdu {
+class DeliverSm final : public Pdu {
  private:
-  DataSm();
+  DeliverSm();
 
   std::string m_strServiceType;
   uint8_t m_nSourceAddrTon;
@@ -21,15 +21,23 @@ class DataSm final : public Pdu {
   uint8_t m_nDestAddrNpi;
   std::string m_strDestinationAddr;
   uint8_t m_nEsmClass;
+  uint8_t m_nProtocolId;
+  uint8_t m_nPriorityFlag;
+  std::string m_strScheduleDeliveryTime;
+  std::string m_strValidityPeriod;
   uint8_t m_nRegisteredDelivery;
+  uint8_t m_nReplaceIfPresentFlag;
   uint8_t m_nDataCoding;
+  uint8_t m_nSmDefaultMsgId;
+  uint8_t m_nSmLength;
+  std::string m_strShortMessage;
 
  private:
   friend const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap();
-  static std::unique_ptr<DataSm> create(std::istream& is);
+  static std::unique_ptr<DeliverSm> create(std::istream& is);
 
  public:
-  explicit DataSm(const builder::DataSmBuilder& params);
+  explicit DeliverSm(const builder::DeliverSmBuilder& params);
 
   virtual void serialize(std::ostream& os) const override;
 

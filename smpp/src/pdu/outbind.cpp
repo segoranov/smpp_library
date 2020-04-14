@@ -53,4 +53,15 @@ std::unique_ptr<Outbind> Outbind::create(std::istream& is) {
   return outbindPtr;
 }
 
+bool Outbind::equals(const Pdu& other) const {
+  if (!Pdu::equals(other)) {
+    return false;
+  }
+
+  auto otherOutbind = static_cast<const Outbind*>(&other);
+
+  return m_strSystemId == otherOutbind->m_strSystemId &&
+         m_strPassword == otherOutbind->m_strPassword;
+}
+
 }  // namespace smpp

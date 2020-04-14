@@ -99,6 +99,9 @@ class SubmitMulti final : public BaseSubmit {
   virtual void serialize(std::ostream& os) const override;
 
   SubmitMultiDestinationAddresses getDestinationAddresses() const;
+
+  // TODO
+  // virtual bool equals(const Pdu& other) const override;
 };
 
 }  // namespace smpp

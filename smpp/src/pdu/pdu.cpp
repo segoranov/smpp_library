@@ -31,6 +31,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
           {constants::CMD_ID_DATA_SM, DataSm::create},
           {constants::CMD_ID_OUTBIND, Outbind::create},
           {constants::CMD_ID_SUBMIT_MULTI, SubmitMulti::create},
+          {constants::CMD_ID_DELIVER_SM, DeliverSm::create},
       };
   return *commandIdToFactoryMap;
 }
@@ -67,6 +68,14 @@ SubmitSm* Pdu::asSubmitSm() {
   }
 
   return static_cast<SubmitSm*>(this);
+}
+
+DeliverSm* Pdu::asDeliverSm() {
+  if (m_nCommandId != constants::CMD_ID_DELIVER_SM) {
+    return nullptr;
+  }
+
+  return static_cast<DeliverSm*>(this);
 }
 
 BindTransmitterResp* Pdu::asBindTransmitterResp() {

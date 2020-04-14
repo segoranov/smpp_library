@@ -23,6 +23,7 @@ add_library(smpp SHARED
     src/pdu/builder/data_sm_builder.cpp
     src/pdu/builder/outbind_builder.cpp
     src/pdu/builder/submit_multi_builder.cpp
+    src/pdu/builder/deliver_sm_builder.cpp
     src/pdu/base_submit.cpp
     src/pdu/base_submission_resp.cpp
     src/pdu/submit_sm.cpp
@@ -30,6 +31,7 @@ add_library(smpp SHARED
     src/pdu/data_sm.cpp
     src/pdu/outbind.cpp
     src/pdu/submit_multi.cpp
+    src/pdu/deliver_sm.cpp
     src/tlv/tlv.cpp
     src/util/logging.cpp
     src/smpp_client.cpp
