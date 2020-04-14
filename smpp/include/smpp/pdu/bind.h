@@ -43,9 +43,10 @@ class Bind final : public Pdu {
 
 template <uint32_t CommandId>
 Bind<CommandId>::Bind(const builder::BindBuilder& params) : Pdu{CommandId} {
+  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+
   params.checkAllValuesArePresent();
   // TODO SG: Validation
-  m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
 
   m_strSystemId = params.m_optSystemId.value();

@@ -13,7 +13,6 @@ int main() {
 
   auto bindResp = smppClient.bind(smpp::BindTransmitter{
       smpp::builder::BindBuilder()
-          .withCommandStatus(smpp::constants::errors::ESME_ROK)
           .withSequenceNumber(1)
           .withSystemId("SMPP3TEST")
           .withPassword("secret08")

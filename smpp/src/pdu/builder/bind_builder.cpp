@@ -2,11 +2,6 @@
 
 namespace smpp::builder {
 
-BindBuilder& BindBuilder::withCommandStatus(uint32_t nCommandStatus) {
-  m_optCommandStatus = nCommandStatus;
-  return *this;
-}
-
 BindBuilder& BindBuilder::withSequenceNumber(uint32_t nSequenceNumber) {
   m_optSequenceNumber = nSequenceNumber;
   return *this;
@@ -48,10 +43,6 @@ BindBuilder& BindBuilder::withAddressRange(const std::string& strAddressRange) {
 }
 
 void BindBuilder::checkAllValuesArePresent() const {
-  if (!m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("BindBuilder: Undefined command status");
-  }
-
   if (!m_optSequenceNumber.has_value()) {
     throw UndefinedValueException("BindBuilder: Undefined sequence number");
   }

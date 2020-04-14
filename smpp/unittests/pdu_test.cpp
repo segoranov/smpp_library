@@ -43,7 +43,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     AND_GIVEN("a BindTransmitter PDU corresponding to the raw PDU") {
       smpp::BindTransmitter bindTransmitterPdu{
           smpp::builder::BindBuilder()
-              .withCommandStatus(smpp::constants::errors::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
               .withPassword("secret08")
@@ -206,7 +205,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
   GIVEN("A sample submit sm pdu with size 44 bytes") {
     smpp::SubmitSm submitSmPdu{
         smpp::builder::SubmitSmBuilder()
-            .withCommandStatus(smpp::constants::errors::ESME_ROK)
             .withSequenceNumber(378019)
             .withServiceType("A")
             .withSourceAddrTon(0x03)
@@ -299,7 +297,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
   GIVEN("A sample data sm pdu with size 29 bytes") {
     smpp::DataSm dataSmPdu{smpp::builder::DataSmBuilder()
-                               .withCommandStatus(smpp::constants::errors::ESME_ROK)
                                .withSequenceNumber(378019)
                                .withServiceType("A")
                                .withSourceAddrTon(0x03)
@@ -346,7 +343,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
   GIVEN("A sample outbind pdu with size 35 bytes") {
     smpp::Outbind outbindPdu{smpp::builder::OutbindBuilder()
-                                 .withCommandStatus(smpp::constants::errors::ESME_ROK)
                                  .withSequenceNumber(378019)
                                  .withSystemId("SMPP3TEST")
                                  .withPassword("secret08")};
@@ -414,7 +410,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
     smpp::SubmitMulti submitMultiPdu{
         smpp::builder::SubmitMultiBuilder()
-            .withCommandStatus(smpp::constants::errors::ESME_ROK)
             .withSequenceNumber(378019)
             .withServiceType("A")
             .withSourceAddrTon(0x03)
@@ -514,7 +509,6 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
   auto createTestSubmitSmPdu = [] {
     return smpp::SubmitSm{
         smpp::builder::SubmitSmBuilder()
-            .withCommandStatus(smpp::constants::errors::ESME_ROK)
             .withSequenceNumber(378019)
             .withServiceType("A")
             .withSourceAddrTon(0x03)
@@ -555,7 +549,6 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
     // make the destination addr the only difference
     smpp::SubmitSm pdu2{
         smpp::builder::SubmitSmBuilder()
-            .withCommandStatus(smpp::constants::errors::ESME_ROK)
             .withSequenceNumber(378019)
             .withServiceType("A")
             .withSourceAddrTon(0x03)

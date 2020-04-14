@@ -2,10 +2,6 @@
 
 namespace smpp::builder {
 
-DataSmBuilder& DataSmBuilder::withCommandStatus(uint32_t nCommandStatus) {
-  m_optCommandStatus = nCommandStatus;
-  return *this;
-}
 DataSmBuilder& DataSmBuilder::withSequenceNumber(uint32_t nSequenceNumber) {
   m_optSequenceNumber = nSequenceNumber;
   return *this;
@@ -67,10 +63,6 @@ DataSmBuilder& DataSmBuilder::withOptionalParameters(const std::vector<Tlv>& tlv
 }
 
 void DataSmBuilder::checkAllValuesArePresent() const {
-  if (!m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("DataSmBuilder: Undefined command status");
-  }
-
   if (!m_optSequenceNumber.has_value()) {
     throw UndefinedValueException("DataSmBuilder: Undefined sequence number");
   }

@@ -2,11 +2,6 @@
 
 namespace smpp::builder {
 
-OutbindBuilder& OutbindBuilder::withCommandStatus(uint32_t nCommandStatus) {
-  m_optCommandStatus = nCommandStatus;
-  return *this;
-}
-
 OutbindBuilder& OutbindBuilder::withSequenceNumber(uint32_t nSequenceNumber) {
   m_optSequenceNumber = nSequenceNumber;
   return *this;
@@ -23,10 +18,6 @@ OutbindBuilder& OutbindBuilder::withPassword(const std::string& strPassword) {
 }
 
 void OutbindBuilder::checkAllValuesArePresent() const {
-  if (!m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("OutbindBuilder: Undefined command status");
-  }
-
   if (!m_optSequenceNumber.has_value()) {
     throw UndefinedValueException("OutbindBuilder: Undefined sequence number");
   }

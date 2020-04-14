@@ -163,7 +163,6 @@ SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
     : BaseSubmit{constants::CMD_ID_SUBMIT_MULTI} {
   INFO << "SubmitMulti(builder) constructor";
   params.checkAllValuesArePresent();
-  m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();
   m_nSourceAddrTon = params.m_optSourceAddrTon.value();

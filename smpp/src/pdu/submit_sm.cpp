@@ -11,7 +11,6 @@ SubmitSm::SubmitSm() : BaseSubmit{constants::CMD_ID_SUBMIT_SM} {}
 SubmitSm::SubmitSm(const builder::SubmitSmBuilder& params)
     : BaseSubmit{constants::CMD_ID_SUBMIT_SM} {
   params.checkAllValuesArePresent();
-  m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();
   m_nSourceAddrTon = params.m_optSourceAddrTon.value();

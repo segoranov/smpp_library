@@ -9,8 +9,9 @@ namespace smpp {
 DataSm::DataSm() : Pdu{constants::CMD_ID_DATA_SM} {}
 
 DataSm::DataSm(const builder::DataSmBuilder& params) : Pdu{constants::CMD_ID_DATA_SM} {
+  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+
   params.checkAllValuesArePresent();
-  m_nCommandStatus = params.m_optCommandStatus.value();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();
   m_nSourceAddrTon = params.m_optSourceAddrTon.value();

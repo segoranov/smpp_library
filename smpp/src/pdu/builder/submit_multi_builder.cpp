@@ -2,10 +2,6 @@
 
 namespace smpp::builder {
 
-SubmitMultiBuilder& SubmitMultiBuilder::withCommandStatus(uint32_t nCommandStatus) {
-  m_optCommandStatus = nCommandStatus;
-  return *this;
-}
 SubmitMultiBuilder& SubmitMultiBuilder::withSequenceNumber(uint32_t nSequenceNumber) {
   m_optSequenceNumber = nSequenceNumber;
   return *this;
@@ -94,10 +90,6 @@ SubmitMultiBuilder& SubmitMultiBuilder::withOptionalParameters(const std::vector
 }
 
 void SubmitMultiBuilder::checkAllValuesArePresent() const {
-  if (!m_optCommandStatus.has_value()) {
-    throw UndefinedValueException("SubmitMultiBuilder: Undefined command status");
-  }
-
   if (!m_optSequenceNumber.has_value()) {
     throw UndefinedValueException("SubmitMultiBuilder: Undefined sequence number");
   }

@@ -21,7 +21,6 @@ class DataSmBuilder {
  private:
   friend class smpp::DataSm;
 
-  std::optional<uint32_t> m_optCommandStatus;
   std::optional<uint32_t> m_optSequenceNumber;
   std::optional<std::string> m_optServiceType;
   std::optional<uint8_t> m_optSourceAddrTon;
@@ -44,7 +43,6 @@ class DataSmBuilder {
  public:
   DataSmBuilder() = default;
 
-  DataSmBuilder& withCommandStatus(uint32_t nCommandStatus);
   DataSmBuilder& withSequenceNumber(uint32_t nSequenceNumber);
   DataSmBuilder& withServiceType(const std::string& strServiceType);
   DataSmBuilder& withSourceAddrTon(uint8_t nSourceAddrTon);
