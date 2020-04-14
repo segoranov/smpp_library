@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <sstream>
-#include <typeinfo>
 #include <unordered_map>
 
 #include "smpp/commands.h"
@@ -79,19 +78,15 @@ BindTransmitterResp* Pdu::asBindTransmitterResp() {
 }
 
 bool Pdu::equals(const Pdu& other) const {
-  INFO << "Pdu::equals()";
-  if (typeid(*this) != typeid(other)) {
-    return false;
-  }
-
+  auto tlvComparator = [](const Tlv& lhs, const Tlv& rhs) { return lhs == rhs; };
   return m_nCommandLength == other.m_nCommandLength && m_nCommandId == other.m_nCommandId &&
          m_nCommandStatus == other.m_nCommandStatus &&
-         m_nSequenceNumber == other.m_nSequenceNumber;  // &&
-  // m_vOptionalTlvParameters == other.m_vOptionalTlvParameters; TODO
+         m_nSequenceNumber == other.m_nSequenceNumber &&
+         std::equal(m_vOptionalTlvParameters.begin(), m_vOptionalTlvParameters.end(),
+                    other.m_vOptionalTlvParameters.begin(), tlvComparator);
 }
 
 void Pdu::serializeHeader(std::ostream& os) const {
-  INFO << "Pdu::serializeHeader()";
   if (!util::isCommandLengthValid(m_nCommandLength)) {
     std::stringstream error;
     error << "Invalid command length detected during Pdu serialization - [" << m_nCommandLength

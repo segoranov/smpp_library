@@ -575,4 +575,83 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
     auto pdu2 = createTestBindPdu();
     THEN("they should not be equal") { REQUIRE_FALSE(pdu1.equals(pdu2)); }
   }
+
+  GIVEN("Two almost equal submit sm PDUs differing only in one optional Tlv parameter") {
+    auto pdu1 = createTestSubmitSmPdu();
+
+    smpp::SubmitSm pdu2{
+        smpp::builder::SubmitSmBuilder()
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_SM")
+            .withOptionalParameters(
+                {smpp::Tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, "test_billing_id"}})};
+
+    THEN("they should not be equal") { REQUIRE_FALSE(pdu1.equals(pdu2)); }
+  }
+
+  GIVEN("Two equal submit sm PDUs with one optional TLV parameter") {
+    smpp::SubmitSm pdu1{
+        smpp::builder::SubmitSmBuilder()
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_SM")
+            .withOptionalParameters(
+                {smpp::Tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, "test_billing_id"}})};
+
+    smpp::SubmitSm pdu2{
+        smpp::builder::SubmitSmBuilder()
+            .withSequenceNumber(378019)
+            .withServiceType("A")
+            .withSourceAddrTon(0x03)
+            .withSourceAddrNpi(0x01)
+            .withSourceAddr("B")
+            .withDestAddrTon(0x03)
+            .withDestAddrNpi(0x01)
+            .withDestinationAddr("C")
+            .withEsmClass(smpp::constants::null_settings::NULL_INT8)
+            .withProtocolId(smpp::constants::null_settings::NULL_INT8)
+            .withPriorityFlag(smpp::constants::null_settings::NULL_INT8)
+            .withScheduleDeliveryTime(smpp::constants::null_settings::NULL_C_OCTET_STRING)
+            .withValidityPeriod("D")
+            .withRegisteredDelivery(0x01)
+            .withReplaceIfPresentFlag(smpp::constants::null_settings::NULL_INT8)
+            .withDataCoding(smpp::constants::null_settings::NULL_INT8)
+            .withSmDefaultMsgId(smpp::constants::null_settings::NULL_INT8)
+            .withShortMessage("TEST_SM")
+            .withOptionalParameters(
+                {smpp::Tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, "test_billing_id"}})};
+
+    THEN("they should not be equal") { REQUIRE(pdu1.equals(pdu2)); }
+  }
 }
