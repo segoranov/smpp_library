@@ -6,7 +6,7 @@ SmppClient::SmppClient(std::shared_ptr<TcpSocket> ptrTcpSocket) : m_ptrTcpSocket
   m_enSessionState = session_util::SessionState::OPEN;
 }
 
-void SmppClient::sendPdu(Pdu::UPtr pdu) {
+void SmppClient::sendPdu(Pdu::SPtr pdu) {
   checkTcpConnection();
 
   // check if session is in appropriate state
@@ -24,15 +24,14 @@ void SmppClient::sendPdu(Pdu::UPtr pdu) {
   }
 }
 
-Pdu::UPtr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId) {
+Pdu::SPtr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId) {
   const uint32_t nResponseCommandId = constants::CMD_ID_GENERIC_NACK | nCommandId;
 
   auto it = m_pduResponseQueue.begin();
   while (it != m_pduResponseQueue.end()) {
-    if ((*it)->getSequenceNumber() == nSequenceNumber &&
-        (*it)->getCommandId() == nResponseCommandId) {
-      auto pdu = std::move(*it);
-      it = m_pduResponseQueue.erase(it);
+    auto pdu = *it;
+    if (pdu->getSequenceNumber() == nSequenceNumber && pdu->getCommandId() == nResponseCommandId) {
+      m_pduResponseQueue.erase(it);
       return pdu;
     }
 
@@ -47,12 +46,12 @@ Pdu::UPtr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nComman
         (pdu->getSequenceNumber() == 0 && pdu->getCommandId() == constants::CMD_ID_GENERIC_NACK)) {
       return pdu;
     } else {
-      m_pduResponseQueue.push_back(std::move(pdu));
+      m_pduResponseQueue.push_back(pdu);
     }
   }
 }
 
-Pdu::UPtr SmppClient::readPduBlocking() {
+Pdu::SPtr SmppClient::readPduBlocking() {
   boost::system::error_code ec;
   uint32_t nCommandLength;
 

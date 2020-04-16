@@ -62,28 +62,68 @@ bool Pdu::hasOptionalParameter(uint16_t nTag) const {
   return iterTlv != m_vOptionalTlvParameters.end();
 }
 
-SubmitSm* Pdu::asSubmitSm() {
+std::shared_ptr<SubmitSm> Pdu::asSubmitSm() {
   if (m_nCommandId != constants::CMD_ID_SUBMIT_SM) {
     return nullptr;
   }
 
-  return static_cast<SubmitSm*>(this);
+  return std::static_pointer_cast<SubmitSm>(shared_from_this());
 }
 
-DeliverSm* Pdu::asDeliverSm() {
+std::shared_ptr<DeliverSm> Pdu::asDeliverSm() {
   if (m_nCommandId != constants::CMD_ID_DELIVER_SM) {
     return nullptr;
   }
 
-  return static_cast<DeliverSm*>(this);
+  return std::static_pointer_cast<DeliverSm>(shared_from_this());
 }
 
-BindTransmitterResp* Pdu::asBindTransmitterResp() {
+std::shared_ptr<BindTransmitter> Pdu::asBindTransmitter() {
+  if (m_nCommandId != constants::CMD_ID_BIND_TRANSMITTER) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<BindTransmitter>(shared_from_this());
+}
+
+std::shared_ptr<BindTransmitterResp> Pdu::asBindTransmitterResp() {
   if (m_nCommandId != constants::CMD_ID_BIND_TRANSMITTER_RESP) {
     return nullptr;
   }
 
-  return static_cast<BindTransmitterResp*>(this);
+  return std::static_pointer_cast<BindTransmitterResp>(shared_from_this());
+}
+
+std::shared_ptr<SubmitMulti> Pdu::asSubmitMulti() {
+  if (m_nCommandId != constants::CMD_ID_SUBMIT_MULTI) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<SubmitMulti>(shared_from_this());
+}
+
+std::shared_ptr<SubmitSmResp> Pdu::asSubmitSmResp() {
+  if (m_nCommandId != constants::CMD_ID_SUBMIT_SM_RESP) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<SubmitSmResp>(shared_from_this());
+}
+
+std::shared_ptr<Outbind> Pdu::asOutbind() {
+  if (m_nCommandId != constants::CMD_ID_OUTBIND) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<Outbind>(shared_from_this());
+}
+
+std::shared_ptr<DataSm> Pdu::asDataSm() {
+  if (m_nCommandId != constants::CMD_ID_DATA_SM) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<DataSm>(shared_from_this());
 }
 
 bool Pdu::equals(const Pdu& other) const {

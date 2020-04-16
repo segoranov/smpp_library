@@ -11,18 +11,19 @@ int main() {
   tcpSocketPtr->connect(endpoint);
   smpp::SmppClient smppClient{tcpSocketPtr};
 
-  auto bindResp = smppClient.bind(smpp::BindTransmitter{
-      smpp::builder::BindBuilder()
-          .withSequenceNumber(1)
-          .withSystemId("SMPP3TEST")
-          .withPassword("secret08")
-          .withSystemType("test_system_type")
-          .withInterfaceVersion(0x50)
-          .withAddrTon(0x01)
-          .withAddrNpi(0x01)
-          .withAddressRange(smpp::constants::null_settings::NULL_C_OCTET_STRING)});
-
-  auto bindTransmitterResp = bindResp->asBindTransmitterResp();
+  auto bindTransmitterResp =
+      smppClient
+          .bind(smpp::BindTransmitter{
+              smpp::builder::BindBuilder()
+                  .withSequenceNumber(1)
+                  .withSystemId("SMPP3TEST")
+                  .withPassword("secret08")
+                  .withSystemType("test_system_type")
+                  .withInterfaceVersion(0x50)
+                  .withAddrTon(0x01)
+                  .withAddrNpi(0x01)
+                  .withAddressRange(smpp::constants::null_settings::NULL_C_OCTET_STRING)})
+          ->asBindTransmitterResp();
 
   io_context.run();
   std::cout << "Bound with status " << bindTransmitterResp->getCommandStatus() << std::endl;

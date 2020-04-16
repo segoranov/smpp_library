@@ -29,7 +29,7 @@ class SmppClient {
    * @return bind response
    */
   template <uint32_t CommandId>
-  Pdu::UPtr bind(const Bind<CommandId>& pdu);
+  Pdu::SPtr bind(const Bind<CommandId>& pdu);
 
  private:
   /**
@@ -49,7 +49,7 @@ class SmppClient {
   /**
    * Sends a request PDU through the socket
    */
-  void sendPdu(Pdu::UPtr pdu);
+  void sendPdu(Pdu::SPtr pdu);
 
   /**
    * Returns a response for a PDU we have sent,
@@ -62,20 +62,20 @@ class SmppClient {
    * @param nCommandId Command id to look for.
    * @return PDU response to PDU with the given sequence number and command id.
    */
-  Pdu::UPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
+  Pdu::SPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
-  Pdu::UPtr readPduBlocking();
+  Pdu::SPtr readPduBlocking();
 
  private:
   session_util::SessionState m_enSessionState;
   std::shared_ptr<TcpSocket> m_ptrTcpSocket;
 
   using PduResponsePtr = std::shared_ptr<Pdu>;
-  std::list<Pdu::UPtr> m_pduResponseQueue;
+  std::list<Pdu::SPtr> m_pduResponseQueue;
 };
 
 template <uint32_t CommandId>
-Pdu::UPtr SmppClient::bind(const Bind<CommandId>& pdu) {
+Pdu::SPtr SmppClient::bind(const Bind<CommandId>& pdu) {
   checkTcpConnection();
   checkSessionState(session_util::SessionState::OPEN);
 

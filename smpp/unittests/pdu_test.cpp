@@ -71,11 +71,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitter PDU is deserialized from the stringstream") {
-          auto deserializedPdu = smpp::Pdu::deserialize(ss);
-          REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_BIND_TRANSMITTER);
-
-          auto deserializedBindTransmitterPdu =
-              dynamic_cast<smpp::BindTransmitter*>(deserializedPdu.get());
+          auto deserializedBindTransmitterPdu = smpp::Pdu::deserialize(ss)->asBindTransmitter();
           REQUIRE(deserializedBindTransmitterPdu);
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -168,32 +164,27 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitterResp PDU is deserialized from the stringstream") {
-          auto deserializedPdu = smpp::Pdu::deserialize(ss);
-          REQUIRE(deserializedPdu->getCommandId() ==
-                  smpp::constants::CMD_ID_BIND_TRANSMITTER_RESP);
-
-          REQUIRE(
-              deserializedPdu->hasOptionalParameter(smpp::constants::TAG_SC_INTERFACE_VERSION));
-
-          auto deserializedSubmitSmPdu =
-              dynamic_cast<smpp::BindTransmitterResp*>(deserializedPdu.get());
-          REQUIRE(deserializedSubmitSmPdu);
+          auto deserializedBindTransmitterRespPdu =
+              smpp::Pdu::deserialize(ss)->asBindTransmitterResp();
+          REQUIRE(deserializedBindTransmitterRespPdu);
+          REQUIRE(deserializedBindTransmitterRespPdu->hasOptionalParameter(
+              smpp::constants::TAG_SC_INTERFACE_VERSION));
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
-            REQUIRE(deserializedSubmitSmPdu->getCommandLength() ==
+            REQUIRE(deserializedBindTransmitterRespPdu->getCommandLength() ==
                     bindTransmitterRespPdu.getCommandLength());
 
-            REQUIRE(deserializedSubmitSmPdu->getCommandStatus() ==
+            REQUIRE(deserializedBindTransmitterRespPdu->getCommandStatus() ==
                     bindTransmitterRespPdu.getCommandStatus());
 
-            REQUIRE(deserializedSubmitSmPdu->getSequenceNumber() ==
+            REQUIRE(deserializedBindTransmitterRespPdu->getSequenceNumber() ==
                     bindTransmitterRespPdu.getSequenceNumber());
 
-            REQUIRE(deserializedSubmitSmPdu->getSystemId() ==
+            REQUIRE(deserializedBindTransmitterRespPdu->getSystemId() ==
                     bindTransmitterRespPdu.getSystemId());
 
-            REQUIRE(deserializedSubmitSmPdu->getOptionalParameters().size() == 1);
-            REQUIRE(deserializedSubmitSmPdu->getOptionalParameters()[0] ==
+            REQUIRE(deserializedBindTransmitterRespPdu->getOptionalParameters().size() == 1);
+            REQUIRE(deserializedBindTransmitterRespPdu->getOptionalParameters()[0] ==
                     smpp::Tlv{smpp::constants::TAG_SC_INTERFACE_VERSION,
                               smpp::constants::VERSION_5_0});
           }
@@ -289,18 +280,13 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a deliverSmPdu sm PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_DELIVER_SM);
-
-        auto deserializedDeliverSmPdu = deserializedPdu->asDeliverSm();
+        auto deserializedDeliverSmPdu = smpp::Pdu::deserialize(ss)->asDeliverSm();
         REQUIRE(deserializedDeliverSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
           // test the same thing in different ways to make sure everything is OK
-          REQUIRE(deserializedPdu->equals(deliverSmPdu));
           REQUIRE(deserializedDeliverSmPdu->equals(deliverSmPdu));
-          REQUIRE(deliverSmPdu.equals(*deserializedPdu));
+          REQUIRE(deliverSmPdu.equals(*deserializedDeliverSmPdu));
         }
       }
     }
@@ -325,12 +311,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit sm resp PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM_RESP);
-
-        auto deserializedSubmitSmRespPdu =
-            dynamic_cast<smpp::SubmitSmResp*>(deserializedPdu.get());
+        auto deserializedSubmitSmRespPdu = smpp::Pdu::deserialize(ss)->asSubmitSmResp();
         REQUIRE(deserializedSubmitSmRespPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -374,11 +355,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a data sm PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_DATA_SM);
-
-        auto deserializedDataSmPdu = dynamic_cast<smpp::DataSm*>(deserializedPdu.get());
+        auto deserializedDataSmPdu = smpp::Pdu::deserialize(ss)->asDataSm();
         REQUIRE(deserializedDataSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -412,16 +389,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("an outbind PDU is deserialized from the stringstream") {
-        smpp::Pdu::UPtr deserializedPdu;
-        try {
-          deserializedPdu = smpp::Pdu::deserialize(ss);
-        } catch (const binary::NotEnoughBytesInStreamException& ex) {
-          FAIL("Could not deserialize PDU: " << ex.what());
-        }
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_OUTBIND);
-
-        auto deserializedOutbindPdu = dynamic_cast<smpp::Outbind*>(deserializedPdu.get());
+        auto deserializedOutbindPdu = smpp::Pdu::deserialize(ss)->asOutbind();
         REQUIRE(deserializedOutbindPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -492,11 +460,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit multi PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_MULTI);
-
-        auto deserializedSubmitMultiPdu = dynamic_cast<smpp::SubmitMulti*>(deserializedPdu.get());
+        auto deserializedSubmitMultiPdu = smpp::Pdu::deserialize(ss)->asSubmitMulti();
         REQUIRE(deserializedSubmitMultiPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {

@@ -16,11 +16,28 @@
 namespace smpp {
 
 class SubmitSm;
+class SubmitSmResp;
+
 class DeliverSm;
+class DeliverSmResp;
+
+class DataSm;
+class DataSmResp;
+
+class SubmitMulti;
+class SubmitMultiResp;
+
+template <uint32_t CommandId>
+class Bind;
+
+using BindTransmitter = Bind<constants::CMD_ID_BIND_TRANSMITTER>;
+
 template <uint32_t CommandId>
 class BindResp;
 
 using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
+
+class Outbind;
 
 /**
  * Base class for all SMPP PDUs
@@ -29,7 +46,7 @@ using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
  * https://isocpp.org/wiki/faq/serialization#serialize-inherit-no-ptrs
  * with the Named Constructor Idiom
  */
-class Pdu {
+class Pdu : public std::enable_shared_from_this<Pdu> {
  protected:
   // PDU Header
   uint32_t m_nCommandLength;
@@ -45,6 +62,7 @@ class Pdu {
   // Aliases for convenience
   using UPtr = std::unique_ptr<Pdu>;
   using SPtr = std::shared_ptr<Pdu>;
+  using WPtr = std::weak_ptr<Pdu>;
 
   uint32_t getCommandLength() const;
   uint32_t getCommandId() const;
@@ -55,9 +73,14 @@ class Pdu {
   bool hasOptionalParameter(uint16_t nTag) const;
 
   // TODO for other PDUs
-  SubmitSm* asSubmitSm();
-  DeliverSm* asDeliverSm();
-  BindTransmitterResp* asBindTransmitterResp();
+  std::shared_ptr<SubmitSm> asSubmitSm();
+  std::shared_ptr<DeliverSm> asDeliverSm();
+  std::shared_ptr<BindTransmitter> asBindTransmitter();
+  std::shared_ptr<BindTransmitterResp> asBindTransmitterResp();
+  std::shared_ptr<SubmitMulti> asSubmitMulti();
+  std::shared_ptr<SubmitSmResp> asSubmitSmResp();
+  std::shared_ptr<Outbind> asOutbind();
+  std::shared_ptr<DataSm> asDataSm();
 
   /**
    * @brief Compare two PDUs
