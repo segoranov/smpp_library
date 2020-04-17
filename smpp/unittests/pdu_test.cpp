@@ -71,7 +71,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitter PDU is deserialized from the stringstream") {
-          auto deserializedBindTransmitterPdu = smpp::Pdu::deserialize(ss)->asBindTransmitter();
+          auto deserializedPdu = smpp::Pdu::deserialize(ss);
+          auto deserializedBindTransmitterPdu = deserializedPdu->asBindTransmitter();
           REQUIRE(deserializedBindTransmitterPdu);
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -164,8 +165,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitterResp PDU is deserialized from the stringstream") {
-          auto deserializedBindTransmitterRespPdu =
-              smpp::Pdu::deserialize(ss)->asBindTransmitterResp();
+          auto deserializedPdu = smpp::Pdu::deserialize(ss);
+          auto deserializedBindTransmitterRespPdu = deserializedPdu->asBindTransmitterResp();
           REQUIRE(deserializedBindTransmitterRespPdu);
           REQUIRE(deserializedBindTransmitterRespPdu->hasOptionalParameter(
               smpp::constants::TAG_SC_INTERFACE_VERSION));
@@ -229,9 +230,6 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
       AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
         auto deserializedPdu = smpp::Pdu::deserialize(ss);
-
-        REQUIRE(deserializedPdu->getCommandId() == smpp::constants::CMD_ID_SUBMIT_SM);
-
         auto deserializedSubmitSmPdu = deserializedPdu->asSubmitSm();
         REQUIRE(deserializedSubmitSmPdu);
 
@@ -280,7 +278,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a deliverSmPdu sm PDU is deserialized from the stringstream") {
-        auto deserializedDeliverSmPdu = smpp::Pdu::deserialize(ss)->asDeliverSm();
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedDeliverSmPdu = deserializedPdu->asDeliverSm();
         REQUIRE(deserializedDeliverSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -311,7 +310,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit sm resp PDU is deserialized from the stringstream") {
-        auto deserializedSubmitSmRespPdu = smpp::Pdu::deserialize(ss)->asSubmitSmResp();
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedSubmitSmRespPdu = deserializedPdu->asSubmitSmResp();
         REQUIRE(deserializedSubmitSmRespPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -355,7 +355,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a data sm PDU is deserialized from the stringstream") {
-        auto deserializedDataSmPdu = smpp::Pdu::deserialize(ss)->asDataSm();
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedDataSmPdu = deserializedPdu->asDataSm();
         REQUIRE(deserializedDataSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -389,7 +390,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("an outbind PDU is deserialized from the stringstream") {
-        auto deserializedOutbindPdu = smpp::Pdu::deserialize(ss)->asOutbind();
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedOutbindPdu = deserializedPdu->asOutbind();
         REQUIRE(deserializedOutbindPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
@@ -460,7 +462,8 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit multi PDU is deserialized from the stringstream") {
-        auto deserializedSubmitMultiPdu = smpp::Pdu::deserialize(ss)->asSubmitMulti();
+        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedSubmitMultiPdu = deserializedPdu->asSubmitMulti();
         REQUIRE(deserializedSubmitMultiPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
