@@ -95,6 +95,9 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
 
   /**
    * @brief Deserializes and creates a PDU by reading raw bytes from an input stream
+   *
+   * The result is easily converted to std::shared_ptr
+   * (https://stackoverflow.com/questions/37884728/does-c11-unique-ptr-and-shared-ptr-able-to-convert-to-each-others-type)
    */
   static UPtr deserialize(std::istream& is);
 
