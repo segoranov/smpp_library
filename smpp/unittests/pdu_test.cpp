@@ -71,7 +71,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitter PDU is deserialized from the stringstream") {
-          auto deserializedPdu = smpp::Pdu::deserialize(ss);
+          smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
           auto deserializedBindTransmitterPdu = deserializedPdu->asBindTransmitter();
           REQUIRE(deserializedBindTransmitterPdu);
 
@@ -165,7 +165,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         }
 
         AND_WHEN("a BindTransmitterResp PDU is deserialized from the stringstream") {
-          auto deserializedPdu = smpp::Pdu::deserialize(ss);
+          smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
           auto deserializedBindTransmitterRespPdu = deserializedPdu->asBindTransmitterResp();
           REQUIRE(deserializedBindTransmitterRespPdu);
           REQUIRE(deserializedBindTransmitterRespPdu->hasOptionalParameter(
@@ -229,7 +229,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit sm PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedSubmitSmPdu = deserializedPdu->asSubmitSm();
         REQUIRE(deserializedSubmitSmPdu);
 
@@ -278,7 +278,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a deliverSmPdu sm PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedDeliverSmPdu = deserializedPdu->asDeliverSm();
         REQUIRE(deserializedDeliverSmPdu);
 
@@ -310,7 +310,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit sm resp PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedSubmitSmRespPdu = deserializedPdu->asSubmitSmResp();
         REQUIRE(deserializedSubmitSmRespPdu);
 
@@ -355,7 +355,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a data sm PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedDataSmPdu = deserializedPdu->asDataSm();
         REQUIRE(deserializedDataSmPdu);
 
@@ -390,7 +390,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("an outbind PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedOutbindPdu = deserializedPdu->asOutbind();
         REQUIRE(deserializedOutbindPdu);
 
@@ -462,7 +462,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       }
 
       AND_WHEN("a submit multi PDU is deserialized from the stringstream") {
-        auto deserializedPdu = smpp::Pdu::deserialize(ss);
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedSubmitMultiPdu = deserializedPdu->asSubmitMulti();
         REQUIRE(deserializedSubmitMultiPdu);
 

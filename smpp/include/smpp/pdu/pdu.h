@@ -46,7 +46,7 @@ class Outbind;
  * https://isocpp.org/wiki/faq/serialization#serialize-inherit-no-ptrs
  * with the Named Constructor Idiom
  */
-class Pdu {
+class Pdu : public std::enable_shared_from_this<Pdu> {
  protected:
   // PDU Header
   uint32_t m_nCommandLength;
@@ -72,14 +72,14 @@ class Pdu {
 
   bool hasOptionalParameter(uint16_t nTag) const;
 
-  SubmitSm* asSubmitSm();
-  DeliverSm* asDeliverSm();
-  BindTransmitter* asBindTransmitter();
-  BindTransmitterResp* asBindTransmitterResp();
-  SubmitMulti* asSubmitMulti();
-  SubmitSmResp* asSubmitSmResp();
-  Outbind* asOutbind();
-  DataSm* asDataSm();
+  std::shared_ptr<SubmitSm> asSubmitSm();
+  std::shared_ptr<DeliverSm> asDeliverSm();
+  std::shared_ptr<BindTransmitter> asBindTransmitter();
+  std::shared_ptr<BindTransmitterResp> asBindTransmitterResp();
+  std::shared_ptr<SubmitMulti> asSubmitMulti();
+  std::shared_ptr<SubmitSmResp> asSubmitSmResp();
+  std::shared_ptr<Outbind> asOutbind();
+  std::shared_ptr<DataSm> asDataSm();
 
   /**
    * @brief Compare two PDUs
