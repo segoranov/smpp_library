@@ -44,11 +44,22 @@ class SmppClient {
   Pdu::SPtr sendPduSync(Pdu::SPtr pdu);
 
   /**
-   * @brief Initiates sending of PDU to the server and returns immediately
-   *
-   *
+   * @brief Initiates asynchronous sending of a PDU to the server and returns immediately
    */
   void sendPduAsync(Pdu::SPtr pdu);
+
+  /**
+   * Returns a response for a PDU we have sent,
+   * specified by its sequence number and its command id.
+   * First the PDU queue is checked for any responses,
+   * if we don't find any we do a blocking read on the socket until
+   * we get the desired response.
+   *
+   * @param nSequenceNumber Sequence number to look for.
+   * @param nCommandId Command id to look for.
+   * @return PDU response to PDU with the given sequence number and command id.
+   */
+  Pdu::SPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
  private:
   /**
@@ -66,22 +77,17 @@ class SmppClient {
   void checkSessionState(session_util::SessionState enDesiredSessionState) const;
 
   /**
+   * @brief Checks whether the session is in appropriate state for transmitting a Pdu different
+   * than bind
+   *
+   * @throw InvalidSessionStateException
+   */
+  void checkTransmissionIsPossible() const;
+
+  /**
    * Sends a request PDU through the socket
    */
   void sendPdu(Pdu::SPtr pdu);
-
-  /**
-   * Returns a response for a PDU we have sent,
-   * specified by its sequence number and its command id.
-   * First the PDU queue is checked for any responses,
-   * if we don't find any we do a blocking read on the socket until
-   * we get the desired response.
-   *
-   * @param nSequenceNumber Sequence number to look for.
-   * @param nCommandId Command id to look for.
-   * @return PDU response to PDU with the given sequence number and command id.
-   */
-  Pdu::SPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
   Pdu::SPtr readPduBlocking();
 

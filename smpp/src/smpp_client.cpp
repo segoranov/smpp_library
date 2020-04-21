@@ -13,7 +13,29 @@ Pdu::SPtr SmppClient::unbind() {
 
 Pdu::SPtr SmppClient::sendPduSync(Pdu::SPtr pdu) {
   checkTcpConnection();
+  checkTransmissionIsPossible();
+  sendPdu(pdu);
+  return readPduResponse(pdu->getSequenceNumber(), pdu->getCommandId());
+}
 
+void SmppClient::sendPduAsync(Pdu::SPtr pdu) {
+  checkTcpConnection();
+  checkTransmissionIsPossible();
+
+  boost::asio::streambuf buff;
+  std::ostream os(&buff);
+  pdu->serialize(os);
+
+  boost::asio::async_write(*m_ptrTcpSocket, buff.data(),
+                           [this](boost::system::error_code ec, std::size_t s) {
+                             if (ec) {
+                               std::cout << "Could not send PDU to server. Bytes sent - " << s
+                                         << ". " << ec.value() << ":" << ec.message() << std::endl;
+                             }
+                           });
+}
+
+void SmppClient::checkTransmissionIsPossible() const {
   if (m_enSessionState == session_util::SessionState::BOUND_RX) {
     throw InvalidSessionStateException("Trying to send a PDU in BOUND_RX state");
   }
@@ -22,12 +44,7 @@ Pdu::SPtr SmppClient::sendPduSync(Pdu::SPtr pdu) {
       m_enSessionState != session_util::SessionState::BOUND_TX) {
     throw InvalidSessionStateException("Trying to send a PDU in non-bound state");
   }
-
-  sendPdu(pdu);
-  return readPduResponse(pdu->getSequenceNumber(), pdu->getCommandId());
 }
-
-void SmppClient::sendPduAsync(Pdu::SPtr pdu) {}
 
 void SmppClient::sendPdu(Pdu::SPtr pdu) {
   boost::asio::streambuf buff;
