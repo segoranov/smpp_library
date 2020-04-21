@@ -6,11 +6,30 @@ SmppClient::SmppClient(std::shared_ptr<TcpSocket> ptrTcpSocket) : m_ptrTcpSocket
   m_enSessionState = session_util::SessionState::OPEN;
 }
 
-void SmppClient::sendPdu(Pdu::SPtr pdu) {
+Pdu::SPtr SmppClient::unbind() {
+  // TODO
+  return nullptr;
+}
+
+Pdu::SPtr SmppClient::sendPduSync(Pdu::SPtr pdu) {
   checkTcpConnection();
 
-  // check if session is in appropriate state
+  if (m_enSessionState == session_util::SessionState::BOUND_RX) {
+    throw InvalidSessionStateException("Trying to send a PDU in BOUND_RX state");
+  }
 
+  if (m_enSessionState != session_util::SessionState::BOUND_TRX &&
+      m_enSessionState != session_util::SessionState::BOUND_TX) {
+    throw InvalidSessionStateException("Trying to send a PDU in non-bound state");
+  }
+
+  sendPdu(pdu);
+  return readPduResponse(pdu->getSequenceNumber(), pdu->getCommandId());
+}
+
+void SmppClient::sendPduAsync(Pdu::SPtr pdu) {}
+
+void SmppClient::sendPdu(Pdu::SPtr pdu) {
   boost::asio::streambuf buff;
   std::ostream os(&buff);
   pdu->serialize(os);

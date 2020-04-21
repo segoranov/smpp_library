@@ -2,3 +2,6 @@ build/
 utests/build/
 .vscode/
 run_with_build.sh
+smpp/smpp_client_examples/node_modules/
+smpp/smpp_client_examples/package-lock.json
+smpp/smpp_client_examples/test.pcap

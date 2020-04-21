@@ -16,7 +16,7 @@ namespace smpp {
 class SmppClient {
  public:
   using TcpSocket = boost::asio::ip::tcp::socket;
-  SmppClient(std::shared_ptr<TcpSocket> ptrTcpSocket);
+  explicit SmppClient(std::shared_ptr<TcpSocket> ptrTcpSocket);
 
   /**
    * @brief Sends bind PDU to the server
@@ -30,6 +30,25 @@ class SmppClient {
    */
   template <uint32_t CommandId>
   Pdu::SPtr bind(const Bind<CommandId>& pdu);
+
+  /**
+   * @brief Sends unbind PDU to the server and blocks until unbind_resp is received
+   */
+  Pdu::SPtr unbind();
+
+  /**
+   * @brief Sends PDU to the server and blocks until corresponding reponse is received
+   *
+   *
+   */
+  Pdu::SPtr sendPduSync(Pdu::SPtr pdu);
+
+  /**
+   * @brief Initiates sending of PDU to the server and returns immediately
+   *
+   *
+   */
+  void sendPduAsync(Pdu::SPtr pdu);
 
  private:
   /**
