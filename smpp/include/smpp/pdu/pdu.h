@@ -72,6 +72,10 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
 
   bool hasOptionalParameter(uint16_t nTag) const;
 
+  /**
+   * Below methods convert the Pdu to the specified command if possible
+   * If the Pdu's type and the to-be-converted-to type do not match, nullptr is returned
+   */
   std::shared_ptr<SubmitSm> asSubmitSm();
   std::shared_ptr<DeliverSm> asDeliverSm();
   std::shared_ptr<BindTransmitter> asBindTransmitter();
