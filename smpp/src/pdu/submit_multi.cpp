@@ -210,7 +210,7 @@ SubmitMultiDestinationAddresses SubmitMulti::getDestinationAddresses() const {
 
 void SubmitMulti::serialize(std::ostream& os) const {
   INFO << "SubmitMulti::serialize()";
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
   binary::serializeInt8(m_nSourceAddrNpi, os);

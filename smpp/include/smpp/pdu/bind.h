@@ -114,7 +114,7 @@ std::string Bind<CommandId>::getAddressRange() const {
 
 template <uint32_t CommandId>
 void Bind<CommandId>::serialize(std::ostream& os) const {
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strSystemId, os);
   binary::serializeNullTerminatedString(m_strPassword, os);
   binary::serializeNullTerminatedString(m_strSystemType, os);

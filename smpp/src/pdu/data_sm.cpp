@@ -64,7 +64,7 @@ uint8_t DataSm::getRegisteredDelivery() const { return m_nRegisteredDelivery; }
 uint8_t DataSm::getDataCoding() const { return m_nDataCoding; }
 
 void DataSm::serialize(std::ostream& os) const {
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
   binary::serializeInt8(m_nSourceAddrNpi, os);

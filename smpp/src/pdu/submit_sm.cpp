@@ -61,7 +61,7 @@ std::string SubmitSm::getDestinationAddr() const { return m_strDestinationAddr; 
 
 void SubmitSm::serialize(std::ostream& os) const {
   INFO << "SubmitSm::serialize()";
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
   binary::serializeInt8(m_nSourceAddrNpi, os);

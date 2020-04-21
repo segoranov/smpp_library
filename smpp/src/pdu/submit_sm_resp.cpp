@@ -42,7 +42,7 @@ std::unique_ptr<SubmitSmResp> SubmitSmResp::create(std::istream& is) {
 }
 
 void SubmitSmResp::serialize(std::ostream& os) const {
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strMessageId, os);
   serializeOptionalParameters(os);
 }

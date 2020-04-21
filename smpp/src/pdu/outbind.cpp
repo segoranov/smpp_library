@@ -32,7 +32,7 @@ std::string Outbind::getSystemId() const { return m_strSystemId; }
 std::string Outbind::getPassword() const { return m_strPassword; }
 
 void Outbind::serialize(std::ostream& os) const {
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strSystemId, os);
   binary::serializeNullTerminatedString(m_strPassword, os);
 }

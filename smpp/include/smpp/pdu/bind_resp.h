@@ -58,7 +58,7 @@ std::string BindResp<CommandId>::getSystemId() const {
 
 template <uint32_t CommandId>
 void BindResp<CommandId>::serialize(std::ostream& os) const {
-  serializeHeader(os);
+  Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strSystemId, os);
   serializeOptionalParameters(os);
 }

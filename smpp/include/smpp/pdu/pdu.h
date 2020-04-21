@@ -112,7 +112,6 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
   using Factory = std::function<UPtr(std::istream& is)>;
 
   // Utility methods for serialization/deserialization
-  void serializeHeader(std::ostream& os) const;
   void serializeOptionalParameters(std::ostream& os) const;
   void deserializeOptionalParameters(std::istream& is);
 };

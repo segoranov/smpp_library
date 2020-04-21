@@ -135,7 +135,7 @@ bool Pdu::equals(const Pdu& other) const {
                     other.m_vOptionalTlvParameters.begin(), tlvComparator);
 }
 
-void Pdu::serializeHeader(std::ostream& os) const {
+void Pdu::serialize(std::ostream& os) const {
   if (!util::isCommandLengthValid(m_nCommandLength)) {
     std::stringstream error;
     error << "Invalid command length detected during Pdu serialization - [" << m_nCommandLength
