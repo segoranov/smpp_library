@@ -87,6 +87,16 @@ Pdu::SPtr SmppClient::readPduResponse(uint32_t nSequenceNumber, uint32_t nComman
   }
 }
 
+Pdu::SPtr SmppClient::readPduResponse() {
+  if (!m_pduResponseQueue.empty()) {
+    auto pdu = m_pduResponseQueue.back();
+    m_pduResponseQueue.pop_back();
+    return pdu;
+  }
+
+  return readPduBlocking();
+}
+
 Pdu::SPtr SmppClient::readPduBlocking() {
   boost::system::error_code ec;
   uint32_t nCommandLength;

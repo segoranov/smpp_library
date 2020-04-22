@@ -61,6 +61,13 @@ class SmppClient {
    */
   Pdu::SPtr readPduResponse(uint32_t nSequenceNumber, uint32_t nCommandId);
 
+  /**
+   * Returns a single response PDU from the SMPP server
+   *
+   * Blocks if there are no response PDUs received
+   */
+  Pdu::SPtr readPduResponse();
+
  private:
   /**
    * @brief Checks whether the TCP socket is open
