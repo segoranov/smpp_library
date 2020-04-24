@@ -7,7 +7,6 @@
 #include "smpp/commands.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
-
 #include "smpp/util/serialization_util.h"
 #include "smpp/util/smpp_util.h"
 
@@ -32,6 +31,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
           {constants::CMD_ID_OUTBIND, Outbind::create},
           {constants::CMD_ID_SUBMIT_MULTI, SubmitMulti::create},
           {constants::CMD_ID_DELIVER_SM, DeliverSm::create},
+          {constants::CMD_ID_ENQUIRE_LINK, EnquireLink::create},
       };
   return *commandIdToFactoryMap;
 }
@@ -124,6 +124,14 @@ std::shared_ptr<DataSm> Pdu::asDataSm() {
   }
 
   return std::static_pointer_cast<DataSm>(shared_from_this());
+}
+
+std::shared_ptr<EnquireLink> Pdu::asEnquireLink() {
+  if (m_nCommandId != constants::CMD_ID_ENQUIRE_LINK) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<EnquireLink>(shared_from_this());
 }
 
 bool Pdu::equals(const Pdu& other) const {

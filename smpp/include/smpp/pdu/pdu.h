@@ -39,6 +39,8 @@ using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
 
 class Outbind;
 
+class EnquireLink;
+
 /**
  * Base class for all SMPP PDUs
  *
@@ -84,6 +86,7 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
   std::shared_ptr<SubmitSmResp> asSubmitSmResp();
   std::shared_ptr<Outbind> asOutbind();
   std::shared_ptr<DataSm> asDataSm();
+  std::shared_ptr<EnquireLink> asEnquireLink();
 
   /**
    * @brief Compare two PDUs
