@@ -32,6 +32,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
           {constants::CMD_ID_SUBMIT_MULTI, SubmitMulti::create},
           {constants::CMD_ID_DELIVER_SM, DeliverSm::create},
           {constants::CMD_ID_ENQUIRE_LINK, EnquireLink::create},
+          {constants::CMD_ID_ENQUIRE_LINK_RESP, EnquireLinkResp::create},
       };
   return *commandIdToFactoryMap;
 }
@@ -132,6 +133,14 @@ std::shared_ptr<EnquireLink> Pdu::asEnquireLink() {
   }
 
   return std::static_pointer_cast<EnquireLink>(shared_from_this());
+}
+
+std::shared_ptr<EnquireLinkResp> Pdu::asEnquireLinkResp() {
+  if (m_nCommandId != constants::CMD_ID_ENQUIRE_LINK_RESP) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<EnquireLinkResp>(shared_from_this());
 }
 
 bool Pdu::equals(const Pdu& other) const {

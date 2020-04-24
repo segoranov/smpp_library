@@ -440,6 +440,40 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     }
   }
 
+  GIVEN("A sample enquire link resp pdu with size 16 bytes") {
+    smpp::EnquireLinkResp enquireLinkRespPdu{
+        smpp::builder::EnquireLinkRespBuilder().withSequenceNumber(378019)};
+
+    THEN("The command length of the pdu should be 16 bytes") {
+      REQUIRE(enquireLinkRespPdu.getCommandLength() == 16);
+    }
+
+    WHEN("the enquire link resp PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      enquireLinkRespPdu.serialize(ss);
+
+      THEN("the stringstream size should be 16 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 16);
+      }
+
+      AND_WHEN("an enquire link resp PDU is deserialized from the stringstream") {
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedEnquireLinkRespPdu = deserializedPdu->asEnquireLinkResp();
+        REQUIRE(deserializedEnquireLinkRespPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedEnquireLinkRespPdu->getCommandLength() ==
+                  enquireLinkRespPdu.getCommandLength());
+          REQUIRE(deserializedEnquireLinkRespPdu->getCommandStatus() ==
+                  enquireLinkRespPdu.getCommandStatus());
+          REQUIRE(deserializedEnquireLinkRespPdu->getSequenceNumber() ==
+                  enquireLinkRespPdu.getSequenceNumber());
+          REQUIRE(deserializedEnquireLinkRespPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
+
   GIVEN("A sample submit multi pdu with size 119 bytes") {
     smpp::SubmitMultiDestinationAddresses destAddresses;
     destAddresses.addSMEDestAddress(

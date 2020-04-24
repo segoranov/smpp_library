@@ -17,15 +17,15 @@ namespace smpp {
 
 class SubmitSm;
 class SubmitSmResp;
-
 class DeliverSm;
 class DeliverSmResp;
-
 class DataSm;
 class DataSmResp;
-
 class SubmitMulti;
 class SubmitMultiResp;
+class EnquireLink;
+class EnquireLinkResp;
+class Outbind;
 
 template <uint32_t CommandId>
 class Bind;
@@ -36,10 +36,6 @@ template <uint32_t CommandId>
 class BindResp;
 
 using BindTransmitterResp = BindResp<constants::CMD_ID_BIND_TRANSMITTER_RESP>;
-
-class Outbind;
-
-class EnquireLink;
 
 /**
  * Base class for all SMPP PDUs
@@ -87,6 +83,7 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
   std::shared_ptr<Outbind> asOutbind();
   std::shared_ptr<DataSm> asDataSm();
   std::shared_ptr<EnquireLink> asEnquireLink();
+  std::shared_ptr<EnquireLinkResp> asEnquireLinkResp();
 
   /**
    * @brief Compare two PDUs
