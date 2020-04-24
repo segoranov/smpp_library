@@ -6,7 +6,7 @@
 
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {

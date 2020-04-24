@@ -7,7 +7,7 @@
 #include "smpp/commands.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 #include "smpp/util/smpp_util.h"
 
@@ -37,7 +37,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
 }
 
 Pdu::Pdu(uint32_t nCommandId) {
-  INFO << "Pdu::Pdu() constructor";
+  // std::cout << "Pdu::Pdu() constructor";
   if (!util::isCommandIdValid(nCommandId)) {
     std::stringstream error;
     error << "Invalid command id while constructing a PDU - [ " << nCommandId << "]";
@@ -158,14 +158,14 @@ void Pdu::serialize(std::ostream& os) const {
 }
 
 void Pdu::serializeOptionalParameters(std::ostream& os) const {
-  INFO << "Pdu::serializeOptionalParameters()";
+  // std::cout << "Pdu::serializeOptionalParameters()";
   for (const auto& tlv : m_vOptionalTlvParameters) {
     tlv.serialize(os);
   }
 }
 
 void Pdu::deserializeOptionalParameters(std::istream& is) {
-  INFO << "Pdu::deserializeOptionalParameters()";
+  // std::cout << "Pdu::deserializeOptionalParameters()";
   while (is.peek() != EOF) {
     Tlv tlv;
     tlv.deserialize(is);
@@ -174,7 +174,7 @@ void Pdu::deserializeOptionalParameters(std::istream& is) {
 }
 
 Pdu::UPtr Pdu::deserialize(std::istream& is) {
-  INFO << "Pdu::deserialize()";
+  // std::cout << "Pdu::deserialize()";
 
   // 1. Deserialize all 4 PDU header fields
   const uint32_t nCommandLength = binary::deserializeInt32(is);
@@ -185,7 +185,7 @@ Pdu::UPtr Pdu::deserialize(std::istream& is) {
     throw InvalidCommandLengthException(error.str());
   }
 
-  INFO << "command length: [" << nCommandLength << "]";
+  // std::cout << "command length: [" << nCommandLength << "]";
 
   const uint32_t nCommandId = binary::deserializeInt32(is);
   if (!util::isCommandIdValid(nCommandId)) {
@@ -194,14 +194,14 @@ Pdu::UPtr Pdu::deserialize(std::istream& is) {
     throw InvalidCommandIdException(error.str());
   }
 
-  INFO << "command id: [" << util::commandIdToString(nCommandId) << "]";
+  // std::cout << "command id: [" << util::commandIdToString(nCommandId) << "]";
 
   // TODO SG validate
   const uint32_t nCommandStatus = binary::deserializeInt32(is);
-  INFO << "command status: [" << nCommandStatus << "]";
+  // std::cout << "command status: [" << nCommandStatus << "]";
 
   const uint32_t nSequenceNumber = binary::deserializeInt32(is);
-  INFO << "sequence number: [" << nSequenceNumber << "]";
+  // std::cout << "sequence number: [" << nSequenceNumber << "]";
 
   // 2. Deserialize PDU body
   auto deserializedPdu = getCommandIdToFactoryMap().at(nCommandId)(is);

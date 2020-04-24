@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "smpp/smpp_exceptions.h"
-#include "smpp/util/logging.h"
+
 
 template <typename ConnectionHandler>
 class AsioGenericServer {
@@ -64,7 +64,7 @@ void AsioGenericServer<ConnectionHandler>::handleNewConnection(
 
   auto remoteIp = handler->socket().remote_endpoint().address().to_string();
   auto remotePort = handler->socket().remote_endpoint().port();
-  INFO << "AsioGenericServer: Accepted new connection from [" << remoteIp << ":" << remotePort
+  // std::cout << "AsioGenericServer: Accepted new connection from [" << remoteIp << ":" << remotePort
        << "]";
 
   handler->start();

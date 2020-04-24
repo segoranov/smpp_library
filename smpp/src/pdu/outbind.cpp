@@ -1,7 +1,7 @@
 #include "smpp/pdu/outbind.h"
 
 #include "smpp/pdu/builder/outbind_builder.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -38,17 +38,17 @@ void Outbind::serialize(std::ostream& os) const {
 }
 
 std::unique_ptr<Outbind> Outbind::create(std::istream& is) {
-  INFO << "Outbind::create()";
+  // std::cout << "Outbind::create()";
 
   auto outbindPtr = std::unique_ptr<Outbind>{new Outbind{}};
 
   const std::string strSystemId = binary::deserializeNullTerminatedString(is);
   outbindPtr->m_strSystemId = strSystemId;
-  DEBUG << "Outbind::create() strSystemId = [" << strSystemId << "]";
+  // std::cout << "Outbind::create() strSystemId = [" << strSystemId << "]";
 
   const std::string strPassword = binary::deserializeNullTerminatedString(is);
   outbindPtr->m_strPassword = strPassword;
-  DEBUG << "Outbind::create() strPassword = [" << strPassword << "]";
+  // std::cout << "Outbind::create() strPassword = [" << strPassword << "]";
 
   return outbindPtr;
 }

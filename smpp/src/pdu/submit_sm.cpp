@@ -1,7 +1,7 @@
 #include "smpp/pdu/submit_sm.h"
 
 #include "smpp/pdu/builder/submit_sm_builder.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -60,7 +60,7 @@ uint8_t SubmitSm::getDestAddrNpi() const { return m_nDestAddrNpi; }
 std::string SubmitSm::getDestinationAddr() const { return m_strDestinationAddr; }
 
 void SubmitSm::serialize(std::ostream& os) const {
-  INFO << "SubmitSm::serialize()";
+  // std::cout << "SubmitSm::serialize()";
   Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
@@ -84,81 +84,81 @@ void SubmitSm::serialize(std::ostream& os) const {
 }
 
 std::unique_ptr<SubmitSm> SubmitSm::create(std::istream& is) {
-  INFO << "SubmitSm::create()";
+  // std::cout << "SubmitSm::create()";
 
   auto submitSmPtr = std::unique_ptr<SubmitSm>{new SubmitSm{}};
 
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   submitSmPtr->m_strServiceType = strServiceType;
-  DEBUG << "SubmitSm::create() strServiceType = [" << strServiceType << "]";
+  // std::cout << "SubmitSm::create() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   submitSmPtr->m_nSourceAddrTon = nSourceAddrTon;
-  DEBUG << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   submitSmPtr->m_nSourceAddrNpi = nSourceAddrNpi;
-  DEBUG << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   submitSmPtr->m_strSourceAddr = strSourceAddr;
-  DEBUG << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
   submitSmPtr->m_nDestAddrTon = nDestAddrTon;
-  DEBUG << "SubmitSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
+  // std::cout << "SubmitSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
   submitSmPtr->m_nDestAddrNpi = nDestAddrNpi;
-  DEBUG << "SubmitSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
+  // std::cout << "SubmitSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
   submitSmPtr->m_strDestinationAddr = strDestinationAddr;
-  DEBUG << "SubmitSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
+  // std::cout << "SubmitSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   submitSmPtr->m_nEsmClass = nEsmClass;
-  DEBUG << "SubmitSm::create() nEsmClass = [" << nEsmClass << "]";
+  // std::cout << "SubmitSm::create() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nProtocolId = binary::deserializeInt8(is);
   submitSmPtr->m_nProtocolId = nProtocolId;
-  DEBUG << "SubmitSm::create() nProtocolId = [" << nProtocolId << "]";
+  // std::cout << "SubmitSm::create() nProtocolId = [" << nProtocolId << "]";
 
   const uint8_t nPriorityFlag = binary::deserializeInt8(is);
   submitSmPtr->m_nPriorityFlag = nPriorityFlag;
-  DEBUG << "SubmitSm::create() nPriorityFlag = [" << nPriorityFlag << "]";
+  // std::cout << "SubmitSm::create() nPriorityFlag = [" << nPriorityFlag << "]";
 
   const std::string strScheduleDeliveryTime = binary::deserializeNullTerminatedString(is);
   submitSmPtr->m_strScheduleDeliveryTime = strScheduleDeliveryTime;
-  DEBUG << "SubmitSm::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime << "]";
+  // std::cout << "SubmitSm::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime << "]";
 
   const std::string strValidityPeriod = binary::deserializeNullTerminatedString(is);
   submitSmPtr->m_strValidityPeriod = strValidityPeriod;
-  DEBUG << "SubmitSm::create() strValidityPeriod = [" << strValidityPeriod << "]";
+  // std::cout << "SubmitSm::create() strValidityPeriod = [" << strValidityPeriod << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   submitSmPtr->m_nRegisteredDelivery = nRegisteredDelivery;
-  DEBUG << "SubmitSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
+  // std::cout << "SubmitSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nReplaceIfPresentFlag = binary::deserializeInt8(is);
   submitSmPtr->m_nReplaceIfPresentFlag = nReplaceIfPresentFlag;
-  DEBUG << "SubmitSm::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
+  // std::cout << "SubmitSm::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   submitSmPtr->m_nDataCoding = nDataCoding;
-  DEBUG << "SubmitSm::create() nDataCoding = [" << nDataCoding << "]";
+  // std::cout << "SubmitSm::create() nDataCoding = [" << nDataCoding << "]";
 
   const uint8_t nSmDefaultMsgId = binary::deserializeInt8(is);
   submitSmPtr->m_nSmDefaultMsgId = nSmDefaultMsgId;
-  DEBUG << "SubmitSm::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
+  // std::cout << "SubmitSm::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
 
   const uint8_t nSmLength = binary::deserializeInt8(is);
   submitSmPtr->m_nSmLength = nSmLength;
-  DEBUG << "SubmitSm::create() nSmLength = [" << nSmLength << "]";
+  // std::cout << "SubmitSm::create() nSmLength = [" << nSmLength << "]";
 
   const std::string strShortMessage = binary::deserializeOctetString(nSmLength, is);
   submitSmPtr->m_strShortMessage = strShortMessage;
-  DEBUG << "SubmitSm::create() strShortMessage = [" << strShortMessage << "]";
+  // std::cout << "SubmitSm::create() strShortMessage = [" << strShortMessage << "]";
 
   submitSmPtr->deserializeOptionalParameters(is);
 

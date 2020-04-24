@@ -6,7 +6,7 @@
 #include "smpp/pdu/pdu.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/print_util.h"
 #include "smpp/util/serialization_util.h"
 
@@ -23,12 +23,12 @@ void SmppSessionHandler::start() {
 }
 
 void SmppSessionHandler::readPdu() {
-  INFO << "SmppSessionHandler::readPdu()";
+  // std::cout << "SmppSessionHandler::readPdu()";
   readPduCommandLength();
 }
 
 void SmppSessionHandler::readPduCommandLength() {
-  INFO << "SmppSessionHandler::readPduCommandLength()";
+  // std::cout << "SmppSessionHandler::readPduCommandLength()";
   boost::shared_array<uint8_t> commandLengthBuffer{new uint8_t[4]};
   boost::asio::async_read(
       m_socket, boost::asio::buffer(commandLengthBuffer.get(), 4),
@@ -42,13 +42,13 @@ void SmppSessionHandler::readPduCommandLength() {
 
         uint32_t* pCommandLength = reinterpret_cast<uint32_t*>(commandLengthBuffer.get());
         uint32_t nCommandLength = ntohl(*pCommandLength);
-        INFO << "Parsed command length: " << nCommandLength;
+        // std::cout << "Parsed command length: " << nCommandLength;
         me->readPduAfterCommandLength(nCommandLength);
       });
 }
 
 void SmppSessionHandler::readPduAfterCommandLength(uint32_t nCommandLength) {
-  INFO << "SmppSessionHandler::readPduAfterCommandLength(" << nCommandLength << ")";
+  // std::cout << "SmppSessionHandler::readPduAfterCommandLength(" << nCommandLength << ")";
   boost::shared_array<uint8_t> pduBuffer{new uint8_t[nCommandLength - 4]};
   boost::asio::async_read(
       m_socket, boost::asio::buffer(pduBuffer.get(), nCommandLength - 4),
@@ -71,8 +71,8 @@ void SmppSessionHandler::readPduAfterCommandLength(uint32_t nCommandLength) {
 }
 
 void SmppSessionHandler::onReceivedPdu(Pdu::SPtr pdu) {
-  INFO << "SmppSessionHandler::onReceivedPdu()";
-  DEBUG << "Pdu is of type [" << util::commandIdToString(pdu->getCommandId()) << "]";
+  // std::cout << "SmppSessionHandler::onReceivedPdu()";
+  // std::cout << "Pdu is of type [" << util::commandIdToString(pdu->getCommandId()) << "]";
   // m_receivePduQueue.push_back(std::move(pdu));
 
   switch (pdu->getCommandId()) {
@@ -86,10 +86,10 @@ void SmppSessionHandler::onReceivedPdu(Pdu::SPtr pdu) {
 }
 
 void SmppSessionHandler::onReceivedBindTransmitter(Pdu::SPtr pdu) {
-  INFO << "SmppSessionHandler::onReceivedBindTransmitter()";
+  // std::cout << "SmppSessionHandler::onReceivedBindTransmitter()";
   auto bindTransmitterPdu = dynamic_cast<BindTransmitter*>(pdu.get());
 
-  DEBUG << "Creating BindTransmitterResp";
+  // std::cout << "Creating BindTransmitterResp";
   // smpp::BindTransmitterResp bindTransmitterRespPdu{
   //     smpp::builder::BindRespBuilder()
   //         .withCommandStatus(smpp::constants::errors::ESME_ROK)
@@ -102,7 +102,7 @@ void SmppSessionHandler::onReceivedBindTransmitter(Pdu::SPtr pdu) {
           .withSequenceNumber(1)
           .withSystemId("SMPP3TEST")
           .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
-  DEBUG << "Created BindTransmitterResp";
+  // std::cout << "Created BindTransmitterResp";
 
   std::stringstream pduBuffer;
   bindTransmitterRespPdu.serialize(pduBuffer);
@@ -110,13 +110,13 @@ void SmppSessionHandler::onReceivedBindTransmitter(Pdu::SPtr pdu) {
 }
 
 void SmppSessionHandler::sendPdu(const PduRawBytes& pdu) {
-  INFO << "SmppSessionHandler::sendPdu()";
+  // std::cout << "SmppSessionHandler::sendPdu()";
   boost::asio::post(m_ioContext,
                     m_writeStrand.wrap([me = shared_from_this(), pdu] { me->queuePdu(pdu); }));
 }
 
 void SmppSessionHandler::queuePdu(const PduRawBytes& pdu) {
-  INFO << "SmppSessionHandler::queuePdu()";
+  // std::cout << "SmppSessionHandler::queuePdu()";
   // this is thread safe because of the strand
   const bool bWriteInProgress = !m_sendPduQueue.empty();
 
@@ -128,7 +128,7 @@ void SmppSessionHandler::queuePdu(const PduRawBytes& pdu) {
 }
 
 void SmppSessionHandler::startPduSend() {
-  INFO << "SmppSessionHandler::startPduSend()";
+  // std::cout << "SmppSessionHandler::startPduSend()";
   boost::asio::async_write(
       m_socket, boost::asio::buffer(m_sendPduQueue.front()),
       m_writeStrand.wrap([me = shared_from_this()](const boost::system::error_code& ec,
@@ -136,7 +136,7 @@ void SmppSessionHandler::startPduSend() {
 }
 
 void SmppSessionHandler::pduSendDone(const boost::system::error_code& ec) {
-  INFO << "SmppSessionHandler::pduSendDone()";
+  // std::cout << "SmppSessionHandler::pduSendDone()";
   if (!ec) {
     m_sendPduQueue.pop_front();
     if (!m_sendPduQueue.empty()) {

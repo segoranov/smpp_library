@@ -1,7 +1,7 @@
 #include "smpp/pdu/data_sm.h"
 
 #include "smpp/pdu/builder/data_sm_builder.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -81,46 +81,46 @@ void DataSm::serialize(std::ostream& os) const {
 std::unique_ptr<DataSm> DataSm::create(std::istream& is) {
   auto dataSmPtr = std::unique_ptr<DataSm>{new DataSm{}};
 
-  INFO << "DataSm::create()";
+  // std::cout << "DataSm::create()";
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   dataSmPtr->m_strServiceType = strServiceType;
-  DEBUG << "DataSm::create() strServiceType = [" << strServiceType << "]";
+  // std::cout << "DataSm::create() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   dataSmPtr->m_nSourceAddrTon = nSourceAddrTon;
-  DEBUG << "DataSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "DataSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   dataSmPtr->m_nSourceAddrNpi = nSourceAddrNpi;
-  DEBUG << "DataSm::create() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
+  // std::cout << "DataSm::create() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   dataSmPtr->m_strSourceAddr = strSourceAddr;
-  DEBUG << "DataSm::create() strSourceAddr = [" << strSourceAddr << "]";
+  // std::cout << "DataSm::create() strSourceAddr = [" << strSourceAddr << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
   dataSmPtr->m_nDestAddrTon = nDestAddrTon;
-  DEBUG << "DataSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
+  // std::cout << "DataSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
   dataSmPtr->m_nDestAddrNpi = nDestAddrNpi;
-  DEBUG << "DataSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
+  // std::cout << "DataSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
   dataSmPtr->m_strDestinationAddr = strDestinationAddr;
-  DEBUG << "DataSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
+  // std::cout << "DataSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   dataSmPtr->m_nEsmClass = nEsmClass;
-  DEBUG << "DataSm::create() nEsmClass = [" << nEsmClass << "]";
+  // std::cout << "DataSm::create() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   dataSmPtr->m_nRegisteredDelivery = nRegisteredDelivery;
-  DEBUG << "DataSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
+  // std::cout << "DataSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   dataSmPtr->m_nDataCoding = nDataCoding;
-  DEBUG << "DataSm::create() nDataCoding = [" << nDataCoding << "]";
+  // std::cout << "DataSm::create() nDataCoding = [" << nDataCoding << "]";
 
   dataSmPtr->deserializeOptionalParameters(is);
   return dataSmPtr;

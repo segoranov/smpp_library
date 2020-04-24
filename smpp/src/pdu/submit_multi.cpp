@@ -4,7 +4,6 @@
 
 #include "smpp/pdu/builder/submit_multi_builder.h"
 #include "smpp/smpp_exceptions.h"
-#include "smpp/util/logging.h"
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -111,7 +110,7 @@ std::string SubmitMultiDestinationAddresses::toString() const {
 }
 
 void SubmitMultiDestinationAddresses::serialize(std::ostream& os) const {
-  INFO << "SubmitMultiDestinationAddresses::serialize()";
+  // std::cout << "SubmitMultiDestinationAddresses::serialize()";
   binary::serializeInt8(m_nNumberOfDests, os);
 
   for (auto const& smeDestAddress : m_vSMEDestAddresses) {
@@ -128,7 +127,7 @@ void SubmitMultiDestinationAddresses::serialize(std::ostream& os) const {
 }
 
 void SubmitMultiDestinationAddresses::deserialize(std::istream& is) {
-  INFO << "SubmitMultiDestinationAddresses::deserialize()";
+  // std::cout << "SubmitMultiDestinationAddresses::deserialize()";
 
   const uint8_t nNumberOfDests = binary::deserializeInt8(is);
 
@@ -161,7 +160,7 @@ SubmitMulti::SubmitMulti() : BaseSubmit{constants::CMD_ID_SUBMIT_MULTI} {}
 
 SubmitMulti::SubmitMulti(const builder::SubmitMultiBuilder& params)
     : BaseSubmit{constants::CMD_ID_SUBMIT_MULTI} {
-  INFO << "SubmitMulti(builder) constructor";
+  // std::cout << "SubmitMulti(builder) constructor";
   params.checkAllValuesArePresent();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_strServiceType = params.m_optServiceType.value();
@@ -209,7 +208,7 @@ SubmitMultiDestinationAddresses SubmitMulti::getDestinationAddresses() const {
 }
 
 void SubmitMulti::serialize(std::ostream& os) const {
-  INFO << "SubmitMulti::serialize()";
+  // std::cout << "SubmitMulti::serialize()";
   Pdu::serialize(os);
   binary::serializeNullTerminatedString(m_strServiceType, os);
   binary::serializeInt8(m_nSourceAddrTon, os);
@@ -231,76 +230,79 @@ void SubmitMulti::serialize(std::ostream& os) const {
 }
 
 std::unique_ptr<SubmitMulti> SubmitMulti::create(std::istream& is) {
-  INFO << "SubmitMulti::create()";
+  // std::cout << "SubmitMulti::create()";
   auto submitMultiPtr = std::unique_ptr<SubmitMulti>{new SubmitMulti{}};
 
-  INFO << "SubmitMulti::create()";
+  // std::cout << "SubmitMulti::create()";
 
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   submitMultiPtr->m_strServiceType = strServiceType;
-  DEBUG << "SubmitMulti::create() strServiceType = [" << strServiceType << "]";
+  // std::cout << "SubmitMulti::create() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   submitMultiPtr->m_nSourceAddrTon = nSourceAddrTon;
-  DEBUG << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   submitMultiPtr->m_nSourceAddrNpi = nSourceAddrNpi;
-  DEBUG << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   submitMultiPtr->m_strSourceAddr = strSourceAddr;
-  DEBUG << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "SubmitMulti::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   SubmitMultiDestinationAddresses destinationAddresses;
   destinationAddresses.deserialize(is);
-  DEBUG << "SubmitMulti::create() destinationAddresses = [" << destinationAddresses.toString()
-        << "]";
+  // std::cout << "SubmitMulti::create() destinationAddresses = [" <<
+  // destinationAddresses.toString()
+  // << "]";
   submitMultiPtr->m_destinationAddresses = destinationAddresses;
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   submitMultiPtr->m_nEsmClass = nEsmClass;
-  DEBUG << "SubmitMulti::create() nEsmClass = [" << nEsmClass << "]";
+  // std::cout << "SubmitMulti::create() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nProtocolId = binary::deserializeInt8(is);
   submitMultiPtr->m_nProtocolId = nProtocolId;
-  DEBUG << "SubmitMulti::create() nProtocolId = [" << nProtocolId << "]";
+  // std::cout << "SubmitMulti::create() nProtocolId = [" << nProtocolId << "]";
 
   const uint8_t nPriorityFlag = binary::deserializeInt8(is);
   submitMultiPtr->m_nPriorityFlag = nPriorityFlag;
-  DEBUG << "SubmitMulti::create() nPriorityFlag = [" << nPriorityFlag << "]";
+  // std::cout << "SubmitMulti::create() nPriorityFlag = [" << nPriorityFlag << "]";
 
   const std::string strScheduleDeliveryTime = binary::deserializeNullTerminatedString(is);
   submitMultiPtr->m_strScheduleDeliveryTime = strScheduleDeliveryTime;
-  DEBUG << "SubmitMulti::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime << "]";
+  // std::cout << "SubmitMulti::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime <<
+  // "]";
 
   const std::string strValidityPeriod = binary::deserializeNullTerminatedString(is);
   submitMultiPtr->m_strValidityPeriod = strValidityPeriod;
-  DEBUG << "SubmitMulti::create() strValidityPeriod = [" << strValidityPeriod << "]";
+  // std::cout << "SubmitMulti::create() strValidityPeriod = [" << strValidityPeriod << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   submitMultiPtr->m_nRegisteredDelivery = nRegisteredDelivery;
-  DEBUG << "SubmitMulti::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
+  // std::cout << "SubmitMulti::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nReplaceIfPresentFlag = binary::deserializeInt8(is);
   submitMultiPtr->m_nReplaceIfPresentFlag = nReplaceIfPresentFlag;
-  DEBUG << "SubmitMulti::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
+  // std::cout << "SubmitMulti::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag <<
+  // "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   submitMultiPtr->m_nDataCoding = nDataCoding;
-  DEBUG << "SubmitMulti::create() nDataCoding = [" << nDataCoding << "]";
+  // std::cout << "SubmitMulti::create() nDataCoding = [" << nDataCoding << "]";
 
   const uint8_t nSmDefaultMsgId = binary::deserializeInt8(is);
   submitMultiPtr->m_nSmDefaultMsgId = nSmDefaultMsgId;
-  DEBUG << "SubmitMulti::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
+  // std::cout << "SubmitMulti::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
 
   const uint8_t nSmLength = binary::deserializeInt8(is);
   submitMultiPtr->m_nSmLength = nSmLength;
-  DEBUG << "SubmitMulti::create() nSmLength = [" << nSmLength << "]";
+  // std::cout << "SubmitMulti::create() nSmLength = [" << nSmLength << "]";
 
   const std::string strShortMessage = binary::deserializeOctetString(nSmLength, is);
   submitMultiPtr->m_strShortMessage = strShortMessage;
-  DEBUG << "SubmitMulti::create() strShortMessage = [" << strShortMessage << "]";
+  // std::cout << "SubmitMulti::create() strShortMessage = [" << strShortMessage << "]";
 
   submitMultiPtr->deserializeOptionalParameters(is);
 

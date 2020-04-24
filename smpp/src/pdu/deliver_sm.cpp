@@ -1,7 +1,7 @@
 #include "smpp/pdu/deliver_sm.h"
 
 #include "smpp/pdu/builder/deliver_sm_builder.h"
-#include "smpp/util/logging.h"
+
 #include "smpp/util/serialization_util.h"
 
 namespace smpp {
@@ -100,78 +100,78 @@ void DeliverSm::serialize(std::ostream& os) const {
 std::unique_ptr<DeliverSm> DeliverSm::create(std::istream& is) {
   auto deliverSmPtr = std::unique_ptr<DeliverSm>{new DeliverSm{}};
 
-  INFO << "DeliverSm::create()";
+  // std::cout << "DeliverSm::create()";
   const std::string strServiceType = binary::deserializeNullTerminatedString(is);
   deliverSmPtr->m_strServiceType = strServiceType;
-  DEBUG << "DeliverSm::create() strServiceType = [" << strServiceType << "]";
+  // std::cout << "DeliverSm::create() strServiceType = [" << strServiceType << "]";
 
   const uint8_t nSourceAddrTon = binary::deserializeInt8(is);
   deliverSmPtr->m_nSourceAddrTon = nSourceAddrTon;
-  DEBUG << "DeliverSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
+  // std::cout << "DeliverSm::create() nSourceAddrTon = [" << nSourceAddrTon << "]";
 
   const uint8_t nSourceAddrNpi = binary::deserializeInt8(is);
   deliverSmPtr->m_nSourceAddrNpi = nSourceAddrNpi;
-  DEBUG << "DeliverSm::create() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
+  // std::cout << "DeliverSm::create() nSourceAddrNpi = [" << nSourceAddrNpi << "]";
 
   const std::string strSourceAddr = binary::deserializeNullTerminatedString(is);
   deliverSmPtr->m_strSourceAddr = strSourceAddr;
-  DEBUG << "DeliverSm::create() strSourceAddr = [" << strSourceAddr << "]";
+  // std::cout << "DeliverSm::create() strSourceAddr = [" << strSourceAddr << "]";
 
   const uint8_t nDestAddrTon = binary::deserializeInt8(is);
   deliverSmPtr->m_nDestAddrTon = nDestAddrTon;
-  DEBUG << "DeliverSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
+  // std::cout << "DeliverSm::create() nDestAddrTon = [" << nDestAddrTon << "]";
 
   const uint8_t nDestAddrNpi = binary::deserializeInt8(is);
   deliverSmPtr->m_nDestAddrNpi = nDestAddrNpi;
-  DEBUG << "DeliverSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
+  // std::cout << "DeliverSm::create() nDestAddrNpi = [" << nDestAddrNpi << "]";
 
   const std::string strDestinationAddr = binary::deserializeNullTerminatedString(is);
   deliverSmPtr->m_strDestinationAddr = strDestinationAddr;
-  DEBUG << "DeliverSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
+  // std::cout << "DeliverSm::create() strDestinationAddr = [" << strDestinationAddr << "]";
 
   const uint8_t nEsmClass = binary::deserializeInt8(is);
   deliverSmPtr->m_nEsmClass = nEsmClass;
-  DEBUG << "DeliverSm::create() nEsmClass = [" << nEsmClass << "]";
+  // std::cout << "DeliverSm::create() nEsmClass = [" << nEsmClass << "]";
 
   const uint8_t nProtocolId = binary::deserializeInt8(is);
   deliverSmPtr->m_nProtocolId = nProtocolId;
-  DEBUG << "DeliverSm::create() nProtocolId = [" << nProtocolId << "]";
+  // std::cout << "DeliverSm::create() nProtocolId = [" << nProtocolId << "]";
 
   const uint8_t nPriorityFlag = binary::deserializeInt8(is);
   deliverSmPtr->m_nPriorityFlag = nPriorityFlag;
-  DEBUG << "DeliverSm::create() nPriorityFlag = [" << nPriorityFlag << "]";
+  // std::cout << "DeliverSm::create() nPriorityFlag = [" << nPriorityFlag << "]";
 
   const std::string strScheduleDeliveryTime = binary::deserializeNullTerminatedString(is);
   deliverSmPtr->m_strScheduleDeliveryTime = strScheduleDeliveryTime;
-  DEBUG << "DeliverSm::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime << "]";
+  // std::cout << "DeliverSm::create() strScheduleDeliveryTime = [" << strScheduleDeliveryTime << "]";
 
   const std::string strValidityPeriod = binary::deserializeNullTerminatedString(is);
   deliverSmPtr->m_strValidityPeriod = strValidityPeriod;
-  DEBUG << "DeliverSm::create() strValidityPeriod = [" << strValidityPeriod << "]";
+  // std::cout << "DeliverSm::create() strValidityPeriod = [" << strValidityPeriod << "]";
 
   const uint8_t nRegisteredDelivery = binary::deserializeInt8(is);
   deliverSmPtr->m_nRegisteredDelivery = nRegisteredDelivery;
-  DEBUG << "DeliverSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
+  // std::cout << "DeliverSm::create() nRegisteredDelivery = [" << nRegisteredDelivery << "]";
 
   const uint8_t nReplaceIfPresentFlag = binary::deserializeInt8(is);
   deliverSmPtr->m_nReplaceIfPresentFlag = nReplaceIfPresentFlag;
-  DEBUG << "DeliverSm::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
+  // std::cout << "DeliverSm::create() nReplaceIfPresentFlag = [" << nReplaceIfPresentFlag << "]";
 
   const uint8_t nDataCoding = binary::deserializeInt8(is);
   deliverSmPtr->m_nDataCoding = nDataCoding;
-  DEBUG << "DeliverSm::create() nDataCoding = [" << nDataCoding << "]";
+  // std::cout << "DeliverSm::create() nDataCoding = [" << nDataCoding << "]";
 
   const uint8_t nSmDefaultMsgId = binary::deserializeInt8(is);
   deliverSmPtr->m_nSmDefaultMsgId = nSmDefaultMsgId;
-  DEBUG << "DeliverSm::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
+  // std::cout << "DeliverSm::create() nSmDefaultMsgId = [" << nSmDefaultMsgId << "]";
 
   const uint8_t nSmLength = binary::deserializeInt8(is);
   deliverSmPtr->m_nSmLength = nSmLength;
-  DEBUG << "DeliverSm::create() nSmLength = [" << nSmLength << "]";
+  // std::cout << "DeliverSm::create() nSmLength = [" << nSmLength << "]";
 
   const std::string strShortMessage = binary::deserializeOctetString(nSmLength, is);
   deliverSmPtr->m_strShortMessage = strShortMessage;
-  DEBUG << "DeliverSm::create() strShortMessage = [" << strShortMessage << "]";
+  // std::cout << "DeliverSm::create() strShortMessage = [" << strShortMessage << "]";
 
   deliverSmPtr->deserializeOptionalParameters(is);
 

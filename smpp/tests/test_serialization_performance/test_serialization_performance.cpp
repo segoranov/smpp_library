@@ -15,7 +15,6 @@ float_time_point getCurrentTime() { return Time::now(); }
 smpp::SubmitSm createTestPdu() {
   return smpp::SubmitSm{
       smpp::builder::SubmitSmBuilder()
-          .withCommandStatus(smpp::constants::errors::ESME_ROK)
           .withSequenceNumber(378019)
           .withServiceType("A")
           .withSourceAddrTon(0x03)
