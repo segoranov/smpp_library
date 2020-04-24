@@ -4,6 +4,7 @@
 #include "smpp/commands.h"
 #include "smpp/smpp_constants.h"
 #include "smpp/smpp_exceptions.h"
+#include "smpp/util/print_util.h"
 #include "smpp/util/smpp_util.h"
 
 SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
@@ -469,6 +470,44 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(deserializedEnquireLinkRespPdu->getSequenceNumber() ==
                   enquireLinkRespPdu.getSequenceNumber());
           REQUIRE(deserializedEnquireLinkRespPdu->getOptionalParameters().size() == 0);
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample generic nack pdu with size 16 bytes") {
+    smpp::GenericNack genericNackPdu{
+        smpp::builder::GenericNackBuilder()
+            .withCommandStatus(smpp::constants::errors::ESME_RINVDSTTON)
+            .withSequenceNumber(378019)};
+
+    THEN("The command length of the pdu should be 16 bytes") {
+      REQUIRE(genericNackPdu.getCommandLength() == 16);
+    }
+
+    WHEN("the generic nack PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      genericNackPdu.serialize(ss);
+
+      THEN("the stringstream size should be 16 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 16);
+      }
+
+      AND_WHEN("a generic nack PDU is deserialized from the stringstream") {
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedGenericNackPdu = deserializedPdu->asGenericNack();
+        std::cout << "ST_TEST " << smpp::print_util::toHexString(deserializedPdu->getCommandId())
+                  << std::endl;
+        REQUIRE(deserializedGenericNackPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedGenericNackPdu->getCommandLength() ==
+                  genericNackPdu.getCommandLength());
+          REQUIRE(deserializedGenericNackPdu->getCommandStatus() ==
+                  genericNackPdu.getCommandStatus());
+          REQUIRE(deserializedGenericNackPdu->getSequenceNumber() ==
+                  genericNackPdu.getSequenceNumber());
+          REQUIRE(deserializedGenericNackPdu->getOptionalParameters().size() == 0);
         }
       }
     }

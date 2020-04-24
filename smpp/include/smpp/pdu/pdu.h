@@ -26,6 +26,7 @@ class SubmitMultiResp;
 class EnquireLink;
 class EnquireLinkResp;
 class Outbind;
+class GenericNack;
 
 template <uint32_t CommandId>
 class Bind;
@@ -84,6 +85,7 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
   std::shared_ptr<DataSm> asDataSm();
   std::shared_ptr<EnquireLink> asEnquireLink();
   std::shared_ptr<EnquireLinkResp> asEnquireLinkResp();
+  std::shared_ptr<GenericNack> asGenericNack();
 
   /**
    * @brief Compare two PDUs

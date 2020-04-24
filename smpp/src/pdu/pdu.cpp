@@ -33,6 +33,7 @@ const std::unordered_map<uint32_t, Pdu::Factory>& getCommandIdToFactoryMap() {
           {constants::CMD_ID_DELIVER_SM, DeliverSm::create},
           {constants::CMD_ID_ENQUIRE_LINK, EnquireLink::create},
           {constants::CMD_ID_ENQUIRE_LINK_RESP, EnquireLinkResp::create},
+          {constants::CMD_ID_GENERIC_NACK, GenericNack::create},
       };
   return *commandIdToFactoryMap;
 }
@@ -141,6 +142,14 @@ std::shared_ptr<EnquireLinkResp> Pdu::asEnquireLinkResp() {
   }
 
   return std::static_pointer_cast<EnquireLinkResp>(shared_from_this());
+}
+
+std::shared_ptr<GenericNack> Pdu::asGenericNack() {
+  if (m_nCommandId != constants::CMD_ID_GENERIC_NACK) {
+    return nullptr;
+  }
+
+  return std::static_pointer_cast<GenericNack>(shared_from_this());
 }
 
 bool Pdu::equals(const Pdu& other) const {
