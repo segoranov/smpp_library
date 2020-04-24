@@ -296,7 +296,7 @@ constexpr uint16_t DATA_CODING_EXKANJI = 0x0D;  // Extended Kanji JIS(X 0212-199
 constexpr uint16_t DATA_CODING_KSC5601 = 0x0E;  // KS C 5601
 constexpr uint16_t DATA_CODING_RSRVD3 = 0x0F;   // reserved
 
-namespace errors {
+namespace command_status {
 
 /**
  * Standard SMPP Error Codes
@@ -508,7 +508,7 @@ constexpr int ESME_RINVBCASTCNTTYPE = 0x0000010B;
 // Broadcast Message Class is invalid
 constexpr int ESME_RINVBCASTMSGCLASS = 0x0000010C;
 
-}  // namespace errors
+}  // namespace command_status
 
 }  // namespace smpp::constants
 

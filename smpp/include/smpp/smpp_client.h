@@ -114,7 +114,7 @@ Pdu::SPtr SmppClient::bind(const Bind<CommandId>& pdu) {
   sendPdu(std::make_unique<Bind<CommandId>>(pdu));
   auto pduResponse = readPduResponse(pdu.getSequenceNumber(), pdu.getCommandId());
 
-  if (pdu.getCommandStatus() == constants::errors::ESME_ROK) {
+  if (pdu.getCommandStatus() == constants::command_status::ESME_ROK) {
     switch (CommandId) {
       case constants::CMD_ID_BIND_RECEIVER: {
         m_enSessionState = session_util::SessionState::BOUND_RX;

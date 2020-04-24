@@ -9,7 +9,7 @@ EnquireLink::EnquireLink() : Pdu{constants::CMD_ID_ENQUIRE_LINK} {}
 
 EnquireLink::EnquireLink(const builder::EnquireLinkBuilder& params)
     : Pdu{constants::CMD_ID_ENQUIRE_LINK} {
-  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+  m_nCommandStatus = smpp::constants::command_status::ESME_ROK;
   params.checkAllValuesArePresent();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
   m_nCommandLength = smpp::constants::PDU_HEADER_LENGTH;

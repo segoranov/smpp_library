@@ -92,13 +92,13 @@ void SmppSessionHandler::onReceivedBindTransmitter(Pdu::SPtr pdu) {
   // std::cout << "Creating BindTransmitterResp";
   // smpp::BindTransmitterResp bindTransmitterRespPdu{
   //     smpp::builder::BindRespBuilder()
-  //         .withCommandStatus(smpp::constants::errors::ESME_ROK)
+  //         .withCommandStatus(smpp::constants::command_status::ESME_ROK)
   //         .withSequenceNumber(bindTransmitterPdu->getSequenceNumber())
   //         .withSystemId(bindTransmitterPdu->getSystemId())
   //         .withScInterfaceVersion(bindTransmitterPdu->getInterfaceVersion())};
   smpp::BindTransmitterResp bindTransmitterRespPdu{
       smpp::builder::BindRespBuilder()
-          .withCommandStatus(smpp::constants::errors::ESME_ROK)
+          .withCommandStatus(smpp::constants::command_status::ESME_ROK)
           .withSequenceNumber(1)
           .withSystemId("SMPP3TEST")
           .withScInterfaceVersion(smpp::constants::VERSION_5_0)};

@@ -9,7 +9,7 @@ namespace smpp {
 DeliverSm::DeliverSm() : Pdu{constants::CMD_ID_DELIVER_SM} {}
 
 DeliverSm::DeliverSm(const builder::DeliverSmBuilder& params) : Pdu{constants::CMD_ID_DELIVER_SM} {
-  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+  m_nCommandStatus = smpp::constants::command_status::ESME_ROK;
 
   params.checkAllValuesArePresent();
   m_nSequenceNumber = params.m_optSequenceNumber.value();

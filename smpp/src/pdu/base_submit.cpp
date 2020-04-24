@@ -6,7 +6,7 @@
 namespace smpp {
 
 BaseSubmit::BaseSubmit(uint32_t nCommandId) : Pdu{nCommandId} {
-  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+  m_nCommandStatus = smpp::constants::command_status::ESME_ROK;
 }
 
 std::string BaseSubmit::getServiceType() const { return m_strServiceType; }

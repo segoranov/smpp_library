@@ -30,7 +30,7 @@ int main() {
 
   smpp::BindTransmitter bindTransmitterPdu{
       smpp::builder::BindBuilder()
-          .withCommandStatus(smpp::constants::errors::ESME_ROK)
+          .withCommandStatus(smpp::constants::command_status::ESME_ROK)
           .withSequenceNumber(1)
           .withSystemId("SMPP3TEST")
           .withPassword("secret08")

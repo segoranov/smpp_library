@@ -142,7 +142,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     AND_GIVEN("a BindTransmitterResp PDU corresponding to the raw PDU") {
       smpp::BindTransmitterResp bindTransmitterRespPdu{
           smpp::builder::BindRespBuilder()
-              .withCommandStatus(smpp::constants::errors::ESME_ROK)
+              .withCommandStatus(smpp::constants::command_status::ESME_ROK)
               .withSequenceNumber(1)
               .withSystemId("SMPP3TEST")
               .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
@@ -294,7 +294,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
 
   GIVEN("A sample submit sm resp pdu with size 28 bytes") {
     smpp::SubmitSmResp submitSmRespPdu{smpp::builder::SubmitSmRespBuilder()
-                                           .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                                           .withCommandStatus(smpp::constants::command_status::ESME_ROK)
                                            .withSequenceNumber(378019)
                                            .withMessageId("0118Z-01026")};
 
@@ -478,7 +478,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
   GIVEN("A sample generic nack pdu with size 16 bytes") {
     smpp::GenericNack genericNackPdu{
         smpp::builder::GenericNackBuilder()
-            .withCommandStatus(smpp::constants::errors::ESME_RINVDSTTON)
+            .withCommandStatus(smpp::constants::command_status::ESME_RINVDSTTON)
             .withSequenceNumber(378019)};
 
     THEN("The command length of the pdu should be 16 bytes") {
@@ -657,7 +657,7 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
 
   auto createTestBindPdu = [] {
     return smpp::BindTransmitterResp{smpp::builder::BindRespBuilder()
-                                         .withCommandStatus(smpp::constants::errors::ESME_ROK)
+                                         .withCommandStatus(smpp::constants::command_status::ESME_ROK)
                                          .withSequenceNumber(1)
                                          .withSystemId("SMPP3TEST")
                                          .withScInterfaceVersion(smpp::constants::VERSION_5_0)};

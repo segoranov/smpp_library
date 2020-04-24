@@ -9,7 +9,7 @@ namespace smpp {
 Outbind::Outbind() : Pdu{constants::CMD_ID_OUTBIND} {}
 
 Outbind::Outbind(const builder::OutbindBuilder& params) : Pdu{constants::CMD_ID_OUTBIND} {
-  m_nCommandStatus = smpp::constants::errors::ESME_ROK;
+  m_nCommandStatus = smpp::constants::command_status::ESME_ROK;
 
   params.checkAllValuesArePresent();
   m_nSequenceNumber = params.m_optSequenceNumber.value();
