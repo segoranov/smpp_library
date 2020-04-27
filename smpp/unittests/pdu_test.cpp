@@ -293,10 +293,11 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
   }
 
   GIVEN("A sample submit sm resp pdu with size 28 bytes") {
-    smpp::SubmitSmResp submitSmRespPdu{smpp::builder::SubmitSmRespBuilder()
-                                           .withCommandStatus(smpp::constants::command_status::ESME_ROK)
-                                           .withSequenceNumber(378019)
-                                           .withMessageId("0118Z-01026")};
+    smpp::SubmitSmResp submitSmRespPdu{
+        smpp::builder::SubmitSmRespBuilder()
+            .withCommandStatus(smpp::constants::command_status::ESME_ROK)
+            .withSequenceNumber(378019)
+            .withMessageId("0118Z-01026")};
 
     THEN("the command length of the PDU should be 28") {
       REQUIRE(submitSmRespPdu.getCommandLength() == 28);
@@ -361,12 +362,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(deserializedDataSmPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedDataSmPdu->getCommandLength() == dataSmPdu.getCommandLength());
-          REQUIRE(deserializedDataSmPdu->getCommandStatus() == dataSmPdu.getCommandStatus());
-          REQUIRE(deserializedDataSmPdu->getSequenceNumber() == dataSmPdu.getSequenceNumber());
-          REQUIRE(deserializedDataSmPdu->getRegisteredDelivery() ==
-                  dataSmPdu.getRegisteredDelivery());
-          REQUIRE(deserializedDataSmPdu->getOptionalParameters().size() == 0);
+          REQUIRE(deserializedDataSmPdu->equals(dataSmPdu));
         }
       }
     }
@@ -396,12 +392,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(deserializedOutbindPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedOutbindPdu->getCommandLength() == outbindPdu.getCommandLength());
-          REQUIRE(deserializedOutbindPdu->getCommandStatus() == outbindPdu.getCommandStatus());
-          REQUIRE(deserializedOutbindPdu->getSequenceNumber() == outbindPdu.getSequenceNumber());
-          REQUIRE(deserializedOutbindPdu->getSystemId() == outbindPdu.getSystemId());
-          REQUIRE(deserializedOutbindPdu->getPassword() == outbindPdu.getPassword());
-          REQUIRE(deserializedOutbindPdu->getOptionalParameters().size() == 0);
+          REQUIRE(deserializedOutbindPdu->equals(outbindPdu));
         }
       }
     }
@@ -429,13 +420,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(deserializedEnquireLinkPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedEnquireLinkPdu->getCommandLength() ==
-                  enquireLinkPdu.getCommandLength());
-          REQUIRE(deserializedEnquireLinkPdu->getCommandStatus() ==
-                  enquireLinkPdu.getCommandStatus());
-          REQUIRE(deserializedEnquireLinkPdu->getSequenceNumber() ==
-                  enquireLinkPdu.getSequenceNumber());
-          REQUIRE(deserializedEnquireLinkPdu->getOptionalParameters().size() == 0);
+          REQUIRE(deserializedEnquireLinkPdu->equals(enquireLinkPdu));
         }
       }
     }
@@ -463,13 +448,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
         REQUIRE(deserializedEnquireLinkRespPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedEnquireLinkRespPdu->getCommandLength() ==
-                  enquireLinkRespPdu.getCommandLength());
-          REQUIRE(deserializedEnquireLinkRespPdu->getCommandStatus() ==
-                  enquireLinkRespPdu.getCommandStatus());
-          REQUIRE(deserializedEnquireLinkRespPdu->getSequenceNumber() ==
-                  enquireLinkRespPdu.getSequenceNumber());
-          REQUIRE(deserializedEnquireLinkRespPdu->getOptionalParameters().size() == 0);
+          REQUIRE(deserializedEnquireLinkRespPdu->equals(enquireLinkRespPdu));
         }
       }
     }
@@ -496,18 +475,37 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
       AND_WHEN("a generic nack PDU is deserialized from the stringstream") {
         smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
         auto deserializedGenericNackPdu = deserializedPdu->asGenericNack();
-        std::cout << "ST_TEST " << smpp::print_util::toHexString(deserializedPdu->getCommandId())
-                  << std::endl;
         REQUIRE(deserializedGenericNackPdu);
 
         THEN("the deserialized PDU should correspond to the initial PDU") {
-          REQUIRE(deserializedGenericNackPdu->getCommandLength() ==
-                  genericNackPdu.getCommandLength());
-          REQUIRE(deserializedGenericNackPdu->getCommandStatus() ==
-                  genericNackPdu.getCommandStatus());
-          REQUIRE(deserializedGenericNackPdu->getSequenceNumber() ==
-                  genericNackPdu.getSequenceNumber());
-          REQUIRE(deserializedGenericNackPdu->getOptionalParameters().size() == 0);
+          REQUIRE(deserializedGenericNackPdu->equals(genericNackPdu));
+        }
+      }
+    }
+  }
+
+  GIVEN("A sample unbind pdu with size 16 bytes") {
+    smpp::Unbind unbindPdu{smpp::builder::UnbindBuilder().withSequenceNumber(378019)};
+
+    THEN("The command length of the pdu should be 16 bytes") {
+      REQUIRE(unbindPdu.getCommandLength() == 16);
+    }
+
+    WHEN("the unbind PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      unbindPdu.serialize(ss);
+
+      THEN("the stringstream size should be 16 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 16);
+      }
+
+      AND_WHEN("an unbind PDU is deserialized from the stringstream") {
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedUnbindPdu = deserializedPdu->asUnbind();
+        REQUIRE(deserializedUnbindPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedUnbindPdu->equals(unbindPdu));
         }
       }
     }
@@ -656,11 +654,12 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
   };
 
   auto createTestBindPdu = [] {
-    return smpp::BindTransmitterResp{smpp::builder::BindRespBuilder()
-                                         .withCommandStatus(smpp::constants::command_status::ESME_ROK)
-                                         .withSequenceNumber(1)
-                                         .withSystemId("SMPP3TEST")
-                                         .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
+    return smpp::BindTransmitterResp{
+        smpp::builder::BindRespBuilder()
+            .withCommandStatus(smpp::constants::command_status::ESME_ROK)
+            .withSequenceNumber(1)
+            .withSystemId("SMPP3TEST")
+            .withScInterfaceVersion(smpp::constants::VERSION_5_0)};
   };
 
   GIVEN("Two equal submit sm PDUs") {

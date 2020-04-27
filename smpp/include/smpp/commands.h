@@ -19,6 +19,7 @@
 #include "smpp/pdu/builder/submit_multi_builder.h"
 #include "smpp/pdu/builder/submit_sm_builder.h"
 #include "smpp/pdu/builder/submit_sm_resp_builder.h"
+#include "smpp/pdu/builder/unbind_builder.h"
 #include "smpp/pdu/data_sm.h"
 #include "smpp/pdu/deliver_sm.h"
 #include "smpp/pdu/enquire_link.h"
@@ -26,5 +27,6 @@
 #include "smpp/pdu/generic_nack.h"
 #include "smpp/pdu/outbind.h"
 #include "smpp/pdu/submit_multi.h"
+#include "smpp/pdu/unbind.h"
 
 #endif
