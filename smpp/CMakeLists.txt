@@ -27,6 +27,7 @@ set(SMPP_COMMANDS_SOURCES
         src/pdu/builder/enquire_link_resp_builder.cpp
         src/pdu/builder/generic_nack_builder.cpp
         src/pdu/builder/unbind_builder.cpp
+        src/pdu/builder/unbind_resp_builder.cpp
         src/pdu/base_submit.cpp
         src/pdu/base_submission_resp.cpp
         src/pdu/submit_sm.cpp
@@ -39,6 +40,7 @@ set(SMPP_COMMANDS_SOURCES
         src/pdu/enquire_link_resp.cpp
         src/pdu/generic_nack.cpp
         src/pdu/unbind.cpp
+        src/pdu/unbind_resp.cpp
         src/tlv/tlv.cpp)
 
 add_library(smppcommands SHARED ${SMPP_COMMANDS_SOURCES})

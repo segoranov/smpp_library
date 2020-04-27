@@ -511,6 +511,36 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
     }
   }
 
+  GIVEN("A sample unbind resp pdu with size 16 bytes") {
+    smpp::UnbindResp unbindRespPdu{
+        smpp::builder::UnbindRespBuilder()
+            .withCommandStatus(smpp::constants::command_status::ESME_ROK)
+            .withSequenceNumber(378019)};
+
+    THEN("The command length of the pdu should be 16 bytes") {
+      REQUIRE(unbindRespPdu.getCommandLength() == 16);
+    }
+
+    WHEN("the unbind resp PDU is serialized into a stringstream") {
+      std::stringstream ss;
+      unbindRespPdu.serialize(ss);
+
+      THEN("the stringstream size should be 16 bytes (the command length)") {
+        REQUIRE(ss.str().size() == 16);
+      }
+
+      AND_WHEN("an unbind resp PDU is deserialized from the stringstream") {
+        smpp::Pdu::SPtr deserializedPdu = smpp::Pdu::deserialize(ss);
+        auto deserializedUnbindRespPdu = deserializedPdu->asUnbindResp();
+        REQUIRE(deserializedUnbindRespPdu);
+
+        THEN("the deserialized PDU should correspond to the initial PDU") {
+          REQUIRE(deserializedUnbindRespPdu->equals(unbindRespPdu));
+        }
+      }
+    }
+  }
+
   GIVEN("A sample submit multi pdu with size 119 bytes") {
     smpp::SubmitMultiDestinationAddresses destAddresses;
     destAddresses.addSMEDestAddress(

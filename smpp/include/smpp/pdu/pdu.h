@@ -28,6 +28,7 @@ class EnquireLinkResp;
 class Outbind;
 class GenericNack;
 class Unbind;
+class UnbindResp;
 
 template <uint32_t CommandId>
 class Bind;
@@ -88,6 +89,7 @@ class Pdu : public std::enable_shared_from_this<Pdu> {
   std::shared_ptr<EnquireLinkResp> asEnquireLinkResp();
   std::shared_ptr<GenericNack> asGenericNack();
   std::shared_ptr<Unbind> asUnbind();
+  std::shared_ptr<UnbindResp> asUnbindResp();
 
   /**
    * @brief Compare two PDUs
