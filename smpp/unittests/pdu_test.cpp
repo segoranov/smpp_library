@@ -77,35 +77,7 @@ SCENARIO("Pdu is serialized/deserialized properly", "[pdu]") {
           REQUIRE(deserializedBindTransmitterPdu);
 
           THEN("the deserialized PDU should correspond to the initial PDU") {
-            REQUIRE(deserializedBindTransmitterPdu->getCommandLength() ==
-                    bindTransmitterPdu.getCommandLength());
-
-            REQUIRE(deserializedBindTransmitterPdu->getCommandStatus() ==
-                    bindTransmitterPdu.getCommandStatus());
-
-            REQUIRE(deserializedBindTransmitterPdu->getSequenceNumber() ==
-                    bindTransmitterPdu.getSequenceNumber());
-
-            REQUIRE(deserializedBindTransmitterPdu->getSystemId() ==
-                    bindTransmitterPdu.getSystemId());
-
-            REQUIRE(deserializedBindTransmitterPdu->getPassword() ==
-                    bindTransmitterPdu.getPassword());
-
-            REQUIRE(deserializedBindTransmitterPdu->getSystemType() ==
-                    bindTransmitterPdu.getSystemType());
-
-            REQUIRE(deserializedBindTransmitterPdu->getInterfaceVersion() ==
-                    bindTransmitterPdu.getInterfaceVersion());
-
-            REQUIRE(deserializedBindTransmitterPdu->getAddrTon() ==
-                    bindTransmitterPdu.getAddrTon());
-
-            REQUIRE(deserializedBindTransmitterPdu->getAddrNpi() ==
-                    bindTransmitterPdu.getAddrNpi());
-
-            REQUIRE(deserializedBindTransmitterPdu->getAddressRange() ==
-                    bindTransmitterPdu.getAddressRange());
+            REQUIRE(deserializedBindTransmitterPdu->equals(bindTransmitterPdu));
           }
         }
       }
@@ -683,7 +655,7 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
             .withShortMessage("TEST_SM")};
   };
 
-  auto createTestBindPdu = [] {
+  auto createTestBindRespPdu = [] {
     return smpp::BindTransmitterResp{
         smpp::builder::BindRespBuilder()
             .withCommandStatus(smpp::constants::command_status::ESME_ROK)
@@ -727,7 +699,7 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
 
   GIVEN("A submit sm PDU and a bind PDU") {
     auto pdu1 = createTestSubmitSmPdu();
-    auto pdu2 = createTestBindPdu();
+    auto pdu2 = createTestBindRespPdu();
     THEN("they should not be equal") { REQUIRE_FALSE(pdu1.equals(pdu2)); }
   }
 
@@ -807,6 +779,34 @@ SCENARIO("Comparison of Pdu's using equals() method is correct") {
             .withOptionalParameters(
                 {smpp::Tlv{smpp::constants::TAG_BILLING_IDENTIFICATION, "test_billing_id"}})};
 
-    THEN("they should not be equal") { REQUIRE(pdu1.equals(pdu2)); }
+    THEN("they should be equal") { REQUIRE(pdu1.equals(pdu2)); }
+  }
+
+  GIVEN("Two almost equal bind pdus") {
+    smpp::BindTransmitter bindTransmitterPdu1{
+        smpp::builder::BindBuilder()
+            .withSequenceNumber(1)
+            .withSystemId("SMPP3TEST")
+            .withPassword("secret08")
+            .withSystemType("SUBMIT1")
+            .withInterfaceVersion(0x50)
+            .withAddrTon(0x01)
+            .withAddrNpi(0x01)
+            .withAddressRange(smpp::constants::null_settings::NULL_C_OCTET_STRING)};
+
+    smpp::BindTransmitter bindTransmitterPdu2{
+        smpp::builder::BindBuilder()
+            .withSequenceNumber(1)
+            .withSystemId("SMPP4TEST")
+            .withPassword("secret08")
+            .withSystemType("SUBMIT1")
+            .withInterfaceVersion(0x50)
+            .withAddrTon(0x01)
+            .withAddrNpi(0x01)
+            .withAddressRange(smpp::constants::null_settings::NULL_C_OCTET_STRING)};
+
+    THEN("they should not be equal") {
+      REQUIRE_FALSE(bindTransmitterPdu1.equals(bindTransmitterPdu2));
+    }
   }
 }

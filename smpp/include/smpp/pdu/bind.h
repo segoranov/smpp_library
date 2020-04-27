@@ -38,6 +38,8 @@ class Bind final : public Pdu {
   uint8_t getAddrNpi() const;
   std::string getAddressRange() const;
 
+  virtual bool equals(const Pdu& other) const override;
+
   virtual void serialize(std::ostream& os) const override;
 };
 
@@ -110,6 +112,21 @@ uint8_t Bind<CommandId>::getAddrNpi() const {
 template <uint32_t CommandId>
 std::string Bind<CommandId>::getAddressRange() const {
   return m_strAddressRange;
+}
+
+template <uint32_t CommandId>
+bool Bind<CommandId>::equals(const Pdu& other) const {
+  if (!Pdu::equals(other)) {
+    return false;
+  }
+
+  auto otherBind = static_cast<const Bind<CommandId>*>(&other);
+
+  return m_strSystemId == otherBind->m_strSystemId && m_strPassword == otherBind->m_strPassword &&
+         m_strSystemType == otherBind->m_strSystemType &&
+         m_nInterfaceVersion == otherBind->m_nInterfaceVersion &&
+         m_nAddrTon == otherBind->m_nAddrTon && m_nAddrNpi == otherBind->m_nAddrNpi &&
+         m_strAddressRange == otherBind->m_strAddressRange;
 }
 
 template <uint32_t CommandId>
