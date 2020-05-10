@@ -55,3 +55,10 @@ target_link_libraries(smppcommands LINK_PUBLIC)
 target_link_libraries(smppclient LINK_PUBLIC smppcommands ${Boost_LIBRARIES})
 
 set_property(TARGET smppcommands smppclient PROPERTY CXX_STANDARD 17)
+
+add_subdirectory(unittests)
+
+include(CTest)
+enable_testing()
+
+add_test(NAME smpp_unit_tests COMMAND run_tests)

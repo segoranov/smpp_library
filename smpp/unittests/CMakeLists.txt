@@ -9,7 +9,7 @@ include_directories(../include )
 
 add_library(libsmppcommands SHARED IMPORTED)
 
-set_target_properties(libsmppcommands PROPERTIES IMPORTED_LOCATION ${CMAKE_SOURCE_DIR}/../build/libsmppcommands.so)
+set_target_properties(libsmppcommands PROPERTIES IMPORTED_LOCATION ${CMAKE_CURRENT_SOURCE_DIR}/../build/libsmppcommands.so)
 
 add_executable(run_tests
  main.cpp 
